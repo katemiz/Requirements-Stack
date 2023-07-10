@@ -1,0 +1,11 @@
+{
+    "100":{
+        "title":"Warning",
+        "subtitle":"No company exists",
+        "type" : "is-warning is-light",
+        "msg" : "In order to create a project, first you need to create a company. Please create a company and then create a project"
+    }
+
+}
+
+
