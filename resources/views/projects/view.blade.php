@@ -39,11 +39,14 @@
               </figure>
             </div>
             <div class="media-content">
-              <p class="title is-4">{{ $project['code'] }}</p>
+              <p class="title is-4">
+                <span>{{ $project['company']['name'] }} </span>
+                <span class="has-text-weight-light"> {{ $project['code'] }}</span>
+              </p>
               <p class="subtitle is-6">@ {{ $project['created_at'] }}</p>
             </div>
           </div>
-      
+
           <div class="content">
             <p>{{ $project['title'] }}</p>
 
@@ -62,7 +65,7 @@
             </a>
 
             <a href="javascript:confirmDelete('{{ $project->id}}')" class="card-footer-item">
-                <span class="icon"><x-carbon-close-outline /></span>
+                <span class="icon has-text-danger-dark"><x-carbon-close-outline /></span>
             </a>
         </footer>
     </div>

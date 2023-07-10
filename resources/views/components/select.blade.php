@@ -2,7 +2,7 @@
     <label class="label">{{ $params['label'] }}</label>
     <div class="control">
       <div class="select">
-        <select>
+        <select name="{{ $params['name'] }}">
           <option>Select</option>
 
           @foreach ($params['options'] as $key => $value)

@@ -65,6 +65,10 @@ class ProjectController extends Controller
 
         $props['user_id'] = 1; //Auth::id();
 
+        $props['company_id'] = $request->input('company');
+
+
+
         if ( isset($request->id) && !empty($request->id)) {
 
             $validated = $request->validate([
@@ -95,6 +99,8 @@ class ProjectController extends Controller
     public function view(Request $request)
     {
         $this->action = 'read';
+
+        //dd(Project::find($request->id)->company());
 
         return view('projects.view', [
             'action' => $this->action,

@@ -16,31 +16,27 @@
                 "title" : "#",
                 "sortable" : true,
                 "align" : "left",
-                "direction" : "asc",
-                "db_column_name" : "id"
+                "direction" : "asc"
             },
     
             "name": {
                 "title" : "Name",
                 "sortable" : true,
                 "align" : "left",
-                "direction" : "asc",
-                "db_column_name" : "name"
+                "direction" : "asc"
             },
             "fullname": {
                 "title" : "Fullname",
                 "sortable" : true,
                 "align" : "left",
-                "direction" : "asc",
-                "db_column_name" : "fullname"
+                "direction" : "asc"
             },
 
             "created_at": {
                 "title" : "Created On",
                 "sortable" : true,
                 "align" : "left",
-                "direction" : "asc",
-                "db_column_name" : "created_at"
+                "direction" : "asc"
             }
 
         },

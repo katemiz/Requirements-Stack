@@ -25,7 +25,7 @@
 
                 <a href="/companies" class="navbar-item icon-text">
                     <span class="icon has-text-warning">
-                        <x-carbon-enterprise />
+                        <x-carbon-letter-cc />
                     </span>
                     <span>Companies</span>
                 </a>
@@ -36,7 +36,7 @@
 
                     <a href="/projects" class="navbar-link">
                         <span class="icon has-text-warning">
-                            <x-carbon-building/>
+                            <x-carbon-letter-pp />
                         </span>
                         <span class="ml-2">Projects</span>
                     </a>
@@ -68,47 +68,24 @@
                     <span>PoCs</span>
                 </a>
 
-                <a href="/sayaclar" class="navbar-item icon-text">
-                    <span class="icon">
-                        {{-- <x-icon icon="reading" fill="{{config('constants.icons.color.dark')}}"/> --}}
-
-                    </span>
-                    <span>Sayaçlar</span>
-                </a>
 
 
-                <a href="/karar" class="navbar-item icon-text">
-                    <span class="icon">
-                        {{-- <x-icon icon="decision" fill="{{config('constants.icons.color.dark')}}"/> --}}
-
-                    </span>
-                    <span>Kararlar</span>
-                </a>
 
 
 
                 <div class="navbar-item has-dropdown is-hoverable">
-                    <p class="navbar-link" href="/Admin">Kayıtlar</p>
+                    <p class="navbar-link" href="/Admin">Export</p>
                     <div class="navbar-dropdown">
 
-                        <a href="/kayit-form/aidat" class="navbar-item">Toplu Aidat Kaydı</a>
-                        <a href="/kayit-form/alacak" class="navbar-item">Alacak Kaydı</a>
-                        <a href="/kayit-form/fatura" class="navbar-item">Fatura Kaydı</a>
-                        <a href="/kayit-form/gelir" class="navbar-item">Gelir Kaydı</a>
-                        <a href="/kayit-form/gider" class="navbar-item">Gider Kaydı</a>
-                        <a href="/okuma-form" class="navbar-item">Okuma Kaydı</a>
+                        <a href="/kayit-form/aidat" class="navbar-item">All Requirements</a>
+                        <a href="/kayit-form/alacak" class="navbar-item">Verification Matrix</a>
+                        <a href="/kayit-form/fatura" class="navbar-item">Req vs POCs</a>
 
                     </div>
                 </div>
 
 
-                <div class="navbar-item has-dropdown is-hoverable">
-                    <p class="navbar-link" href="/Admin">Yazdır</p>
-                    <div class="navbar-dropdown">
-                        <a href="/dokum" class="navbar-item icon-text">Gelir-Gider Döküm</a>
-                        <a href="/bosmakbuz" class="navbar-item icon-text">Boş Makbuz</a>
-                    </div>
-                </div>
+
 
             @endif
 
@@ -153,30 +130,25 @@
                 </div>
             </div>
             @else
-            <div class="navbar-item">
 
-                <a href="{{route('login')}}" class="icon-text has-color-warning">
-                    <span class="icon has-text-grey-light">
-                        {{-- <x-icon icon="login" fill="{{config('constants.icons.color.dark')}}"/> --}}
+                {{-- <div class="navbar-item">
+                    <a href="{{route('login')}}" class="icon-text has-color-warning">
+                        <span class="icon has-text-grey-light">
+                            <x-carbon-login/>
+                        </span>
+                        <span class="ml-1">Giriş</span>
+                    </a>
+                </div> --}}
 
-                        <x-carbon-login/>
+                <div class="navbar-item">
+                    <a href="{{route('register')}}" class="icon-text">
+                        <span class="icon has-text-info">
+                            <x-carbon-user-avatar />
+                        </span>
+                        <span class="ml-1">User</span>
+                    </a>
+                </div>
 
-
-                    </span>
-                    <span class="ml-1">Giriş</span>
-                </a>
-            </div>
-
-            <div class="navbar-item">
-
-                <a href="{{route('register')}}" class="icon-text">
-                    <span class="icon has-text-grey-light">
-                        {{-- <x-icon icon="user" fill="{{config('constants.icons.color.dark')}}"/> --}}
-                        <x-carbon-user-follow />
-                    </span>
-                    <span class="ml-1">Kaydolun</span>
-                </a>
-            </div>
             @endif
 
         </div>
@@ -184,3 +156,16 @@
     </div>
 
 </nav>
+
+
+@if (session('dene'))
+
+<section class="hero has-background-grey-lighter has-text-right">
+
+    <p class="is-size-7 p-1">
+      Hero subtitle
+    </p>
+</section>
+    
+@endif
+
