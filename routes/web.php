@@ -4,9 +4,10 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Livewire\ListCompanies;
 use App\Http\Livewire\ListProjects;
+use App\Http\Livewire\ListRequirements;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\CompanyController;
-
+use App\Http\Controllers\RequirementController;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,6 +63,13 @@ Route::get('/register', function () {
     Route::post('/projects/store/{id?}', [ProjectController::class, 'store']);
     Route::get('/projects/delete/{id}', [ProjectController::class, 'delete']);
 
+
+    // Requirements
+    Route::get('/requirements', ListRequirements::class);
+    Route::get('/requirements/view/{id}', [RequirementController::class, 'view']);
+    Route::get('/requirements/form/{id?}', [RequirementController::class, 'form']);
+    Route::post('/requirements/store/{id?}', [RequirementController::class, 'store']);
+    Route::get('/requirements/delete/{id}', [RequirementController::class, 'delete']);
 
 
     // Route::get('/projects', function () {

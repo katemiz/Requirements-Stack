@@ -7,8 +7,10 @@ use Livewire\Component;
 use Livewire\WithPagination;
 
 use App\Models\Project;
+use App\Models\Requirement;
 
-class ListProjects extends Component
+
+class ListRequirements extends Component
 {
     use WithPagination;
 
@@ -24,15 +26,15 @@ class ListProjects extends Component
 
     public function mount()
     {
-        $this->params = json_decode( file_get_contents(resource_path('/js/projects.json')),true );
+        $this->params = json_decode( file_get_contents(resource_path('/js/requirements.json')),true );
     }
 
 
     public function render(Request $request)
     {
-        $projects = Project::search('title',$this->search)->orderBy($this->sortField,$this->sortDirection)->paginate(env('RESULTS_PER_PAGE'));
+        $projects = Requirement::search('text',$this->search)->orderBy($this->sortField,$this->sortDirection)->paginate(env('RESULTS_PER_PAGE'));
 
-        return view('projects.list-projects',[
+        return view('requirement.list',[
             'records' => $projects,
             'params' => $this->params
         ]);

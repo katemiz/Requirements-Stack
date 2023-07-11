@@ -4,6 +4,13 @@
         "subtitle":"No company exists",
         "type" : "is-warning is-light",
         "msg" : "In order to create a project, first you need to create a company. Please create a company and then create a project"
+    },
+
+    "110":{
+        "title":"Warning",
+        "subtitle":"No project exists",
+        "type" : "is-warning is-light",
+        "msg" : "In order to create a requirement, first you need to create a project to which requirement will be linked. Please create a project (and/or an End Product) and then create a requirement"
     }
 
 }

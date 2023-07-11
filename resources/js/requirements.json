@@ -1,0 +1,107 @@
+{
+
+    "list" : {
+        "title" : "Requirements",
+        "subtitle" : "List of all requirements",
+        "addButton" : {
+            "text":"Add Requirement",
+            "route":"/requirements/form"
+        },
+        "filterText" : "Search ...",
+        "listCaption" : false,
+
+        "headers" : {
+
+            "id": {
+                "title" : "#",
+                "sortable" : true,
+                "align" : "left",
+                "direction" : "asc"
+            },
+    
+            "project_id": {
+                "title" : "Project",
+                "sortable" : true,
+                "align" : "left",
+                "direction" : "asc"
+            },
+
+            "type": {
+                "title" : "Type",
+                "sortable" : true,
+                "align" : "left",
+                "direction" : "asc"
+            },
+            "text": {
+                "title" : "Requirement Text",
+                "sortable" : true,
+                "align" : "left",
+                "direction" : "asc"
+            },
+
+            "created_at": {
+                "title" : "Created On",
+                "sortable" : true,
+                "align" : "left",
+                "direction" : "asc"
+            }
+
+        },
+        "actions" : {
+            "r" : "/projects/view/",
+            "w" : "/projects/form/",
+            "x" : "/projects/delete/"
+        },
+        "noitem" : "No requirements found in database yet!",
+        "delete_confirm" : {
+            "question" : "Do you want to delete this requirement from database?",
+            "last_warning" : "When done, it is not possible to revert back."
+        }
+    },
+
+    "create" : {
+        "title" : "Requirements",
+        "subtitle" : "Create a New Requirement",
+        "submitText" : "Add Requirement",
+        "submitRoute" : "/requirements/store"
+    },
+
+    "read" : {
+        "title" : "Requirements",
+        "subtitle" : "View Requirement Parameters",
+        "submitText" : "Add Requirement",
+        "submitRoute" : "/requirements/store"
+    },
+
+    "update" : {
+        "title" : "Requirements",
+        "subtitle" : "Edit Requirement Properties",
+        "submitText" : "Update Requirement",
+        "submitRoute" : "/requirements/store/"
+    },
+
+    "form" : {
+
+        "project": {
+            "label" : "Project",
+            "name" : "project",
+            "options" : ""
+        },
+
+        "code" : {
+            "label" : "Project Code",
+            "name" : "code",
+            "placeholder" : "Enter project code eg RLS",
+            "value" : ""
+        },
+
+        "title" : {
+            "label" : "Project Title",
+            "name" : "title",
+            "placeholder" : "Enter project title/description",
+            "value" : ""
+        }
+    }
+}
+
+

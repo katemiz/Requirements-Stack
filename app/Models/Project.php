@@ -22,14 +22,15 @@ class Project extends Model
         return $this->belongsTo(Company::class);
     }
 
-
-
     public function endproducts(): HasMany
     {
         return $this->hasMany(EndProduct::class);
     }
 
-
+    public function requirements(): HasMany
+    {
+        return $this->hasMany(Requirement::class);
+    }
 
 
 }

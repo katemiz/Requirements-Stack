@@ -10,4 +10,10 @@ class Company extends Model
     use HasFactory;
 
     protected $fillable = ['user_id','name', 'fullname'];
+
+
+    public function projects(): HasMany
+    {
+        return $this->hasMany(Project::class);
+    }
 }
