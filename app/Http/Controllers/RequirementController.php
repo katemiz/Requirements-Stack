@@ -36,8 +36,10 @@ class RequirementController extends Controller
         $optionArr = [];
 
         foreach ($projects as $project) {
-            $optionArr[$project->id] = $project->name;
+            $optionArr[$project->id] = $project->code;
+
         }
+
 
         $this->params['form']['project']['options'] = $optionArr;
 
@@ -53,7 +55,7 @@ class RequirementController extends Controller
             $this->params['form']['text']['value'] = $requirement->text;
         }
 
-        return view('projects.form', [
+        return view('requirement.form', [
             'action' => $this->action,
             'requirement' => $requirement,
             'params' => $this->params

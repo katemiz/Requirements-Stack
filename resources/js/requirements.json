@@ -88,17 +88,12 @@
             "options" : ""
         },
 
-        "code" : {
-            "label" : "Project Code",
-            "name" : "code",
-            "placeholder" : "Enter project code eg RLS",
-            "value" : ""
-        },
 
-        "title" : {
-            "label" : "Project Title",
-            "name" : "title",
-            "placeholder" : "Enter project title/description",
+
+        "text" : {
+            "label" : "Requirement Description",
+            "name" : "text",
+            "placeholder" : "Enter requirement text/description",
             "value" : ""
         }
     }
