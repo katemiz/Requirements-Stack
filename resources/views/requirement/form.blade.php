@@ -9,10 +9,16 @@
     <form action="{{ $params[$action]['submitRoute'] }}" method="POST" enctype="multipart/form-data">
     @csrf
 
-        <x-select :params="$params['form']['project']" />
-        {{-- <x-form-input :params="$params['form']['text']" /> --}}
+        {{-- <pre>
+        @php
+            print_r($params['form']['text']);
+        @endphp
+        </pre> --}}
 
-        <x-form-editor />
+        <x-select :params="$params['form']['project']" />
+        <x-form-editor :params="$params['form']['text']"/>
+        <x-form-editor :params="$params['form']['remarks']"/>
+
 
         <div class="buttons is-right">
             <button class="button is-dark">{{ $params[$action]['submitText'] }}</button>

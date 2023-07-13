@@ -61,4 +61,47 @@ class RequirementController extends Controller
             'params' => $this->params
         ]);
     }
+
+
+
+    public function store(Request $request)
+    {
+        $id = false;
+
+        $props['user_id'] = 1; //Auth::id();
+
+        $props['project_id'] = $request->input('project');
+
+
+
+        if ( isset($request->id) && !empty($request->id)) {
+
+            $validated = $request->validate([
+                'code' => ['required', 'max:12'],
+                'text' => ['required','max:128'],
+            ]);
+
+            // update
+            $project = Project::find($request->id)->update(array_merge($props,$validated));
+
+            $id = $request->id;
+        } else {
+
+            $validated = $request->validate([
+                'code' => ['required', 'unique:projects', 'max:12'],
+                'text' => ['required','max:128'],
+            ]);
+
+            // create
+            $project = Project::create(array_merge($props,$validated));
+            $id = $project->id;
+        }
+
+        return redirect('/projects/view/'.$id);
+    }
+
+
+
+
+
 }

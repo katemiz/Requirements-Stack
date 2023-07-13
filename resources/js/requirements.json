@@ -95,6 +95,13 @@
             "name" : "text",
             "placeholder" : "Enter requirement text/description",
             "value" : ""
+        },
+
+        "remarks" : {
+            "label" : "Remarks/Notes",
+            "name" : "remarks",
+            "placeholder" : "Enter remarks/notes",
+            "value" : ""
         }
     }
 }
