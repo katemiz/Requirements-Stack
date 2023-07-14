@@ -5,9 +5,15 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\ListCompanies;
 use App\Http\Livewire\ListProjects;
 use App\Http\Livewire\ListRequirements;
+use App\Http\Livewire\ListEndProducts;
+
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\RequirementController;
+use App\Http\Controllers\EndProductsController;
+
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -62,6 +68,15 @@ Route::get('/register', function () {
     Route::get('/projects/form/{id?}', [ProjectController::class, 'form']);
     Route::post('/projects/store/{id?}', [ProjectController::class, 'store']);
     Route::get('/projects/delete/{id}', [ProjectController::class, 'delete']);
+
+
+    // End Products
+    Route::get('/endproducts', ListEndProducts::class);
+    Route::get('/endproducts/view/{id}', [EndProductsController::class, 'view']);
+    Route::get('/endproducts/form/{id?}', [EndProductsController::class, 'form']);
+    Route::post('/endproducts/store/{id?}', [EndProductsController::class, 'store']);
+    Route::get('/endproducts/delete/{id}', [EndProductsController::class, 'delete']);
+
 
 
     // Requirements

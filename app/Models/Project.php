@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+use App\Models\Company;
 
 
 class Project extends Model
@@ -30,6 +31,21 @@ class Project extends Model
     public function requirements(): HasMany
     {
         return $this->hasMany(Requirement::class);
+    }
+
+
+    protected function companyNameId(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value) => Company::find($value)->name,
+        );
+    }
+
+
+    // Accessor to get the full name of the user
+    public function getCompanyNameAttribute()
+    {
+        return Company::find($this->company_id)->name;
     }
 
 

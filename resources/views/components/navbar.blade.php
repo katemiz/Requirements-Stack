@@ -41,9 +41,8 @@
                         <span class="ml-2">Projects</span>
                     </a>
 
-                    {{-- <p class="navbar-link" href="/durum/ozet">Projects</p> --}}
                     <div class="navbar-dropdown">
-                        <a href="/durum/ozet" class="navbar-item">End Products</a>
+                        <a href="/endproducts" class="navbar-item">End Products</a>
                     </div>
                 </div>
 

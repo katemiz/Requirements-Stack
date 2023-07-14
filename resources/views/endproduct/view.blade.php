@@ -16,7 +16,7 @@
       }).then((result) => {
           if (result.isConfirmed) {
 
-              window.location.href = '/projects/delete/'+id
+              window.location.href = '/endproducts/delete/'+id
           } else {
               return false
           }
@@ -40,19 +40,19 @@
             </div>
             <div class="media-content">
               <p class="title is-4">
-                <span>{{ $endproduct['project']['name'] }}  {{ $project->company_name }}</span>
+                <span>{{ $project->code }}</span>
                 <span class="has-text-weight-light"> {{ $project['code'] }}</span>
               </p>
-              <p class="subtitle is-6">@ {{ $endproduct['created_at'] }}</p>
+              <p class="subtitle is-6">@ {{ $project['created_at'] }}</p>
             </div>
           </div>
 
           <div class="content">
-            <p>{{ $endproduct['title'] }}</p>
+            <p>{{ $project['title'] }}</p>
 
-            @if ($project['updated_at'] != $endproduct['created_at'])
+            @if ($project['updated_at'] != $project['created_at'])
             <div class="is-size-7 has-text-grey-light">
-                Updated @ {{ $endproduct['updated_at'] }}
+                Updated @ {{ $project['created_at'] }}
             </div>
             @endif
 
@@ -60,7 +60,7 @@
         </div>
 
         <footer class="card-footer">
-            <a href="/endproducts/form/{{ $project->id}}" class="card-footer-item">
+            <a href="/projects/form/{{ $project->id}}" class="card-footer-item">
                 <span class="icon"><x-carbon-pen/></span>
             </a>
 
