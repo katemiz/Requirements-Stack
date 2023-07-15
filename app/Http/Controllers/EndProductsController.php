@@ -76,11 +76,11 @@ class EndProductsController extends Controller
             // update
             $endproduct = EndProduct::find($request->id)->update(array_merge($props,$validated));
 
-            $id = $endproduct->id;
+            $id = $request->id;
         } else {
 
             $validated = $request->validate([
-                'code' => ['required', 'unique:endproducts', 'max:12'],
+                'code' => ['required', 'unique:end_products', 'max:64'],
                 'title' => ['required','max:128'],
             ]);
 

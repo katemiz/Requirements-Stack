@@ -14,4 +14,17 @@ class EndProduct extends Model
 
     protected $fillable = ['user_id','project_id','code', 'title'];
 
+
+    public function project(): BelongsTo
+    {
+        return $this->belongsTo(Project::class);
+    }
+
+
+        // Accessor to get the full name of the user
+        public function getProjectCodeAttribute()
+        {
+            return Project::find($this->project_id)->code;
+        }
+
 }

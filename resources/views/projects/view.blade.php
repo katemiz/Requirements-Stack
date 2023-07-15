@@ -40,19 +40,19 @@
             </div>
             <div class="media-content">
               <p class="title is-4">
-                <span>{{ $endproduct['project']['name'] }}  {{ $project->company_name }}</span>
+                <span>{{ $project->company_name }}</span>
                 <span class="has-text-weight-light"> {{ $project['code'] }}</span>
               </p>
-              <p class="subtitle is-6">@ {{ $endproduct['created_at'] }}</p>
+              <p class="subtitle is-6">@ {{ $project['created_at'] }}</p>
             </div>
           </div>
 
           <div class="content">
-            <p>{{ $endproduct['title'] }}</p>
+            <p>{{ $project['title'] }}</p>
 
-            @if ($project['updated_at'] != $endproduct['created_at'])
+            @if ($project['updated_at'] != $project['created_at'])
             <div class="is-size-7 has-text-grey-light">
-                Updated @ {{ $endproduct['updated_at'] }}
+                Updated @ {{ $project['updated_at'] }}
             </div>
             @endif
 

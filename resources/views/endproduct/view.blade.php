@@ -29,6 +29,10 @@
       
     <x-title :params="$params[$action]" />
 
+    <x-notification type="is-info is-light" message="Primar lorem ipsum dolor sit amet, consectetur
+    adipiscing elit lorem ipsum dolor. <strong>Pellentesque risus mi</strong>, tempus quis placerat ut, porta nec nulla. Vestibulum rhoncus ac ex sit amet fringilla. Nullam gravida purus diam, et dictum <a>felis venenatis</a> efficitur."> </x-notification>
+
+
     <div class="card">
 
         <div class="card-content">
@@ -40,19 +44,19 @@
             </div>
             <div class="media-content">
               <p class="title is-4">
-                <span>{{ $project->code }}</span>
-                <span class="has-text-weight-light"> {{ $project['code'] }}</span>
+                <span>{{ $endproduct->project_code }}</span>
+                <span class="has-text-weight-light"> {{ $endproduct['code'] }}</span>
               </p>
-              <p class="subtitle is-6">@ {{ $project['created_at'] }}</p>
+              <p class="subtitle is-6">@ {{ $endproduct['created_at'] }}</p>
             </div>
           </div>
 
           <div class="content">
-            <p>{{ $project['title'] }}</p>
+            <p>{{ $endproduct['title'] }}</p>
 
-            @if ($project['updated_at'] != $project['created_at'])
+            @if ($endproduct['updated_at'] != $endproduct['created_at'])
             <div class="is-size-7 has-text-grey-light">
-                Updated @ {{ $project['created_at'] }}
+                Updated @ {{ $endproduct['updated_at'] }}
             </div>
             @endif
 
@@ -60,11 +64,11 @@
         </div>
 
         <footer class="card-footer">
-            <a href="/projects/form/{{ $project->id}}" class="card-footer-item">
+            <a href="/endproducts/form/{{ $endproduct->id}}" class="card-footer-item">
                 <span class="icon"><x-carbon-pen/></span>
             </a>
 
-            <a href="javascript:confirmDelete('{{ $project->id}}')" class="card-footer-item">
+            <a href="javascript:confirmDelete('{{ $endproduct->id}}')" class="card-footer-item">
                 <span class="icon has-text-danger-dark"><x-carbon-close-outline /></span>
             </a>
         </footer>
