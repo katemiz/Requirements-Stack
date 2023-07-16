@@ -1,15 +1,15 @@
 <section class="section container">
 
-    <x-title :params="$params['list']" />
-    <x-table-action :params="$params['list']" />
+    <x-title :params="config('projects.list')" />
+    <x-table-action :params="config('projects.list')" />
 
     @if ($records->count() > 0)
 
-        <x-table :params="$params['list']" :records="$records" />
+        <x-table :params="config('projects.list')" :records="$records" />
         {{ $records->links('pagination.bulma') }}
 
     @else
-        <x-notification type="is-warning is-light" message="{{ $params['list']['noitem'] }}" />
+        <x-notification type="is-warning is-light" message="{{ config('projects.list.noitem') }}" />
     @endif
 
 </section>

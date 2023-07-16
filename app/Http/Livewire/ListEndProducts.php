@@ -14,8 +14,6 @@ class ListEndProducts extends Component
 {
     use WithPagination;
 
-    public $params;
-
     protected $listeners = ['delete' => 'deleteReal'];
 
     public $search = '';
@@ -23,20 +21,12 @@ class ListEndProducts extends Component
     public $sortDirection = 'asc';
     public $msg = false;
 
-
-    public function mount()
-    {
-        $this->params = json_decode( file_get_contents(resource_path('/js/endproducts.json')),true );
-    }
-
-
     public function render(Request $request)
     {
         $projects = EndProduct::search('text',$this->search)->orderBy($this->sortField,$this->sortDirection)->paginate(env('RESULTS_PER_PAGE'));
 
         return view('endproduct.list-end-products',[
-            'records' => $projects,
-            'params' => $this->params,
+            'records' => $projects
         ]);
     }
 

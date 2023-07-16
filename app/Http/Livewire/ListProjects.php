@@ -12,8 +12,6 @@ class ListProjects extends Component
 {
     use WithPagination;
 
-    public $params;
-
     protected $listeners = ['delete' => 'deleteReal'];
 
     public $search = '';
@@ -22,19 +20,12 @@ class ListProjects extends Component
     public $msg = false;
 
 
-    public function mount()
-    {
-        $this->params = json_decode( file_get_contents(resource_path('/js/projects.json')),true );
-    }
-
-
     public function render(Request $request)
     {
         $projects = Project::search('title',$this->search)->orderBy($this->sortField,$this->sortDirection)->paginate(env('RESULTS_PER_PAGE'));
 
         return view('projects.list-projects',[
-            'records' => $projects,
-            'params' => $this->params
+            'records' => $projects
         ]);
     }
 

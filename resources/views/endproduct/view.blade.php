@@ -4,8 +4,8 @@
     function confirmDelete(id) {
 
       Swal.fire({
-      title: {{ Js::from($params['list']['delete_confirm']['question']) }},
-      text: {{ Js::from($params['list']['delete_confirm']['last_warning']) }},
+      title: {{ Js::from(config('endproducts.list.delete_confirm.question')) }},
+      text: {{ Js::from(config('endproducts.list.delete_confirm.last_warning')) }},
       icon: 'question',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -28,8 +28,8 @@
   <section class="section container">
       
     <div class="columns">
-      <div class="column"><x-title :params="$params[$action]" /></div>
-      <div class="column is-one"><x-info :info="$definition" /></div>
+      <div class="column"><x-title :params="config('endproducts')[$action]" /></div>
+      <div class="column is-one"><x-info :info="config('definitions.endproduct')" /></div>
     </div>
 
     <div class="card">
@@ -38,24 +38,24 @@
           <div class="media">
             <div class="media-left">
               <figure class="image is-48x48">
-                <a href="/projects"><x-carbon-menu /></a>
+                <a href="/endproducts"><x-carbon-menu /></a>
               </figure>
             </div>
             <div class="media-content">
               <p class="title is-4">
                 <span>{{ $endproduct->project_code }}</span>
-                <span class="has-text-weight-light"> {{ $endproduct['code'] }}</span>
+                <span class="has-text-weight-light"> {{ $endproduct->code }}</span>
               </p>
-              <p class="subtitle is-6">@ {{ $endproduct['created_at'] }}</p>
+              <p class="subtitle is-6">@ {{ $endproduct->created_at }}</p>
             </div>
           </div>
 
           <div class="content">
             <p>{{ $endproduct['title'] }}</p>
 
-            @if ($endproduct['updated_at'] != $endproduct['created_at'])
+            @if ($endproduct->updated_at != $endproduct->created_at)
             <div class="is-size-7 has-text-grey-light">
-                Updated @ {{ $endproduct['updated_at'] }}
+                Updated @ {{ $endproduct->updated_at }}
             </div>
             @endif
 

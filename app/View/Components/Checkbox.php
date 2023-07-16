@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class Select extends Component
+class Checkbox extends Component
 {
     /**
      * Create a new component instance.
@@ -21,6 +21,6 @@ class Select extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.select');
+        return view('components.checkbox');
     }
 }

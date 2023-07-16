@@ -7,22 +7,24 @@ use Illuminate\Http\Request;
 
 use App\Models\Company;
 use App\Models\Project;
+use App\Models\EndProduct;
 use App\Models\Requirement;
+
 
 
 class RequirementController extends Controller
 {
     public $action;
-    public $params;
-
-    public function __construct()
-    {
-        $this->params = json_decode( file_get_contents(resource_path('/js/requirements.json')),true );
-    }
 
     public function form(Request $request)
     {
-        $projects = Project::all()->sortBy("name");
+
+        if ( !session('current_project_id') || empty(session('current_project_id'))) {
+            return redirect('/selectcurrentproject');
+        }
+
+        $projects = Project::all()->sortBy("code");
+        $endproducts = EndProduct::where('project_id',session('current_project_id'))->orderBy("code")->get();
 
         if ( $projects->count() < 1) {
 
@@ -37,8 +39,14 @@ class RequirementController extends Controller
             $optionArr[$project->id] = $project->code;
         }
 
+        $epArr = [];
 
-        $this->params['form']['project']['options'] = $optionArr;
+        foreach ($endproducts as $endproduct) {
+            $epArr[$endproduct->id] = $endproduct->code;
+        }
+
+        config(["requirements.form.project.options" => $optionArr]);
+        config(["requirements.form.endproduct.options" => $epArr]);
 
         $this->action = 'create';
         $requirement = false;
@@ -46,16 +54,11 @@ class RequirementController extends Controller
         if ( isset($request->id) && !empty($request->id)) {
             $requirement = Requirement::find($request->id);
             $this->action = 'update';
-            $this->params['update']['submitRoute'] = $this->params['update']['submitRoute'].$request->id;
-
-            $this->params['form']['type']['value'] = $requirement->type;
-            $this->params['form']['text']['value'] = $requirement->text;
         }
 
         return view('requirement.form', [
             'action' => $this->action,
-            'requirement' => $requirement,
-            'params' => $this->params
+            'requirement' => $requirement
         ]);
     }
 
@@ -63,38 +66,38 @@ class RequirementController extends Controller
 
     public function store(Request $request)
     {
-        $id = false;
-
         $props['user_id'] = 1; //Auth::id();
 
         $props['project_id'] = $request->input('project');
+        $props['rtype'] = $request->input('rtype');
+        $props['cross_ref_no'] = $request->input('cross_ref_no');
+        $props['remarks'] = $request->input('remarks');
 
 
+        $validated = $request->validate([
+            'rtype' => ['required'],
+            'hidElIdtext' => ['required'],
+        ]);
+
+
+        $props = array_merge($props,$validated);
+
+        dd($props);
 
         if ( isset($request->id) && !empty($request->id)) {
 
-            $validated = $request->validate([
-                'code' => ['required', 'max:12'],
-                'text' => ['required','max:128'],
-            ]);
-
             // update
-            $project = Project::find($request->id)->update(array_merge($props,$validated));
+            $requirement = Requirement::find($request->id)->update($props);
 
             $id = $request->id;
         } else {
 
-            $validated = $request->validate([
-                'code' => ['required', 'unique:projects', 'max:12'],
-                'text' => ['required','max:128'],
-            ]);
-
             // create
-            $project = Project::create(array_merge($props,$validated));
-            $id = $project->id;
+            $requirement = Requirement::create($props);
+            $id = $requirement->id;
         }
 
-        return redirect('/projects/view/'.$id);
+        return redirect('/requirements/view/'.$id);
     }
 
 

@@ -11,12 +11,6 @@ use App\Models\Project;
 class ProjectController extends Controller
 {
     public $action;
-    public $params;
-
-    public function __construct()
-    {
-        $this->params = json_decode( file_get_contents(resource_path('/js/projects.json')),true );
-    }
 
     public function form(Request $request)
     {
@@ -35,7 +29,7 @@ class ProjectController extends Controller
             $optionArr[$company->id] = $company->name;
         }
 
-        $this->params['form']['company']['options'] = $optionArr;
+        config(['projects.form.company.options' => $optionArr]);
 
         $this->action = 'create';
         $project = false;
@@ -43,16 +37,11 @@ class ProjectController extends Controller
         if ( isset($request->id) && !empty($request->id)) {
             $project = Project::find($request->id);
             $this->action = 'update';
-            $this->params['update']['submitRoute'] = $this->params['update']['submitRoute'].$request->id;
-
-            $this->params['form']['code']['value'] = $project->code;
-            $this->params['form']['title']['value'] = $project->title;
         }
 
         return view('projects.form', [
             'action' => $this->action,
             'project' => $project,
-            'params' => $this->params
         ]);
     }
 
@@ -98,12 +87,9 @@ class ProjectController extends Controller
     {
         $this->action = 'read';
 
-        //dd(Project::find($request->id)->company());
-
         return view('projects.view', [
             'action' => $this->action,
-            'project' => Project::find($request->id),
-            'params' => $this->params
+            'project' => Project::find($request->id)
         ]);
     }
 

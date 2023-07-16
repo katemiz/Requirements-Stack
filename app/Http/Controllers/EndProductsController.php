@@ -11,12 +11,6 @@ use App\Models\Project;
 class EndProductsController extends Controller
 {
     public $action;
-    public $params;
-
-    public function __construct()
-    {
-        $this->params = json_decode( file_get_contents(resource_path('/js/endproducts.json')),true );
-    }
 
     public function form(Request $request)
     {
@@ -35,24 +29,19 @@ class EndProductsController extends Controller
             $optionArr[$project->id] = $project->code;
         }
 
-        $this->params['form']['project']['options'] = $optionArr;
+        config(['endproducts.form.project.options' => $optionArr ]);
 
         $this->action = 'create';
-        $project = false;
+        $endproduct = false;
 
         if ( isset($request->id) && !empty($request->id)) {
             $endproduct = EndProduct::find($request->id);
             $this->action = 'update';
-            $this->params['update']['submitRoute'] = $this->params['update']['submitRoute'].$request->id;
-
-            $this->params['form']['code']['value'] = $endproduct->code;
-            $this->params['form']['title']['value'] = $endproduct->title;
         }
 
         return view('endproduct.form', [
             'action' => $this->action,
-            'project' => $project,
-            'params' => $this->params
+            'endproduct' => $endproduct
         ]);
     }
 
@@ -99,16 +88,14 @@ class EndProductsController extends Controller
 
         return view('endproduct.view', [
             'action' => $this->action,
-            'endproduct' => EndProduct::find($request->id),
-            'params' => $this->params,
-            'definition' => $this->definitions['endproduct']
+            'endproduct' => EndProduct::find($request->id)
         ]);
     }
 
 
     public function delete($id)
     {
-        Project::find($id)->delete();
-        return redirect('/projects');
+        EndProduct::find($id)->delete();
+        return redirect('/endproducts');
     }
 }

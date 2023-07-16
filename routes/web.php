@@ -11,6 +11,8 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\RequirementController;
 use App\Http\Controllers\EndProductsController;
+use App\Http\Controllers\CurrentProjectController;
+
 
 
 
@@ -50,7 +52,9 @@ Route::get('/register', function () {
 // Route::middleware(['auth'])->group(function () {
 
 
-
+    // Current Project
+    Route::get('/selectcurrentproject', [CurrentProjectController::class, 'selectCurrent']);
+    Route::get('/setcurrentproject/{id}', [CurrentProjectController::class, 'setCurrent']);
 
 
     // Companies

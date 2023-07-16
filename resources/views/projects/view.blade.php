@@ -4,8 +4,8 @@
     function confirmDelete(id) {
 
       Swal.fire({
-      title: {{ Js::from($params['list']['delete_confirm']['question']) }},
-      text: {{ Js::from($params['list']['delete_confirm']['last_warning']) }},
+      title: {{ Js::from(config('projects.list.delete_confirm.question')) }},
+      text: {{ Js::from(config('projects.list.delete_confirm.last_warning')) }},
       icon: 'question',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -27,7 +27,7 @@
 
   <section class="section container">
       
-    <x-title :params="$params[$action]" />
+    <x-title :params="config('projects')[$action]" />
 
     <div class="card">
 
@@ -41,18 +41,18 @@
             <div class="media-content">
               <p class="title is-4">
                 <span>{{ $project->company_name }}</span>
-                <span class="has-text-weight-light"> {{ $project['code'] }}</span>
+                <span class="has-text-weight-light"> {{ $project->code }}</span>
               </p>
-              <p class="subtitle is-6">@ {{ $project['created_at'] }}</p>
+              <p class="subtitle is-6">@ {{ $project->created_at }}</p>
             </div>
           </div>
 
           <div class="content">
             <p>{{ $project['title'] }}</p>
 
-            @if ($project['updated_at'] != $project['created_at'])
+            @if ($project->updated_at != $project->created_at)
             <div class="is-size-7 has-text-grey-light">
-                Updated @ {{ $project['updated_at'] }}
+                Updated @ {{ $project->updated_at }}
             </div>
             @endif
 
@@ -60,7 +60,7 @@
         </div>
 
         <footer class="card-footer">
-            <a href="/endproducts/form/{{ $project->id}}" class="card-footer-item">
+            <a href="/projects/form/{{ $project->id}}" class="card-footer-item">
                 <span class="icon"><x-carbon-pen/></span>
             </a>
 

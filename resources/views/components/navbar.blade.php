@@ -157,12 +157,12 @@
 </nav>
 
 
-@if (session('dene'))
+@if (session('current_project_name'))
 
 <section class="hero has-background-grey-lighter has-text-right">
 
     <p class="is-size-7 p-1">
-      Hero subtitle
+      Current Project : {{ session('current_project_name') }}
     </p>
 </section>
     

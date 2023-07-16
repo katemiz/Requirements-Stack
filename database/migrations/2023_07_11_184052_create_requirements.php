@@ -18,8 +18,11 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(User::class);
             $table->foreignIdFor(Project::class);
+            $table->string('cross_ref_no')->nullable();
+            $table->string('rtype');
             $table->text('text');
-            $table->text('remarks');
+            $table->text('remarks')->nullable();
+            $table->string('status')->default('Verbatim');
             $table->timestamps();
         });
     }

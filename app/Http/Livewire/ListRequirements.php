@@ -14,8 +14,6 @@ class ListRequirements extends Component
 {
     use WithPagination;
 
-    public $params;
-
     protected $listeners = ['delete' => 'deleteReal'];
 
     public $search = '';
@@ -24,19 +22,15 @@ class ListRequirements extends Component
     public $msg = false;
 
 
-    public function mount()
-    {
-        $this->params = json_decode( file_get_contents(resource_path('/js/requirements.json')),true );
-    }
+
 
 
     public function render(Request $request)
     {
-        $projects = Requirement::search('text',$this->search)->orderBy($this->sortField,$this->sortDirection)->paginate(env('RESULTS_PER_PAGE'));
+        $requirements = Requirement::search('text',$this->search)->orderBy($this->sortField,$this->sortDirection)->paginate(env('RESULTS_PER_PAGE'));
 
         return view('requirement.list',[
-            'records' => $projects,
-            'params' => $this->params
+            'records' => $requirements
         ]);
     }
 

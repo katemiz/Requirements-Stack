@@ -1,5 +1,5 @@
 <div class="field">
-    <input type="label" name="hidEl{{ $params['name']}}" id="hidElId{{ $params['name']}}" value="">
+    <input type="label" name="hidEl{{ $params['name']}}" id="hidElId{{ $params['name']}}" value="{{ $value }}">
   
     <label class="label">{{ $params['label'] }}</label>
     <div class="control">
@@ -19,14 +19,18 @@
           }
       
           editor.model.document.on('change:data', ( evt, data ) => {
-          document.getElementById("ck{{ $params['name']}}").value = editor.getData()
-        });
+            document.getElementById("hidElId{{ $params['name']}}").value = editor.getData()
+          });
         })
         .catch( error => {
           console.error(error);
         });
       </script>
   
+
+    @error('hidElId'.$params['name'])
+    <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
+    @enderror
   
   
   
