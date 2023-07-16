@@ -22,12 +22,6 @@ class ListCompanies extends Component
     public $msg = false;
 
 
-    public function mount()
-    {
-        $this->params = json_decode( file_get_contents(resource_path('/js/companies.json')),true );
-    }
-
-
     public function render(Request $request)
     {
         $companies = Company::search('fullname',$this->search)->orderBy($this->sortField,$this->sortDirection)->paginate(env('RESULTS_PER_PAGE'));

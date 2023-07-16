@@ -11,12 +11,6 @@ use App\Models\Project;
 class CompanyController extends Controller
 {
     public $action;
-    public $params;
-
-    public function __construct()
-    {
-        $this->params = json_decode( file_get_contents(resource_path('/js/companies.json')),true );
-    }
 
     public function form(Request $request)
     {
@@ -26,16 +20,11 @@ class CompanyController extends Controller
         if ( isset($request->id) && !empty($request->id)) {
             $company = Company::find($request->id);
             $this->action = 'update';
-            $this->params['update']['submitRoute'] = $this->params['update']['submitRoute'].$request->id;
-
-            $this->params['form']['name']['value'] = $company->name;
-            $this->params['form']['fullname']['value'] = $company->fullname;
         }
 
         return view('companies.form', [
             'action' => $this->action,
-            'company' => $company,
-            'params' => $this->params
+            'company' => $company
         ]);
     }
 
@@ -43,7 +32,6 @@ class CompanyController extends Controller
     public function store(Request $request)
     {
         $id = false;
-
 
         $props['user_id'] = 1; //Auth::id();
 
@@ -53,8 +41,6 @@ class CompanyController extends Controller
                 'name' => ['required', 'max:12'],
                 'fullname' => ['required','max:128'],
             ]);
-
-
 
             // update
             $company = Company::find($request->id)->update(array_merge($props,$validated));
@@ -66,8 +52,6 @@ class CompanyController extends Controller
                 'name' => ['required', 'unique:companies', 'max:12'],
                 'fullname' => ['required','max:128'],
             ]);
-
-
 
             // create
             $company = Company::create(array_merge($props,$validated));
@@ -84,15 +68,14 @@ class CompanyController extends Controller
 
         return view('companies.view', [
             'action' => $this->action,
-            'company' => Company::find($request->id),
-            'params' => $this->params
+            'company' => Company::find($request->id)
         ]);
     }
 
 
     public function delete($id)
     {
-        Project::find($id)->delete();
+        Company::find($id)->delete();
         return redirect('/companies');
     }
 }

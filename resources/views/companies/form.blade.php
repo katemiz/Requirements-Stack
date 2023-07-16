@@ -1,16 +1,16 @@
 <x-layout>
 <section class="section container">
 
-    <x-title :params="$params[$action]" />
+    <x-title :params="config('companies')[$action]" />
 
-    <form action="{{ $params[$action]['submitRoute'] }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ config('companies.cu_route') }}{{ $company ? $company->id : '' }}" method="POST" enctype="multipart/form-data">
     @csrf
 
-        <x-form-input :params="$params['form']['name']" />
-        <x-form-input :params="$params['form']['fullname']" />
+        <x-form-input :params="config('companies.form.name')" value="{{ $company ? $company->name : '' }}"/>
+        <x-form-input :params="config('companies.form.fullname')" value="{{ $company ? $company->fullname : '' }}"/>
 
         <div class="buttons is-right">
-            <button class="button is-dark">{{ $params[$action]['submitText'] }}</button>
+            <button class="button is-dark">{{ config('companies')[$action]['submitText'] }}</button>
         </div>
 
     </form>

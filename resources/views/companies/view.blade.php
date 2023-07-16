@@ -4,8 +4,8 @@
     function confirmDelete(id) {
 
       Swal.fire({
-      title: {{ Js::from($params['list']['delete_confirm']['question']) }},
-      text: {{ Js::from($params['list']['delete_confirm']['last_warning']) }},
+      title: {{ Js::from(config('companies')['list']['delete_confirm']['question']) }},
+      text: {{ Js::from(config('companies')['list']['delete_confirm']['last_warning']) }},
       icon: 'question',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -27,7 +27,7 @@
 
   <section class="section container">
       
-    <x-title :params="$params[$action]" />
+    <x-title :params="config('companies')[$action]" />
 
     <div class="card">
 

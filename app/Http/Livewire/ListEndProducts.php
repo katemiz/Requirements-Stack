@@ -36,7 +36,7 @@ class ListEndProducts extends Component
 
         return view('endproduct.list-end-products',[
             'records' => $projects,
-            'params' => $this->params
+            'params' => $this->params,
         ]);
     }
 

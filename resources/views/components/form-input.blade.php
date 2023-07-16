@@ -1,7 +1,7 @@
 <div class="field">
     <label class="label">{{ $params['label'] }}</label>
     <div class="control">
-      <input class="input" type="text" name="{{ $params['name'] }}" placeholder="{{ $params['placeholder'] }}" value="{{ old($params['name'], $params['value']) }}">
+      <input class="input" type="text" name="{{ $params['name'] }}" placeholder="{{ $params['placeholder'] }}" value="{{ old($params['name'], $value) }}">
     </div>
 
     @error($params['name'])

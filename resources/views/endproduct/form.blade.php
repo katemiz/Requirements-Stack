@@ -1,7 +1,11 @@
 <x-layout>
 <section class="section container">
 
-    <x-title :params="$params[$action]" />
+
+    <div class="columns">
+        <div class="column"><x-title :params="$params[$action]" /></div>
+        <div class="column is-one"><x-info :info="$definition" /></div>
+    </div>
 
     <form action="{{ $params[$action]['submitRoute'] }}" method="POST" enctype="multipart/form-data">
     @csrf

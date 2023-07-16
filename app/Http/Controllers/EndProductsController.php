@@ -24,10 +24,8 @@ class EndProductsController extends Controller
 
         if ( $projects->count() < 1) {
 
-            $warnings = json_decode( file_get_contents(resource_path('/js/warnings.json')),true );
-
             return view('warning', [
-                'warning' => $warnings['120'],
+                'warning' => config('warnings.120'),
             ]);
         }
 
@@ -97,10 +95,13 @@ class EndProductsController extends Controller
     {
         $this->action = 'read';
 
+
+
         return view('endproduct.view', [
             'action' => $this->action,
             'endproduct' => EndProduct::find($request->id),
-            'params' => $this->params
+            'params' => $this->params,
+            'definition' => $this->definitions['endproduct']
         ]);
     }
 

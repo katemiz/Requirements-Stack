@@ -24,10 +24,8 @@ class ProjectController extends Controller
 
         if ( $companies->count() < 1) {
 
-            $warnings = json_decode( file_get_contents(resource_path('/js/warnings.json')),true );
-
             return view('warning', [
-                'warning' => $warnings['100'],
+                'warning' => config('warnings.100'),
             ]);
         }
 

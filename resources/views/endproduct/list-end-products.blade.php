@@ -1,6 +1,10 @@
 <section class="section container">
 
-    <x-title :params="$params['list']" />
+    <div class="columns">
+        <div class="column"><x-title :params="$params['list']" /></div>
+        <div class="column is-one"><x-info :info="config('definitions.endproduct')" /></div>
+    </div>
+    
     <x-table-action :params="$params['list']" />
 
     @if ($records->count() > 0)

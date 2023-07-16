@@ -26,10 +26,8 @@ class RequirementController extends Controller
 
         if ( $projects->count() < 1) {
 
-            $warnings = json_decode( file_get_contents(resource_path('/js/warnings.json')),true );
-
             return view('warning', [
-                'warning' => $warnings['110'],
+                'warning' => config('warnings.110')
             ]);
         }
 
@@ -37,7 +35,6 @@ class RequirementController extends Controller
 
         foreach ($projects as $project) {
             $optionArr[$project->id] = $project->code;
-
         }
 
 
