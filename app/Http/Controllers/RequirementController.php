@@ -10,21 +10,25 @@ use App\Models\Project;
 use App\Models\EndProduct;
 use App\Models\Requirement;
 
+use App\Rules\EditorRule;
+use App\Rules\SelectRule;
+
+
 
 
 class RequirementController extends Controller
 {
     public $action;
 
-    public function form(Request $request)
-    {
-
-        if ( !session('current_project_id') || empty(session('current_project_id'))) {
-            return redirect('/selectcurrentproject');
-        }
+    public function __construct () {
 
         $projects = Project::all()->sortBy("code");
         $endproducts = EndProduct::where('project_id',session('current_project_id'))->orderBy("code")->get();
+
+        // dd(["aaaa"=>session('current_project_id')]);
+
+
+        // dd($endproducts);
 
         if ( $projects->count() < 1) {
 
@@ -42,11 +46,27 @@ class RequirementController extends Controller
         $epArr = [];
 
         foreach ($endproducts as $endproduct) {
-            $epArr[$endproduct->id] = $endproduct->code;
+            $epArr[$endproduct->id] = $endproduct->code.', '.$endproduct->title;
         }
 
         config(["requirements.form.project.options" => $optionArr]);
         config(["requirements.form.endproduct.options" => $epArr]);
+
+        // dd(config("requirements.form.endproduct.options"));
+
+    } 
+
+
+
+    public function form(Request $request)
+    {
+
+        // dd(config(["requirements.form.endproduct.options"]));
+
+        if ( !session('current_project_id') || empty(session('current_project_id'))) {
+            return redirect('/selectcurrentproject');
+        }
+
 
         $this->action = 'create';
         $requirement = false;
@@ -68,21 +88,21 @@ class RequirementController extends Controller
     {
         $props['user_id'] = 1; //Auth::id();
 
+
+
         $props['project_id'] = $request->input('project');
-        $props['rtype'] = $request->input('rtype');
         $props['cross_ref_no'] = $request->input('cross_ref_no');
         $props['remarks'] = $request->input('remarks');
 
-
         $validated = $request->validate([
-            'rtype' => ['required'],
-            'hidElIdtext' => ['required'],
+            'rtype' => ['required', 'string', new SelectRule],
+            'text' => 'required|min:25',
         ]);
 
 
         $props = array_merge($props,$validated);
 
-        dd($props);
+        // dd($props);
 
         if ( isset($request->id) && !empty($request->id)) {
 
@@ -96,6 +116,29 @@ class RequirementController extends Controller
             $requirement = Requirement::create($props);
             $id = $requirement->id;
         }
+
+
+        // END PRODUCTS
+
+        $req = Requirement::find($id);
+
+        foreach (config("requirements.form.endproduct.options") as $key => $v) {
+
+            $varname  = "endproduct".$key;
+
+            if ( $request->input($varname) ) {
+
+
+                $req->end_products()->attach($request[$varname]);
+
+            }
+
+
+
+        }
+
+
+
 
         return redirect('/requirements/view/'.$id);
     }

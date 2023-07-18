@@ -7,8 +7,8 @@
             
             @foreach ($params['options'] as $key => $v)
 
-                <label class="checkbox">
-                    <input type="checkbox" name="{{$params['name']}}{{$key}}"> {{ $v }}
+                <label class="checkbox is-block">
+                    <input type="checkbox" name="{{$params['name']}}{{$key}}" value="{{$key}}"> {{ $v }}
                 </label>
 
             @endforeach

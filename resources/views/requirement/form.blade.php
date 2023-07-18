@@ -9,6 +9,10 @@
     <form action="{{ config('requirements.cu_route') }}{{ $requirement ? $requirement->id : '' }}" method="POST" enctype="multipart/form-data">
     @csrf
 
+
+        {{-- @php
+            print_r(config('requirements.form.endproduct'));
+        @endphp --}}
         <x-select :params="config('requirements.form.project')" value="{{ $requirement ? $requirement->project_id : '' }}"/>
         <x-checkbox :params="config('requirements.form.endproduct')" value="{{ $requirement ? $requirement->project_id : '' }}"/>
         <x-select :params="config('requirements.form.rtype')" value="{{ $requirement ? $requirement->rtype : '' }}"/>
@@ -22,7 +26,7 @@
 
     </form>
 
-    @if ($errors->any())
+    {{-- @if ($errors->any())
     <div class="alert alert-danger">
         <ul>
             @foreach ($errors->all() as $error)
@@ -30,7 +34,7 @@
             @endforeach
         </ul>
     </div>
-@endif
+    @endif --}}
 
 
 </section>

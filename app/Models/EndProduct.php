@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+
+
 class EndProduct extends Model
 {
     use HasFactory;
@@ -21,10 +23,17 @@ class EndProduct extends Model
     }
 
 
-        // Accessor to get the full name of the user
-        public function getProjectCodeAttribute()
-        {
-            return Project::find($this->project_id)->code;
-        }
+    // Accessor to get the full name of the user
+    public function getProjectCodeAttribute()
+    {
+        return Project::find($this->project_id)->code;
+    }
+
+
+
+    public function requirements(): BelongsToMany
+    {
+        return $this->belongsToMany(Requirement::class);
+    }
 
 }
