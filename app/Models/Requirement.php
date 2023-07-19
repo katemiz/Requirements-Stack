@@ -11,7 +11,7 @@ class Requirement extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id','project_id','text','rtype'];
+    protected $fillable = ['user_id','project_id','text','rtype','remarks','cross_ref_no'];
 
 
     public function end_products(): BelongsToMany

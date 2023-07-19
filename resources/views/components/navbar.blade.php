@@ -157,7 +157,7 @@
 </nav>
 
 
-@if (session('current_project_name'))
+@if (session('current_project_id') && session('current_project_name'))
 
 <section class="hero has-background-grey-lighter has-text-right">
 

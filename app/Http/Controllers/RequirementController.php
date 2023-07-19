@@ -22,10 +22,15 @@ class RequirementController extends Controller
 
     public function __construct () {
 
+        // dd(["aaaa"=>session('current_project_id')]);
+
+
+
+        // dd(session('current_project_id'));
+
         $projects = Project::all()->sortBy("code");
         $endproducts = EndProduct::where('project_id',session('current_project_id'))->orderBy("code")->get();
 
-        // dd(["aaaa"=>session('current_project_id')]);
 
 
         // dd($endproducts);
@@ -63,9 +68,16 @@ class RequirementController extends Controller
 
         // dd(config(["requirements.form.endproduct.options"]));
 
-        if ( !session('current_project_id') || empty(session('current_project_id'))) {
+        if ( !$request->session()->has('current_project_id' )) {
+
+
+        // if ( session('current_project_id') === null || empty(session('current_project_id'))) {
+
+            dd('redirecting');
             return redirect('/selectcurrentproject');
         }
+
+
 
 
         $this->action = 'create';
@@ -87,9 +99,6 @@ class RequirementController extends Controller
     public function store(Request $request)
     {
         $props['user_id'] = 1; //Auth::id();
-
-
-
         $props['project_id'] = $request->input('project');
         $props['cross_ref_no'] = $request->input('cross_ref_no');
         $props['remarks'] = $request->input('remarks');
@@ -106,8 +115,10 @@ class RequirementController extends Controller
 
         if ( isset($request->id) && !empty($request->id)) {
 
+
             // update
             $requirement = Requirement::find($request->id)->update($props);
+
 
             $id = $request->id;
         } else {
@@ -143,7 +154,22 @@ class RequirementController extends Controller
         return redirect('/requirements/view/'.$id);
     }
 
+    public function view(Request $request)
+    {
+        $this->action = 'read';
 
+        return view('requirement.view', [
+            'action' => $this->action,
+            'requirement' => Requirement::find($request->id)
+        ]);
+    }
+
+
+    public function delete($id)
+    {
+        Requirement::find($id)->delete();
+        return redirect('/requirements');
+    }
 
 
 

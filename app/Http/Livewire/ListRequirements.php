@@ -17,7 +17,7 @@ class ListRequirements extends Component
     protected $listeners = ['delete' => 'deleteReal'];
 
     public $search = '';
-    public $sortField = 'title';
+    public $sortField = 'text';
     public $sortDirection = 'asc';
     public $msg = false;
 

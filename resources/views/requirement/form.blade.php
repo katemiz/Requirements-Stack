@@ -10,9 +10,9 @@
     @csrf
 
 
-        {{-- @php
+        @php
             print_r(config('requirements.form.endproduct'));
-        @endphp --}}
+        @endphp
         <x-select :params="config('requirements.form.project')" value="{{ $requirement ? $requirement->project_id : '' }}"/>
         <x-checkbox :params="config('requirements.form.endproduct')" value="{{ $requirement ? $requirement->project_id : '' }}"/>
         <x-select :params="config('requirements.form.rtype')" value="{{ $requirement ? $requirement->rtype : '' }}"/>

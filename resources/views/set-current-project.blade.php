@@ -2,7 +2,7 @@
   
 
 
-    <section class="section container">
+    {{-- <section class="section container">
 
         <x-title :params="$params" />
 
@@ -24,9 +24,9 @@
                 <td>{{ $project->title }}</td>
                 <td><a href="/setcurrentproject/{{ $project->id }}">Set as Current Project</a></td>
             </tr>
-
                 
             @endforeach
+
         </table>
     
     
@@ -34,7 +34,7 @@
             <x-notification type="is-warning is-light" message="No projects found" />
         @endif
     
-    </section>
+    </section> --}}
     
 
 

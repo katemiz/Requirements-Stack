@@ -14,6 +14,9 @@ class CurrentProjectController extends Controller
     {
         $params = ["title" => "Set Current Project","subtitle" => "Set default project for requirements"];
 
+        dd("aaa");
+
+
         return view('set-current-project', [
             'projects' => Project::all()->sortBy("code"),
             'params' => $params
