@@ -14,7 +14,7 @@ class CurrentProjectController extends Controller
     {
         $params = ["title" => "Set Current Project","subtitle" => "Set default project for requirements"];
 
-        dd("aaa");
+        //dd("aaa");
 
 
         return view('set-current-project', [

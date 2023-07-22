@@ -73,7 +73,7 @@ class RequirementController extends Controller
 
         // if ( session('current_project_id') === null || empty(session('current_project_id'))) {
 
-            dd('redirecting');
+            //dd('redirecting');
             return redirect('/selectcurrentproject');
         }
 

@@ -2,7 +2,7 @@
   
 
 
-    {{-- <section class="section container">
+    <section class="section container">
 
         <x-title :params="$params" />
 
@@ -34,7 +34,7 @@
             <x-notification type="is-warning is-light" message="No projects found" />
         @endif
     
-    </section> --}}
+    </section>
     
 
 
