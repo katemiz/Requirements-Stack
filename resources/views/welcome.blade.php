@@ -4,7 +4,7 @@
 <div class="columns">
 
     <div class="column is-half">
-        <h1 class="title has-text-weight-light is-size-1 has-text-left">Requirements Stack</h1>
+        <h1 class="title has-text-weight-light is-size-1 has-text-left">{{ config('appconstants.app.name') }}</h1>
 
         <figure class="image is-1by1">
             <img src="images/hero.svg" alt="The Process Flow" on:click="{showImg}">
@@ -13,9 +13,9 @@
 
     <div class="column content">
 
-        <h1 class="subtitle has-text-weight-light">The toolkit that connects</h1>
+        <h1 class="subtitle has-text-weight-light">{{ config('appconstants.app.welcome_greeter') }}</h1>
 
-        <p class="mb-3">This toolkit focuses on the relationships between datasets of The Requirements Flow letting you extract all relations between nodes.</p>
+        <p class="mb-3">{{ config('appconstants.app.welcome_explanation') }}</p>
 
         <p class="mb-3"></p>
 

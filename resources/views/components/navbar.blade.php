@@ -6,7 +6,7 @@
             <span class="icon has-text-dark">
                 <x-carbon-tree-view-alt/>
             </span>
-            <span class="ml-2">{{ env('APP_NAME') }}</span>
+            <span class="ml-2">{{ config('appconstants.app.name') }}</span>
         </a>
 
         <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbar_ana">
@@ -21,7 +21,7 @@
 
         <div class="navbar-start" id="navstart">
 
-            @if(!Auth::check())
+            @if(Auth::check())
 
                 <a href="/companies" class="navbar-item icon-text">
                     <span class="icon has-text-warning">
@@ -95,56 +95,42 @@
 
             @if(Auth::check())
 
-            <div class="navbar-item has-dropdown is-hoverable">
+                <div class="navbar-item has-dropdown is-hoverable">
 
-                <p class="navbar-link">
-                    <span class="icon">
-                        {{-- <x-icon icon="user" fill="{{config('constants.icons.color.dark')}}"/> --}}
-
-                    </span>
-                    <span class="mx-3 has-text-right">
-                        {{ Auth::user()->name }} {{ Auth::user()->lastname }}
-                        <span class="block has-text-warning is-size-7">{{session('selected_bina')}}</span>
-                    </span>
-                </p>
+                    <p class="navbar-link">
+                        <span class="mx-3 has-text-right">
+                            {{ Auth::user()->name }} {{ Auth::user()->lastname }}
+                            {{-- <span class="block has-text-warning is-size-7">{{session('selected_bina')}}</span> --}}
+                        </span>
+                    </p>
 
 
 
-                <div class="navbar-dropdown">
+                    <div class="navbar-dropdown">
 
-                    <a href="/bina-list" class="navbar-item">Binalarım</a>
+                        <a href="/profile" class="navbar-item">Profile</a>
 
-                    <a  href="/help" class="navbar-item">Yardım</a>
-                    <!-- Authentication -->
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
+                        <!-- Authentication -->
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
 
-                        <a :href="route('logout')" class="navbar-item"
-                                onclick="event.preventDefault();
-                                            this.closest('form').submit();">
-                            {{ __('Log Out') }}
-                        </a>
-                    </form>
+                            <a :href="route('logout')" class="navbar-item"
+                                    onclick="event.preventDefault();
+                                                this.closest('form').submit();">
+                                {{ __('ui.links.logout.text') }}
+                            </a>
+                        </form>
 
+                    </div>
                 </div>
-            </div>
             @else
 
-                {{-- <div class="navbar-item">
-                    <a href="{{route('login')}}" class="icon-text has-color-warning">
-                        <span class="icon has-text-grey-light">
-                            <x-carbon-login/>
-                        </span>
-                        <span class="ml-1">Giriş</span>
-                    </a>
-                </div> --}}
-
                 <div class="navbar-item">
-                    <a href="{{route('register')}}" class="icon-text">
+                    <a href="{{route('login')}}" class="icon-text">
                         <span class="icon has-text-info">
-                            <x-carbon-user-avatar />
+                            <x-carbon-login />
                         </span>
-                        <span class="ml-1">User</span>
+                        <span class="ml-1">{{ __('ui.links.login.text')}}</span>
                     </a>
                 </div>
 
