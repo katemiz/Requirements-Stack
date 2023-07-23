@@ -8,9 +8,9 @@ use Livewire\WithPagination;
 
 
 use App\Models\Project;
-use App\Models\EndProduct;
+use App\Models\Endproduct;
 
-class ListEndProducts extends Component
+class ListEndproducts extends Component
 {
     use WithPagination;
 
@@ -23,7 +23,7 @@ class ListEndProducts extends Component
 
     public function render(Request $request)
     {
-        $projects = EndProduct::search('text',$this->search)->orderBy($this->sortField,$this->sortDirection)->paginate(env('RESULTS_PER_PAGE'));
+        $projects = Endproduct::search('text',$this->search)->orderBy($this->sortField,$this->sortDirection)->paginate(env('RESULTS_PER_PAGE'));
 
         return view('endproduct.list-end-products',[
             'records' => $projects
@@ -44,7 +44,7 @@ class ListEndProducts extends Component
 
     public function deleteReal($id)
     {
-        EndProduct::find($id)->delete();
+        Endproduct::find($id)->delete();
         $this->dispatchBrowserEvent('informUserOnDelete');
     }
 

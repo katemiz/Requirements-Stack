@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 use App\Models\Requirement;
-use App\Models\EndProduct;
+use App\Models\Endproduct;
 
 
 
@@ -17,8 +17,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('endproduct_requirement', function (Blueprint $table) {
-            $table->foreignIdFor(Requirement::class);
-            $table->foreignIdFor(EndProduct::class);
+            $table->foreignIdFor(Requirement::class)->constrained();
+            $table->foreignIdFor(Endproduct::class)->constrained();
             $table->timestamps();
         });
     }

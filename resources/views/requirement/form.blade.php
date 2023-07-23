@@ -1,5 +1,11 @@
 <section class="section container">
 
+
+
+
+
+
+
     <script src="{{ asset('/js/ckeditor5/ckeditor.js') }}"></script>
 
 
@@ -8,11 +14,7 @@
     <form action="{{ config('requirements.cu_route') }}{{ $requirement ? $requirement->id : '' }}" method="POST" enctype="multipart/form-data">
     @csrf
 
-{{-- <pre>
-        @php
-            print_r($projects);
-        @endphp
-        </pre> --}}
+
 
 
         <div class="field">
@@ -35,32 +37,33 @@
             @enderror
         </div>
 
-
         @if ($selectedPrj)
 
-        {{-- @php
-            print_r($selectedPrj->endproducts());
-        @endphp --}}
-            
-
         <div class="field">
-            <label class="label">{{ config('requirements.form.endproduct.label') }}</label>
-            <div class="control">
-              <div class="select">
-                <select name="{{ config('requirements.form.endproduct.name') }}">
-                  <option value="notselected">Select</option>
-        
-                  @foreach ($selectedPrj->endproducts() as $endproduct)
-                    <option value="{{ $endproduct->id }}" @selected( count($projects) == 1 || $endproduct->id == $value)>{{ $endproduct->code }}</option>
-                  @endforeach
-        
-                </select>
-              </div>
-            </div>
-        
-            @error(config('requirements.form.endproduct.name'))
-            <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
-            @enderror
+          <label class="label">{{ config('requirements.form.endproduct.label') }}</label>
+      
+          <div class="control">
+      
+              @if ( count($endproducts) > 0)
+                  
+                @foreach ($endproducts as $endproduct)
+    
+                    <label class="checkbox is-block">
+                        <input 
+                          type="checkbox" 
+                          name="{{ config('requirements.form.endproduct.name') }}{{$endproduct->id}}" 
+                          value="{{$endproduct->id}}"
+                          @checked(in_array($endproduct->id,$current_ep_id_arr))>
+                          {{ $endproduct->code }}
+                    </label>
+    
+                @endforeach
+      
+              @else  
+                <p>{{ config('requirements.form.endproduct.nooptions')}}</p>
+              @endif
+      
+          </div>
         </div>
 
         @else 
@@ -87,7 +90,7 @@
 
         {{-- <x-select :params="config('requirements.form.project')" value="{{ $requirement ? $requirement->project_id : '' }}"/> --}}
         {{-- <x-checkbox :params="config('requirements.form.endproduct')" value="{{ $requirement ? $requirement->project_id : '' }}"/> --}}
-        {{-- <x-select :params="config('requirements.form.rtype')" value="{{ $requirement ? $requirement->rtype : '' }}"/> --}}
+        <x-select :params="config('requirements.form.rtype')" value="{{ $requirement ? $requirement->rtype : '' }}"/>
         <x-form-input :params="config('requirements.form.cross_ref_no')" value="{{ $requirement ? $requirement->cross_ref_no : '' }}"/>
         <x-form-editor :params="config('requirements.form.text')" value="{{ $requirement ? $requirement->text : '' }}" />
         <x-form-editor :params="config('requirements.form.remarks')" value="{{ $requirement ? $requirement->remarks : '' }}"/>
@@ -98,7 +101,7 @@
 
     </form>
 
-    {{-- @if ($errors->any())
+    @if ($errors->any())
     <div class="alert alert-danger">
         <ul>
             @foreach ($errors->all() as $error)
@@ -106,7 +109,7 @@
             @endforeach
         </ul>
     </div>
-    @endif --}}
+    @endif
 
 
 </section>

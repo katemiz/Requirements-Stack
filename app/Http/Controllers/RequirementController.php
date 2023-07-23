@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
+
+
 use Illuminate\Http\Request;
 
 
 use App\Models\Company;
 use App\Models\Project;
-use App\Models\EndProduct;
+use App\Models\Endproduct;
 use App\Models\Requirement;
 
 use App\Rules\EditorRule;
@@ -22,18 +25,7 @@ class RequirementController extends Controller
 
     public function __construct () {
 
-        // dd(["aaaa"=>session('current_project_id')]);
-
-
-
-        // dd(session('current_project_id'));
-
         $projects = Project::all()->sortBy("code");
-        $endproducts = EndProduct::where('project_id',session('current_project_id'))->orderBy("code")->get();
-
-
-
-        // dd($endproducts);
 
         if ( $projects->count() < 1) {
 
@@ -42,87 +34,42 @@ class RequirementController extends Controller
             ]);
         }
 
-        $optionArr = [];
-
-        foreach ($projects as $project) {
-            $optionArr[$project->id] = $project->code;
-        }
-
-        $epArr = [];
-
-        foreach ($endproducts as $endproduct) {
-            $epArr[$endproduct->id] = $endproduct->code.', '.$endproduct->title;
-        }
-
-        config(["requirements.form.project.options" => $optionArr]);
-        config(["requirements.form.endproduct.options" => $epArr]);
-
-        // dd(config("requirements.form.endproduct.options"));
-
     } 
 
 
 
-    public function form(Request $request)
-    {
-
-        // dd(config(["requirements.form.endproduct.options"]));
-
-        if ( !$request->session()->has('current_project_id' )) {
 
 
-        // if ( session('current_project_id') === null || empty(session('current_project_id'))) {
+    public function getEndProducts($idReq) {
 
-            //dd('redirecting');
-            return redirect('/selectcurrentproject');
-        }
-
-
-
-
-        $this->action = 'create';
-        $requirement = false;
-
-        if ( isset($request->id) && !empty($request->id)) {
-            $requirement = Requirement::find($request->id);
-            $this->action = 'update';
-        }
-
-        return view('requirement.form', [
-            'action' => $this->action,
-            'requirement' => $requirement
-        ]);
+        $req = Requirement::find($idReq);
+        return Project::find($req->project_id)->endproducts()->get();
     }
 
 
 
     public function store(Request $request)
     {
-        $props['user_id'] = 1; //Auth::id();
-        $props['project_id'] = $request->input('project');
-        $props['cross_ref_no'] = $request->input('cross_ref_no');
-        $props['remarks'] = $request->input('remarks');
-
         $validated = $request->validate([
+            'project' => 'required|numeric',
             'rtype' => ['required', 'string', new SelectRule],
             'text' => 'required|min:25',
         ]);
 
-
-        $props = array_merge($props,$validated);
-
-        // dd($props);
+        $props['user_id'] = Auth::id();
+        $props['project_id'] = $validated['project'];
+        $props['rtype'] = $validated['rtype'];
+        $props['cross_ref_no'] = $request->input('cross_ref_no');
+        $props['text'] = $validated['text'];
+        $props['remarks'] = $request->input('remarks');
 
         if ( isset($request->id) && !empty($request->id)) {
-
-
             // update
-            $requirement = Requirement::find($request->id)->update($props);
-
-
+            Requirement::find($request->id)->update($props);
             $id = $request->id;
-        } else {
 
+            $requirement = Requirement::find($id);
+        } else {
             // create
             $requirement = Requirement::create($props);
             $id = $requirement->id;
@@ -130,29 +77,23 @@ class RequirementController extends Controller
 
 
         // END PRODUCTS
+        $endproducts = $this->getEndProducts($id);
 
-        $req = Requirement::find($id);
+        $dizin = [];
+        foreach ($endproducts as $endproduct) {
 
-        foreach (config("requirements.form.endproduct.options") as $key => $v) {
-
-            $varname  = "endproduct".$key;
+            $varname  = "endproduct".$endproduct->id;
 
             if ( $request->input($varname) ) {
-
-
-                $req->end_products()->attach($request[$varname]);
-
+                array_push($dizin,$endproduct->id);
             }
-
-
-
         }
 
-
-
+        $requirement->endproducts()->sync($dizin);
 
         return redirect('/requirements/view/'.$id);
     }
+
 
     public function view(Request $request)
     {

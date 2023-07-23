@@ -17,7 +17,6 @@ class Project extends Model
 
     protected $fillable = ['user_id','company_id','code', 'title'];
 
-
     public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class);
@@ -25,14 +24,15 @@ class Project extends Model
 
     public function endproducts(): HasMany
     {
-        return $this->hasMany(EndProduct::class);
+        return $this->hasMany(Endproduct::class);
     }
+
+
 
     public function requirements(): HasMany
     {
         return $this->hasMany(Requirement::class);
     }
-
 
     protected function companyNameId(): Attribute
     {

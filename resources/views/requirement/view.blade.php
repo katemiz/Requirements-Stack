@@ -40,11 +40,27 @@
             </div>
             <div class="media-content">
               <p class="title is-4">
-                <span>{{ $requirement->rtype }} {{ $requirement->id }}</span>
-                <span class="has-text-weight-light"> {{ $requirement->id }}</span>
+                <span>{{ $requirement->rtype }}-{{ $requirement->id }}</span>
+                {{-- <span class="has-text-weight-light"> {{ $requirement->id }}</span> --}}
               </p>
               <p class="subtitle is-6">@ {{ $requirement->created_at }}</p>
             </div>
+
+            <div class="media-content">
+
+              <h4 class="subtitle has-text-weight-normal my-0">Project</h4>
+              <span class="tag is-black">{{ $requirement->project->code }}</span>
+            </div>
+
+            <div class="media-content">
+
+              <h4 class="subtitle has-text-weight-normal my-0">End Products</h4>
+              @foreach ($requirement->project->endproducts as $ep)
+              <span class="tag is-info">{{ $ep->code}}</span>
+              @endforeach
+            </div>
+
+
           </div>
 
           <div class="content">

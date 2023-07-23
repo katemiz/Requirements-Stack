@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-use App\Models\EndProduct;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+
+use App\Models\Endproduct;
 
 class Requirement extends Model
 {
@@ -14,9 +17,15 @@ class Requirement extends Model
     protected $fillable = ['user_id','project_id','text','rtype','remarks','cross_ref_no'];
 
 
-    public function end_products(): BelongsToMany
+    public function project(): BelongsTo
     {
-        return $this->belongsToMany(EndProduct::class);
+        return $this->belongsTo(Project::class);
+    }
+
+
+    public function endproducts(): BelongsToMany
+    {
+        return $this->belongsToMany(Endproduct::class);
     }
 
 }

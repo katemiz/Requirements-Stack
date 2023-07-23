@@ -9,7 +9,7 @@ use App\Http\Livewire\ListCompanies;
 use App\Http\Livewire\ListProjects;
 use App\Http\Livewire\ListRequirements;
 use App\Http\Livewire\RequirementLivewire;
-use App\Http\Livewire\ListEndProducts;
+use App\Http\Livewire\ListEndproducts;
 
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\CompanyController;
@@ -64,7 +64,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/projects/delete/{id}', [ProjectController::class, 'delete']);
 
     // End Products
-    Route::get('/endproducts', ListEndProducts::class);
+    Route::get('/endproducts', ListEndproducts::class);
     Route::get('/endproducts/view/{id}', [EndProductsController::class, 'view']);
     Route::get('/endproducts/form/{id?}', [EndProductsController::class, 'form']);
     Route::post('/endproducts/store/{id?}', [EndProductsController::class, 'store']);
@@ -74,7 +74,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/requirements', ListRequirements::class);
     Route::get('/requirements/view/{id}', [RequirementController::class, 'view']);
     //Route::get('/requirements/form/{id?}', [RequirementController::class, 'form']);
-    Route::get('/requirements/{action}/{id?}', RequirementLivewire::class);
+    Route::get('/requirements/form/{id?}', RequirementLivewire::class);
     Route::post('/requirements/store/{id?}', [RequirementController::class, 'store']);
     //Route::get('/requirements/delete/{id}', [RequirementController::class, 'delete']);
 });

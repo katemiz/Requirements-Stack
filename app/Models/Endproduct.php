@@ -5,13 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 
-class EndProduct extends Model
+class Endproduct extends Model
 {
     use HasFactory;
 
-    protected $table = 'end_products';
+    protected $table = 'endproducts';
 
 
     protected $fillable = ['user_id','project_id','code', 'title'];
@@ -35,5 +38,12 @@ class EndProduct extends Model
     {
         return $this->belongsToMany(Requirement::class);
     }
+
+
+
+
+
+
+
 
 }

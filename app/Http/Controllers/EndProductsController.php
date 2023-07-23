@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\EndProduct;
+use App\Models\Endproduct;
 use App\Models\Project;
 
 
@@ -35,7 +35,7 @@ class EndProductsController extends Controller
         $endproduct = false;
 
         if ( isset($request->id) && !empty($request->id)) {
-            $endproduct = EndProduct::find($request->id);
+            $endproduct = Endproduct::find($request->id);
             $this->action = 'update';
         }
 
@@ -61,18 +61,18 @@ class EndProductsController extends Controller
             ]);
 
             // update
-            $endproduct = EndProduct::find($request->id)->update(array_merge($props,$validated));
+            $endproduct = Endproduct::find($request->id)->update(array_merge($props,$validated));
 
             $id = $request->id;
         } else {
 
             $validated = $request->validate([
-                'code' => ['required', 'unique:end_products', 'max:64'],
+                'code' => ['required', 'unique:endproducts', 'max:64'],
                 'title' => ['required','max:128'],
             ]);
 
             // create
-            $endproduct = EndProduct::create(array_merge($props,$validated));
+            $endproduct = Endproduct::create(array_merge($props,$validated));
             $id = $endproduct->id;
         }
 
@@ -88,14 +88,14 @@ class EndProductsController extends Controller
 
         return view('endproduct.view', [
             'action' => $this->action,
-            'endproduct' => EndProduct::find($request->id)
+            'endproduct' => Endproduct::find($request->id)
         ]);
     }
 
 
     public function delete($id)
     {
-        EndProduct::find($id)->delete();
+        Endproduct::find($id)->delete();
         return redirect('/endproducts');
     }
 }
