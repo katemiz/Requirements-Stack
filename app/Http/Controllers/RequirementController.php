@@ -9,9 +9,13 @@ use Illuminate\Http\Request;
 
 
 use App\Models\Company;
-use App\Models\Project;
 use App\Models\Endproduct;
+use App\Models\Meeting;
+use App\Models\Moc;
+use App\Models\Poc;
+use App\Models\Project;
 use App\Models\Requirement;
+use App\Models\Witness;
 
 use App\Rules\EditorRule;
 use App\Rules\SelectRule;
@@ -34,7 +38,7 @@ class RequirementController extends Controller
             ]);
         }
 
-    } 
+    }
 
 
 
@@ -111,6 +115,34 @@ class RequirementController extends Controller
         Requirement::find($id)->delete();
         return redirect('/requirements');
     }
+
+
+
+    public function verform(Request $request)
+    {
+        $ver = false;
+        $action = 'create';
+
+        if ($request->has('id'))  {
+            $ver = Verification::find($request->id);
+            $action = 'update';
+        }
+
+        $requirement = Requirement::find($request->rid);
+
+
+        return view('requirement.verform', [
+            'requirement' => $requirement,
+            'verification' => $ver,
+            'action' => $action,
+            'dgates' => Meeting::where('project_id',$requirement->project->id),
+            'mocs' => Moc::where('project_id',$requirement->project->id),
+            'pocs' => Poc::where('project_id',$requirement->project->id),
+            'witnesses' => Witness::where('project_id',$requirement->project->id)
+
+        ]);
+    }
+
 
 
 

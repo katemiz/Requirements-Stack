@@ -10,7 +10,9 @@ use App\Http\Livewire\ListProjects;
 use App\Http\Livewire\ListRequirements;
 use App\Http\Livewire\RequirementLivewire;
 use App\Http\Livewire\ListEndproducts;
+use App\Http\Livewire\ListGates;
 
+use App\Http\Controllers\GateController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\RequirementController;
@@ -63,6 +65,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/projects/store/{id?}', [ProjectController::class, 'store']);
     Route::get('/projects/delete/{id}', [ProjectController::class, 'delete']);
 
+    // Decision Gates / Meetings
+    Route::get('/dgates', ListGates::class);
+    Route::get('/dgates/view/{id}', [GateController::class, 'view']);
+    Route::get('/dgates/form/{id?}', [GateController::class, 'form']);
+    Route::post('/dgates/store/{id?}', [GateController::class, 'store']);
+    Route::get('/dgates/delete/{id}', [GateController::class, 'delete']);
+
     // End Products
     Route::get('/endproducts', ListEndproducts::class);
     Route::get('/endproducts/view/{id}', [EndProductsController::class, 'view']);
@@ -73,8 +82,8 @@ Route::middleware('auth')->group(function () {
     // Requirements
     Route::get('/requirements', ListRequirements::class);
     Route::get('/requirements/view/{id}', [RequirementController::class, 'view']);
-    //Route::get('/requirements/form/{id?}', [RequirementController::class, 'form']);
     Route::get('/requirements/form/{id?}', RequirementLivewire::class);
+    Route::get('/requirements/verform/{rid}/{id?}', [RequirementController::class, 'verform']);
     Route::post('/requirements/store/{id?}', [RequirementController::class, 'store']);
     //Route::get('/requirements/delete/{id}', [RequirementController::class, 'delete']);
 });

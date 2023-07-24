@@ -26,7 +26,7 @@
   </script>
 
   <section class="section container">
-      
+
     <x-title :params="config('requirements')[$action]" />
 
     <div class="card">
@@ -55,7 +55,7 @@
             <div class="media-content">
 
               <h4 class="subtitle has-text-weight-normal my-0">End Products</h4>
-              @foreach ($requirement->project->endproducts as $ep)
+              @foreach ($requirement->endproducts as $ep)
               <span class="tag is-info">{{ $ep->code}}</span>
               @endforeach
             </div>
@@ -66,12 +66,15 @@
           <div class="content">
             <p>{!! $requirement['text'] !!}</p>
 
-            <h4 class="subtitle has-text-weight-normal mt-3">Remarks</h4>
-
             @if ( !empty($requirement['remarks']) )
+            <h4 class="subtitle has-text-weight-normal mt-3">Remarks</h4>
             <p>{!! $requirement['remarks'] !!}</p>
-            <h4 class="subtitle has-text-weight-normal mt-3">Verifications</h4>
             @endif
+
+            {{-- @if ( !empty($requirement['verifications']) )
+            <h4 class="subtitle has-text-weight-normal mt-3">Verifications</h4>
+            <p>{!! $requirement['verifications'] !!}</p>
+            @endif --}}
 
 
 
@@ -86,6 +89,12 @@
         </div>
 
         <footer class="card-footer">
+
+            <a href="/requirements/verform/{{ $requirement->id}}" class="card-footer-item">
+                <span class="icon"><x-carbon-letter-vv /></span>
+            </a>
+
+
             <a href="/requirements/form/{{ $requirement->id}}" class="card-footer-item">
                 <span class="icon"><x-carbon-pen/></span>
             </a>
@@ -95,7 +104,7 @@
             </a>
         </footer>
     </div>
-  
+
+
   </section>
 </x-layout>
-    

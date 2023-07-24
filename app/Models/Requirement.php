@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 use App\Models\Endproduct;
+use App\Models\Verification;
+
 
 class Requirement extends Model
 {
@@ -26,6 +28,11 @@ class Requirement extends Model
     public function endproducts(): BelongsToMany
     {
         return $this->belongsToMany(Endproduct::class);
+    }
+
+    public function verifications(): BelongsToMany
+    {
+        return $this->belongsToMany(Verification::class);
     }
 
 }

@@ -2,6 +2,11 @@
 
 return [
 
+    "add" => [
+        "title" => "Verifications",
+        "subtitle" => "Add new verification to selected requirement",
+    ],
+
     "list" => [
         "title" => "Requirements",
         "subtitle" => "List of all requirements",
@@ -62,9 +67,9 @@ return [
     ],
 
     "create" => [
-        "title" => "Requirements",
-        "subtitle" => "Create a New Requirement",
-        "submitText" => "Add Requirement",
+        "title" => "Verifications",
+        "subtitle" => "Create a New Verification",
+        "submitText" => "Add Verification",
     ],
 
     "read" => [
@@ -83,10 +88,28 @@ return [
 
     "form" => [
 
-        "project"=> [
-            "label" => "Project",
-            "name" => "project",
-            "options" => ""
+        "dgate"=> [
+            "label" => "Select Decision Gate / Meeting",
+            "name" => "dgate",
+            "options" => []
+        ],
+
+        "moc"=> [
+            "label" => "Select MOC / Verification Method",
+            "name" => "moc",
+            "options" => []
+        ],
+
+        "poc"=> [
+            "label" => "Select POC / Evidence",
+            "name" => "poc",
+            "options" => []
+        ],
+
+        "witness"=> [
+            "label" => "Select Witness",
+            "name" => "witness",
+            "options" => []
         ],
 
 

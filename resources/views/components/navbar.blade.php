@@ -43,6 +43,8 @@
 
                     <div class="navbar-dropdown">
                         <a href="/endproducts" class="navbar-item">End Products</a>
+                        <a href="/dgates" class="navbar-item">Decision Gates</a>
+                        <a href="/phases" class="navbar-item">Project Phases</a>
                     </div>
                 </div>
 
@@ -151,6 +153,6 @@
       Current Project : {{ session('current_project_name') }}
     </p>
 </section>
-    
+
 @endif
 

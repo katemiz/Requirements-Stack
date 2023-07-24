@@ -5,9 +5,11 @@
         <select name="{{ $params['name'] }}">
           <option value="notselected">Select</option>
 
-          @foreach ($params['options'] as $key => $v)
-            <option value="{{ $key }}" @selected( count($params['options']) == 1 || $key == $value)>{{ $v }}</option>
-          @endforeach
+          @if ( count($params['options']) > 0)
+            @foreach ($params['options'] as $key => $v)
+                <option value="{{ $key }}" @selected( count($params['options']) == 1 || $key == $value)>{{ $v }}</option>
+            @endforeach
+          @endif
 
         </select>
       </div>
