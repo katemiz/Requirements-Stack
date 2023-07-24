@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Moc extends Model
 {
     use HasFactory;
+    protected $fillable = ['user_id','project_id', 'code','name','description'];
+
 }

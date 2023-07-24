@@ -55,7 +55,7 @@
                     <span>Requirements</span>
                 </a>
 
-                <a href="/durum/giderler" class="navbar-item icon-text">
+                <a href="/mocs" class="navbar-item icon-text">
                     <span class="icon has-text-warning">
                         <x-carbon-rule />
                     </span>

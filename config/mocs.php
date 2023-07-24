@@ -3,11 +3,11 @@
 return [
 
     "list" => [
-        "title" => "Decision Gates / Meetings",
-        "subtitle" => "List of all Decision Gates",
+        "title" => "Means of Compliances (MOC) / Validation Methods",
+        "subtitle" => "List of all Means of Compliances (MOC) / Validation Methods",
         "addButton" => [
-            "text"=>"Add Decision Gates",
-            "route"=>"/dgates/form"
+            "text"=>"Add Means of Compliances (MOC)",
+            "route"=>"/mocs/form"
         ],
         "filterText" => "Search ...",
         "listCaption" => false,
@@ -50,41 +50,41 @@ return [
 
         ],
         "actions" => [
-            "r" => "/dgates/view/",
-            "w" => "/dgates/form/",
-            "x" => "/dgates/delete/"
+            "r" => "/mocs/view/",
+            "w" => "/mocs/form/",
+            "x" => "/mocs/delete/"
         ],
-        "noitem" => "No Decision Gates found in database yet!",
+        "noitem" => "No MOC/Means of Compliance found in database yet!",
         "delete_confirm" => [
-            "question" => "Do you want to delete this decision gate from database?",
+            "question" => "Do you want to delete this MOC from database?",
             "last_warning" => "When done, it is not possible to revert back."
         ]
     ],
 
-    "select_current" => [
-        "title" => "Projects",
-        "subtitle" => "Select current project",
-    ],
+    // "select_current" => [
+    //     "title" => "Projects",
+    //     "subtitle" => "Select current project",
+    // ],
 
     "create" => [
-        "title" => "Decision Gates",
-        "subtitle" => "Create a New Decision Gate",
-        "submitText" => "Add Decision Gate",
+        "title" => "MOC - Means of Compliance",
+        "subtitle" => "Create a New MOC - Means of Compliance",
+        "submitText" => "Add MOC - Means of Compliance",
     ],
 
     "read" => [
-        "title" => "Decision Gates",
-        "subtitle" => "View Decision Gate Parameters",
-        "submitText" => "Add Decision Gate",
+        "title" => "MOC - Means of Compliance",
+        "subtitle" => "View MOC - Means of Compliance Parameters",
+        "submitText" => "Add MOC - Means of Compliance",
     ],
 
     "update" => [
-        "title" => "Decision Gates",
-        "subtitle" => "Edit Decision Gate Properties",
-        "submitText" => "Update Decision Gate",
+        "title" => "MOC - Means of Compliance",
+        "subtitle" => "Edit MOC - Means of Compliance Properties",
+        "submitText" => "Update MOC - Means of Compliance",
     ],
 
-    "cu_route" => "/dgates/store/",
+    "cu_route" => "/mocs/store/",
 
     "form" => [
 
@@ -95,16 +95,23 @@ return [
         ],
 
         "code" => [
-            "label" => "Decision Gate/ Meeting Code",
+            "label" => "MOC - Means of Compliance Code",
             "name" => "code",
-            "placeholder" => "Enter Decision Gate Code",
+            "placeholder" => "Enter MOC - Means of Compliance Code",
             "value" => ""
         ],
 
         "title" => [
-            "label" => "Decision Gate Title",
+            "label" => "MOC - Means of Compliance Title",
             "name" => "name",
-            "placeholder" => "Enter decision gate title/description",
+            "placeholder" => "Enter MOC - Means of Compliance title/description",
+            "value" => ""
+        ],
+
+        "description" => [
+            "label" => "Description/Remarks/Notes",
+            "name" => "description",
+            "placeholder" => "Enter remarks/notes",
             "value" => ""
         ]
     ]

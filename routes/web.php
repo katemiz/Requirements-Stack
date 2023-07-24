@@ -11,8 +11,10 @@ use App\Http\Livewire\ListRequirements;
 use App\Http\Livewire\RequirementLivewire;
 use App\Http\Livewire\ListEndproducts;
 use App\Http\Livewire\ListGates;
+use App\Http\Livewire\ListMocs;
 
 use App\Http\Controllers\GateController;
+use App\Http\Controllers\MocController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\RequirementController;
@@ -71,6 +73,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/dgates/form/{id?}', [GateController::class, 'form']);
     Route::post('/dgates/store/{id?}', [GateController::class, 'store']);
     Route::get('/dgates/delete/{id}', [GateController::class, 'delete']);
+
+    // MOC - Means of Compliances
+    Route::get('/mocs', ListMocs::class);
+    Route::get('/mocs/view/{id}', [MocController::class, 'view']);
+    Route::get('/mocs/form/{id?}', [MocController::class, 'form']);
+    Route::post('/mocs/store/{id?}', [MocController::class, 'store']);
+    Route::get('/mocs/delete/{id}', [MocController::class, 'delete']);
 
     // End Products
     Route::get('/endproducts', ListEndproducts::class);

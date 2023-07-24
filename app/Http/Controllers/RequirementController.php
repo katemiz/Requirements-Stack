@@ -3,10 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
-
-
 use Illuminate\Http\Request;
-
 
 use App\Models\Company;
 use App\Models\Endproduct;

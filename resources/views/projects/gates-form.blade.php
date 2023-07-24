@@ -6,9 +6,9 @@
         <form action="{{ config('dgates.cu_route') }}{{ $dgate ? $dgate->id : ''}}" method="POST" enctype="multipart/form-data">
         @csrf
 
-            {{-- <x-select :params="config('dgates.form.company')" value="{{ $dgate ? $dgate->company_id : '' }}"/> --}}
+            <x-select :params="config('dgates.form.project')" value="{{ $dgate ? $dgate->project_id : '' }}"/>
             <x-form-input :params="config('dgates.form.code')" value="{{ $dgate ? $dgate->code : '' }}"/>
-            <x-form-input :params="config('dgates.form.title')" value="{{ $dgate ? $dgate->title : '' }}"/>
+            <x-form-input :params="config('dgates.form.title')" value="{{ $dgate ? $dgate->name : '' }}"/>
 
             <div class="buttons is-right">
                 <button class="button is-dark">{{ config('dgates')[$action]['submitText'] }}</button>
@@ -17,4 +17,4 @@
         </form>
 
     </section>
-    </x-layout>
+</x-layout>

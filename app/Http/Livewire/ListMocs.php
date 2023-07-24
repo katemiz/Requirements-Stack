@@ -6,9 +6,10 @@ use Illuminate\Http\Request;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-use App\Models\Meeting;
+use App\Models\Moc;
 
-class ListGates extends Component
+
+class ListMocs extends Component
 {
     use WithPagination;
 
@@ -22,10 +23,10 @@ class ListGates extends Component
 
     public function render(Request $request)
     {
-        $projects = Meeting::search('name',$this->search)->orderBy($this->sortField,$this->sortDirection)->paginate(env('RESULTS_PER_PAGE'));
+        $mocs = Moc::search('name',$this->search)->orderBy($this->sortField,$this->sortDirection)->paginate(env('RESULTS_PER_PAGE'));
 
-        return view('projects.list-gates',[
-            'records' => $projects
+        return view('mocs.list-mocs',[
+            'records' => $mocs
         ]);
     }
 

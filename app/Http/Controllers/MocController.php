@@ -5,19 +5,19 @@ use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
 
-use App\Models\Company;
+use App\Models\Moc;
 use App\Models\Project;
 
 
-class ProjectController extends Controller
+class MocController extends Controller
 {
     public $action;
 
     public function form(Request $request)
     {
-        $companies = Company::all()->sortBy("name");
+        $projects = Project::all()->sortBy("name");
 
-        if ( $companies->count() < 1) {
+        if ( $projects->count() < 1) {
 
             return view('warning', [
                 'warning' => config('warnings.100'),
@@ -26,23 +26,23 @@ class ProjectController extends Controller
 
         $optionArr = [];
 
-        foreach ($companies as $company) {
-            $optionArr[$company->id] = $company->name;
+        foreach ($projects as $project) {
+            $optionArr[$project->id] = $project->code;
         }
 
-        config(['projects.form.company.options' => $optionArr]);
+        config(['mocs.form.project.options' => $optionArr]);
 
         $this->action = 'create';
-        $project = false;
+        $moc = false;
 
         if ( isset($request->id) && !empty($request->id)) {
-            $project = Project::find($request->id);
+            $moc = Moc::find($request->id);
             $this->action = 'update';
         }
 
-        return view('projects.form', [
+        return view('mocs.moc-form', [
             'action' => $this->action,
-            'project' => $project,
+            'moc' => $moc,
         ]);
     }
 
@@ -51,36 +51,35 @@ class ProjectController extends Controller
     {
         $id = false;
 
-        $props['user_id'] = 1; //Auth::id();
-
-        $props['company_id'] = $request->input('company');
-
+        $props['user_id'] = Auth::id();
+        $props['project_id'] = $request->input('project');
+        $props['description'] = $request->input('description');
 
 
         if ( isset($request->id) && !empty($request->id)) {
 
             $validated = $request->validate([
                 'code' => ['required', 'max:12'],
-                'title' => ['required','max:128'],
+                'name' => ['required','max:128'],
             ]);
 
             // update
-            $project = Project::find($request->id)->update(array_merge($props,$validated));
+            $project = Moc::find($request->id)->update(array_merge($props,$validated));
 
             $id = $request->id;
         } else {
 
             $validated = $request->validate([
-                'code' => ['required', 'unique:projects', 'max:12'],
-                'title' => ['required','max:128'],
+                'code' => ['required', 'unique:mocs', 'max:12'],
+                'name' => ['required','max:128'],
             ]);
 
             // create
-            $project = Project::create(array_merge($props,$validated));
+            $project = Moc::create(array_merge($props,$validated));
             $id = $project->id;
         }
 
-        return redirect('/projects/view/'.$id);
+        return redirect('/mocs/view/'.$id);
     }
 
 
@@ -88,16 +87,16 @@ class ProjectController extends Controller
     {
         $this->action = 'read';
 
-        return view('projects.view', [
+        return view('mocs.moc-view', [
             'action' => $this->action,
-            'project' => Project::find($request->id)
+            'moc' => Moc::find($request->id)
         ]);
     }
 
 
     public function delete($id)
     {
-        Project::find($id)->delete();
-        return redirect('/projects');
+        Moc::find($id)->delete();
+        return redirect('/mocs');
     }
 }

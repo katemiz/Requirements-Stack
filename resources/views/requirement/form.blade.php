@@ -1,21 +1,10 @@
 <section class="section container">
 
-
-
-
-
-
-
     <script src="{{ asset('/js/ckeditor5/ckeditor.js') }}"></script>
-
-
     <x-title :params="config('requirements')[$action]" />
 
     <form action="{{ config('requirements.cu_route') }}{{ $requirement ? $requirement->id : '' }}" method="POST" enctype="multipart/form-data">
     @csrf
-
-
-
 
         <div class="field">
             <label class="label">{{ config('requirements.form.project.label') }}</label>
@@ -67,29 +56,9 @@
         </div>
 
         @else 
-
         <p>{{ config('requirements.form.endproduct.nooptions') }}</p>
-
         @endif
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        {{-- <x-select :params="config('requirements.form.project')" value="{{ $requirement ? $requirement->project_id : '' }}"/> --}}
-        {{-- <x-checkbox :params="config('requirements.form.endproduct')" value="{{ $requirement ? $requirement->project_id : '' }}"/> --}}
         <x-select :params="config('requirements.form.rtype')" value="{{ $requirement ? $requirement->rtype : '' }}"/>
         <x-form-input :params="config('requirements.form.cross_ref_no')" value="{{ $requirement ? $requirement->cross_ref_no : '' }}"/>
         <x-form-editor :params="config('requirements.form.text')" value="{{ $requirement ? $requirement->text : '' }}" />

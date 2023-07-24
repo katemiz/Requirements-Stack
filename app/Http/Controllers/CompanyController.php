@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
 
@@ -33,7 +34,7 @@ class CompanyController extends Controller
     {
         $id = false;
 
-        $props['user_id'] = 1; //Auth::id();
+        $props['user_id'] = Auth::id();
 
         if ( isset($request->id) && !empty($request->id)) {
 

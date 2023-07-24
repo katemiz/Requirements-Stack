@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Meeting extends Model
 {
     use HasFactory;
+    protected $fillable = ['user_id','project_id', 'code','name'];
+
 }
