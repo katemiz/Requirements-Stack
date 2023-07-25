@@ -62,7 +62,7 @@
                     <span>MoCs</span>
                 </a>
 
-                <a href="/durum/verecekler" class="navbar-item icon-text">
+                <a href="/pocs" class="navbar-item icon-text">
                     <span class="icon has-text-warning">
                         <x-carbon-policy />
                     </span>
