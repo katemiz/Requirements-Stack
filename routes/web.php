@@ -3,8 +3,6 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-
-
 use App\Http\Livewire\ListCompanies;
 use App\Http\Livewire\ListProjects;
 use App\Http\Livewire\ListRequirements;
@@ -13,7 +11,7 @@ use App\Http\Livewire\ListEndproducts;
 use App\Http\Livewire\ListGates;
 use App\Http\Livewire\ListMocs;
 use App\Http\Livewire\ListPocs;
-
+use App\Http\Livewire\ListWitnesses;
 
 use App\Http\Controllers\GateController;
 use App\Http\Controllers\MocController;
@@ -23,6 +21,7 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\RequirementController;
 use App\Http\Controllers\EndProductsController;
 use App\Http\Controllers\CurrentProjectController;
+use App\Http\Controllers\WitnessController;
 
 /*
 |--------------------------------------------------------------------------
@@ -91,6 +90,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/pocs/store/{id?}', [PocController::class, 'store']);
     Route::get('/pocs/delete/{id}', [PocController::class, 'delete']);
 
+    // Witness
+    Route::get('/witness', ListWitnesses::class);
+    Route::get('/witness/view/{id}', [WitnessController::class, 'view']);
+    Route::get('/witness/form/{id?}', [WitnessController::class, 'form']);
+    Route::post('/witness/store/{id?}', [WitnessController::class, 'store']);
+    Route::get('/witness/delete/{id}', [WitnessController::class, 'delete']);
+
     // End Products
     Route::get('/endproducts', ListEndproducts::class);
     Route::get('/endproducts/view/{id}', [EndProductsController::class, 'view']);
@@ -104,6 +110,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/requirements/form/{id?}', RequirementLivewire::class);
     Route::get('/requirements/verform/{rid}/{id?}', [RequirementController::class, 'verform']);
     Route::post('/requirements/store/{id?}', [RequirementController::class, 'store']);
+    Route::post('/verifications/store/{rid}/{id?}', [RequirementController::class, 'verstore']);
+
     //Route::get('/requirements/delete/{id}', [RequirementController::class, 'delete']);
 });
 

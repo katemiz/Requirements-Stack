@@ -45,6 +45,8 @@
                         <a href="/endproducts" class="navbar-item">End Products</a>
                         <a href="/dgates" class="navbar-item">Decision Gates</a>
                         <a href="/phases" class="navbar-item">Project Phases</a>
+                        <a href="/witness" class="navbar-item">Project Witnesses</a>
+
                     </div>
                 </div>
 

@@ -71,13 +71,42 @@
             <p>{!! $requirement['remarks'] !!}</p>
             @endif
 
-            {{-- @if ( !empty($requirement['verifications']) )
-            <h4 class="subtitle has-text-weight-normal mt-3">Verifications</h4>
-            <p>{!! $requirement['verifications'] !!}</p>
-            @endif --}}
+            <a href="/requirements/verform/{{ $requirement->id}}" class="button is-link is-small" href="/verform/1"> Add Verification</a>
 
+            @if ( !empty($requirement['verifications']) )
+                <h4 class="subtitle has-text-weight-normal mt-3">Verifications</h4>
 
+                <table class="table is-fullwidth">
 
+                <tbody>
+                    <tr>
+                        <th>Witness</th>
+                        <th>Decision Gate</th>
+                        <th>Verfifcation Method</th>
+                        <th>Proof of Compliance</th>
+                        <th>Actions</th>
+                    </tr>
+
+                    @foreach ($requirement->verifications as $verification)
+
+                        <tr>
+                            <td>Administration </td>
+                            <td>{{ $verification->dgate }}</td>
+                            <td>Analysis / Design</td>
+                            <td>CMP</td>
+
+                            <td>
+                            <a href="/verform/1/76">Edit</a> |
+                            <a href="/delver/1/76">Delete</a>
+                            </td>
+                        </tr>
+
+                    @endforeach
+
+                </tbody>
+                </table>
+
+            @endif
 
             @if ($requirement->updated_at != $requirement->created_at)
             <div class="is-size-7 has-text-grey-light">
@@ -89,11 +118,6 @@
         </div>
 
         <footer class="card-footer">
-
-            <a href="/requirements/verform/{{ $requirement->id}}" class="card-footer-item">
-                <span class="icon"><x-carbon-letter-vv /></span>
-            </a>
-
 
             <a href="/requirements/form/{{ $requirement->id}}" class="card-footer-item">
                 <span class="icon"><x-carbon-pen/></span>

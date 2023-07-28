@@ -84,7 +84,7 @@ return [
         "submitText" => "Update Requirement",
     ],
 
-    "cu_route" => "/requirements/store/",
+    "cu_route" => "/verifications/store/",
 
     "form" => [
 

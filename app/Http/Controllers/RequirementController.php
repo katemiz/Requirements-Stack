@@ -12,7 +12,9 @@ use App\Models\Moc;
 use App\Models\Poc;
 use App\Models\Project;
 use App\Models\Requirement;
+use App\Models\Verification;
 use App\Models\Witness;
+
 
 use App\Rules\EditorRule;
 use App\Rules\SelectRule;
@@ -127,17 +129,84 @@ class RequirementController extends Controller
 
         $requirement = Requirement::find($request->rid);
 
+        // DGATES
+        $dg_collection = Meeting::where('project_id',$requirement->project->id)->get();
+        $dgates = [];
+        foreach ($dg_collection as $dg) {
+            $dgates[$dg->id] = $dg->name;
+        }
+        config(['verifications.form.dgate.options' => $dgates]);
+
+        // MOCS
+        $moc_collection = Moc::where('project_id',$requirement->project->id)->get();
+        $mocs = [];
+        foreach ($moc_collection as $mmm) {
+            $mocs[$mmm->id] = $mmm->name;
+        }
+        config(['verifications.form.moc.options' => $mocs]);
+
+        // POCS
+        $poc_collection = Poc::where('project_id',$requirement->project->id)->get();
+        $pocs = [];
+        foreach ($poc_collection as $ppp) {
+            $pocs[$ppp->id] = $ppp->name;
+        }
+        config(['verifications.form.poc.options' => $pocs]);
+
+        // WITNESSES
+        $witness_collection = Witness::where('project_id',$requirement->project->id)->get();
+        $witnesses = [];
+        foreach ($witness_collection as $www) {
+            $witnesses[$www->id] = $www->name;
+        }
+        config(['verifications.form.witness.options' => $witnesses]);
 
         return view('requirement.verform', [
             'requirement' => $requirement,
             'verification' => $ver,
-            'action' => $action,
-            'dgates' => Meeting::where('project_id',$requirement->project->id),
-            'mocs' => Moc::where('project_id',$requirement->project->id),
-            'pocs' => Poc::where('project_id',$requirement->project->id),
-            'witnesses' => Witness::where('project_id',$requirement->project->id)
-
+            'action' => $action
         ]);
+    }
+
+
+
+
+    public function verstore(Request $request)
+    {
+
+        $props['requirement_id'] = $request->rid;
+
+        $validated = $request->validate([
+            'dgate' => 'required|numeric',
+            'moc' => 'required|numeric',
+            'poc' => 'required|numeric',
+            'witness' => 'required|numeric',
+        ]);
+
+        $props['user_id'] = Auth::id();
+        $props['project_id'] = $request->input('projectid');
+        $props['meeting_id'] = $validated['dgate'];
+        $props['moc_id'] = $validated['moc'];
+        $props['poc_id'] = $validated['poc'];
+        $props['witness_id'] = $validated['witness'];
+
+        $props['remarks'] = $request->input('remarks');
+
+        // dd($props);
+
+        if ( isset($request->id) && !empty($request->id)) {
+            // update
+            Verification::find($request->id)->update($props);
+            $id = $request->id;
+
+            $verification = Verification::find($id);
+        } else {
+            // create
+            $verification = Verification::create($props);
+            $id = $verification->id;
+        }
+
+        return redirect('/requirements/view/'.$request->rid);
     }
 
 

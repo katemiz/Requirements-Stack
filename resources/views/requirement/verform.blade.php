@@ -4,8 +4,6 @@
 <section class="section container">
 
     <script src="{{ asset('/js/ckeditor5/ckeditor.js') }}"></script>
-
-
     <x-title :params="config('verifications')[$action]" />
 
     <div class="card has-background-info-light">
@@ -67,6 +65,9 @@
     @csrf
 
     <div class="columns">
+
+        <input type="hidden" name="reqid" value="{{ $requirement->id }}" />
+        <input type="hidden" name="projectid" value="{{ $requirement->project->id }}" />
 
         <div class="column">
             <x-select :params="config('verifications.form.dgate')" value=" {{ $verification ? $verification->meeting_id : ''}}"/>

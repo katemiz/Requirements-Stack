@@ -10,4 +10,10 @@ class Meeting extends Model
     use HasFactory;
     protected $fillable = ['user_id','project_id', 'code','name'];
 
+
+    // public function verification(): BelongsTo
+    // {
+    //     return $this->belongsTo(Verification::class);
+    // }
+
 }
