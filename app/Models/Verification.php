@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 
 
@@ -21,12 +21,12 @@ class Verification extends Model
     }
 
 
-    public function dgate(): HasOne
+
+
+    public function dgate(): HasMany
     {
-        return $this->hasOne(Meeting::class, 'foreign_key');
+        return $this->hasMany(Meeting::class,'verifications');
     }
-
-
 
 
 
