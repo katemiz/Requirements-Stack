@@ -20,6 +20,10 @@ use App\Rules\EditorRule;
 use App\Rules\SelectRule;
 
 
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\RequirementsExport;
+
+
 
 
 class RequirementController extends Controller
@@ -122,12 +126,12 @@ class RequirementController extends Controller
         $ver = false;
         $action = 'create';
 
-        if ($request->has('id'))  {
+        $requirement = Requirement::find($request->rid);
+
+        if ($request->id)  {
             $ver = Verification::find($request->id);
             $action = 'update';
         }
-
-        $requirement = Requirement::find($request->rid);
 
         // DGATES
         $dg_collection = Meeting::where('project_id',$requirement->project->id)->get();
@@ -210,6 +214,20 @@ class RequirementController extends Controller
     }
 
 
+
+
+    public function delver(Request $request)
+    {
+        Verification::find($request->id)->delete();
+        return redirect('/requirements/view/'.$request->rid);
+    }
+
+
+
+    public function excelExport() 
+    {
+        return Excel::download(new RequirementsExport, 'requirements.xlsx');
+    } 
 
 
 }

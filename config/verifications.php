@@ -59,9 +59,9 @@ return [
             "w" => "/requirements/form/",
             "x" => "/requirements/delete/"
         ],
-        "noitem" => "No requirements found in database yet!",
+        "noitem" => "No verifications found in database yet!",
         "delete_confirm" => [
-            "question" => "Do you want to delete this requirement from database?",
+            "question" => "Do you want to delete this verification from database?",
             "last_warning" => "When done, it is not possible to revert back."
         ]
     ],
@@ -79,9 +79,9 @@ return [
     ],
 
     "update" => [
-        "title" => "Requirements",
-        "subtitle" => "Edit Requirement Properties",
-        "submitText" => "Update Requirement",
+        "title" => "Verifications",
+        "subtitle" => "Edit Verification Properties",
+        "submitText" => "Update Verification",
     ],
 
     "cu_route" => "/verifications/store/",

@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 use App\Models\Endproduct;
 use App\Models\Verification;
+use App\Models\Meeting;
+
 
 
 class Requirement extends Model
@@ -33,6 +35,12 @@ class Requirement extends Model
     public function verifications(): HasMany
     {
         return $this->hasMany(Verification::class);
+    }
+
+
+    public function dgates(): HasMany
+    {
+        return $this->hasMany(Meeting::class,'verifications');
     }
 
 }

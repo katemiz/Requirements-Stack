@@ -110,9 +110,19 @@ Route::middleware('auth')->group(function () {
     Route::get('/requirements/form/{id?}', RequirementLivewire::class);
     Route::get('/requirements/verform/{rid}/{id?}', [RequirementController::class, 'verform']);
     Route::post('/requirements/store/{id?}', [RequirementController::class, 'store']);
+    Route::get('/requirements/export', [RequirementController::class, 'excelExport']);
     Route::post('/verifications/store/{rid}/{id?}', [RequirementController::class, 'verstore']);
+    Route::get('/verifications/delete/{rid}/{id}', [RequirementController::class, 'delver']);
 
     //Route::get('/requirements/delete/{id}', [RequirementController::class, 'delete']);
+
+
+    // Excel Import-Export
+    Route::get('file-import-export', [UserController::class, 'fileImportExport']);
+    Route::post('file-import', [UserController::class, 'fileImport'])->name('file-import');
+    Route::get('file-export', [UserController::class, 'fileExport'])->name('file-export');
+
+
 });
 
 require __DIR__.'/auth.php';

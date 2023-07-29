@@ -1,7 +1,71 @@
 <x-layout>
   <script>
 
-    function confirmDelete(id) {
+
+    function deleteConfirm (rid,id) {
+
+      rid = parseInt(rid)
+      id = parseInt(id)
+
+
+      let title,text,redirect
+
+      console.log(rid,typeof(id))
+
+      // Requirement delete
+      if (rid && id < 1) {
+
+        title = {{ Js::from(config('requirements.list.delete_confirm.question')) }}
+        text = {{ Js::from(config('requirements.list.delete_confirm.last_warning')) }},
+
+        redirect = '/requirements/delete/'+rid
+
+        console.log("reg")
+
+      }
+
+      // Verification delete
+      if (rid && id > 0) {
+
+        title = {{ Js::from(config('verifications.list.delete_confirm.question')) }}
+        text = {{ Js::from(config('verifications.list.delete_confirm.last_warning')) }},
+
+        redirect = '/verifications/delete/'+rid+'/'+id
+
+        console.log("ver")
+
+      }
+
+      confirmDialog(title,text,redirect)
+    }
+
+
+
+    function confirmDialog(title,text,redirect) {
+
+      Swal.fire({
+      title: title,
+      text: text,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Delete',
+      cancelButtonText: 'Ooops ...',
+
+      }).then((result) => {
+          if (result.isConfirmed) {
+
+              window.location.href = redirect
+          } else {
+              return false
+          }
+      })
+    }
+
+
+
+    function SILconfirmDelete(id) {
 
       Swal.fire({
       title: {{ Js::from(config('requirements.list.delete_confirm.question')) }},
@@ -22,6 +86,9 @@
           }
       })
     }
+
+
+
 
   </script>
 
@@ -73,7 +140,7 @@
 
             <a href="/requirements/verform/{{ $requirement->id}}" class="button is-link is-small" href="/verform/1"> Add Verification</a>
 
-            @if ( !empty($requirement['verifications']) )
+            @if ( count($requirement->verifications) > 0 )
                 <h4 class="subtitle has-text-weight-normal mt-3">Verifications</h4>
 
                 <table class="table is-fullwidth">
@@ -89,17 +156,19 @@
 
                     @foreach ($requirement->verifications as $verification)
 
-                        <tr>
-                            <td>Administration </td>
-                            <td>{{ $verification->dgate }}</td>
-                            <td>Analysis / Design</td>
-                            <td>CMP</td>
+                      <tr>
+                          <td>{{ $verification->witness->code }}</td>
+                          <td>{{ $verification->dgate->code }}</td>
+                          <td>{{ $verification->moc->code }}</td>
+                          <td>{{ $verification->poc->code }}</td>
+                          <td>
+                            <a href="/requirements/verform/{{ $requirement->id}}/{{ $verification->id}}">Edit</a> |
+                            <a href="javascript:deleteConfirm('{{$requirement->id}}','{{$verification->id}}')">Delete</a>
 
-                            <td>
-                            <a href="/verform/1/76">Edit</a> |
-                            <a href="/delver/1/76">Delete</a>
-                            </td>
-                        </tr>
+
+
+                          </td>
+                      </tr>
 
                     @endforeach
 
@@ -123,8 +192,8 @@
                 <span class="icon"><x-carbon-pen/></span>
             </a>
 
-            <a href="javascript:confirmDelete('{{ $requirement->id}}')" class="card-footer-item">
-                <span class="icon has-text-danger-dark"><x-carbon-close-outline /></span>
+            <a href="javascript:deleteConfirm('{{ $requirement->id}}',0)" class="card-footer-item">
+                <span class="icon has-text-danger-dark"><x-carbon-trash-can /></span>
             </a>
         </footer>
     </div>

@@ -61,7 +61,7 @@
 
     <div class="column card mt-3">
 
-    <form action="{{ config('verifications.cu_route') }}{{ $requirement ? $requirement->id : '' }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ config('verifications.cu_route') }}{{ $requirement->id }}{{ $verification ? '/'.$verification->id: ''}}" method="POST" enctype="multipart/form-data">
     @csrf
 
     <div class="columns">
@@ -71,17 +71,14 @@
 
         <div class="column">
             <x-select :params="config('verifications.form.dgate')" value=" {{ $verification ? $verification->meeting_id : ''}}"/>
-
         </div>
 
         <div class="column">
             <x-select :params="config('verifications.form.moc')" value=" {{ $verification ? $verification->moc_id : ''}}"/>
-
         </div>
 
         <div class="column">
             <x-select :params="config('verifications.form.poc')" value=" {{ $verification ? $verification->poc_id : ''}}"/>
-
         </div>
 
         <div class="column">
@@ -92,7 +89,7 @@
     </div>
 
 
-    <x-form-editor :params="config('verifications.form.remarks')" value="{{ $requirement ? $requirement->remarks : '' }}"/>
+    <x-form-editor :params="config('verifications.form.remarks')" value="{{ $verification ? $verification->remarks : '' }}"/>
 
     <div class="buttons is-right">
         <button class="button is-dark">{{ config('verifications')[$action]['submitText'] }}</button>
