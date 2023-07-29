@@ -95,12 +95,12 @@
                                 @break
                             @case('w')
                                 <a href="{{ $route }}{{ $record->id}}">
-                                <span class="icon"><x-carbon-pen/></span>   
+                                <span class="icon"><x-carbon-edit /></span>   
                                 </a>                                                    
                                 @break
                             @case('x')
                                 <a wire:click.prevent="deleteConfirm({{$record->id}})">
-                                <span class="icon has-text-danger-dark"><x-carbon-close/></span>   
+                                <span class="icon has-text-danger-dark"><x-carbon-trash-can /></span>   
                                 </a>                                                   
                                 @break
                         @endswitch

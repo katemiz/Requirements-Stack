@@ -39,8 +39,8 @@ class CompanyController extends Controller
         if ( isset($request->id) && !empty($request->id)) {
 
             $validated = $request->validate([
-                'name' => ['required', 'max:12'],
-                'fullname' => ['required','max:128'],
+                'name' => ['required', 'max:32'],
+                'fullname' => ['required','max:256'],
             ]);
 
             // update
@@ -50,8 +50,8 @@ class CompanyController extends Controller
         } else {
 
             $validated = $request->validate([
-                'name' => ['required', 'unique:companies', 'max:12'],
-                'fullname' => ['required','max:128'],
+                'name' => ['required', 'unique:companies', 'max:32'],
+                'fullname' => ['required','max:256'],
             ]);
 
             // create

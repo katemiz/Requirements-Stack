@@ -35,37 +35,59 @@
           <div class="media">
             <div class="media-left">
               <figure class="image is-48x48">
-                <a href="/companies"><x-carbon-menu /></a>
-              </figure>
+                <a href="/companies"><x-carbon-list /></a>
+              </figure>              
             </div>
+
             <div class="media-content">
               <p class="title is-4">{{ $company['name'] }}</p>
-              <p class="subtitle is-6">@ {{ $company['created_at'] }}</p>
+              {{-- <p class="subtitle is-6">@ {{ $company['created_at'] }}</p> --}}
             </div>
           </div>
       
           <div class="content">
             <p>{{ $company['fullname'] }}</p>
-
-            @if ($company['updated_at'] != $company['created_at'])
-            <div class="is-size-7 has-text-grey-light">
-                Updated @ {{ $company['created_at'] }}
-            </div>
-            @endif
-
           </div>
         </div>
 
+
+
+
+
+
+
+
         <footer class="card-footer">
             <a href="/companies/form/{{ $company->id}}" class="card-footer-item">
-                <span class="icon"><x-carbon-pen/></span>
+                <span class="icon"><x-carbon-edit /></span>
             </a>
 
             <a href="javascript:confirmDelete('{{ $company->id}}')" class="card-footer-item">
-                <span class="icon"><x-carbon-close-outline /></span>
+                <span class="icon has-text-danger"><x-carbon-trash-can /></span>
             </a>
         </footer>
     </div>
+
+
+    <div class="columns m-2">
+
+      <div class="column is-size-7 has-text-grey-light is-half">
+
+        Created by {{ $company['user_id'] }}<br>
+        @ {{ $company['created_at'] }}
+
+
+      </div>
+
+      <div class="column is-size-7 has-text-right has-text-grey-light">
+
+        Updated by {{ $company['updated_uid'] }}<br>
+        @ {{ $company['updated_at'] }}
+
+      </div>
+
+    </div>
+
   
   </section>
 </x-layout>

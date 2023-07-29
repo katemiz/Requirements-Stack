@@ -12,6 +12,9 @@ use App\Http\Livewire\ListGates;
 use App\Http\Livewire\ListMocs;
 use App\Http\Livewire\ListPocs;
 use App\Http\Livewire\ListWitnesses;
+use App\Http\Livewire\ListUsers;
+use App\Http\Livewire\ListRoles;
+
 
 use App\Http\Controllers\GateController;
 use App\Http\Controllers\MocController;
@@ -22,6 +25,7 @@ use App\Http\Controllers\RequirementController;
 use App\Http\Controllers\EndProductsController;
 use App\Http\Controllers\CurrentProjectController;
 use App\Http\Controllers\WitnessController;
+use App\Http\Controllers\RolesPermissionsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,6 +47,28 @@ Route::get('lang/{lang}', [
     'as' => 'lang.switch',
     'uses' => 'App\Http\Controllers\LanguageController@switchLang',
 ]);
+
+
+
+
+// Users
+Route::get('/admin/users', ListUsers::class);
+Route::get('/admin/roles', ListRoles::class);
+
+Route::get('/admin/users/view/{id}', [UserController::class, 'view']);
+Route::get('/admin/roles/view/{id}', [RolesPermissionsController::class, 'roleview']);
+
+
+Route::get('/admin/users/form/{id?}', [UserController::class, 'form']);
+Route::get('/admin/roles/form/{id?}', [RolesPermissionsController::class, 'roleform']);
+
+Route::post('/admin/users/store/{id?}', [UserController::class, 'store']);
+Route::post('/admin/roles/store/{id?}', [RolesPermissionsController::class, 'rolestore']);
+
+
+Route::get('/admin/users/delete/{id}', [UserController::class, 'delete']);
+
+
 
 
 Route::middleware('auth')->group(function () {
