@@ -49,4 +49,28 @@ class Verification extends Model
     {
         return Witness::find($this->witness_id);
     }
+
+
+
+
+    public function getDecisionGateAttribute()
+    {
+        return Meeting::find($this->meeting_id)->name;
+    }
+
+    public function getMocNameAttribute()
+    {
+        return Moc::find($this->moc_id)->name;
+    }
+
+    public function getPocNameAttribute()
+    {
+        return Poc::find($this->poc_id)->name;
+    }
+
+    public function getWitnessNameAttribute()
+    {
+        return Witness::find($this->witness_id)->name;
+    }
+
 }

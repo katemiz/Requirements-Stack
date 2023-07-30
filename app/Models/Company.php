@@ -12,8 +12,7 @@ class Company extends Model
     use HasFactory;
     use HasUpdatedBy;
 
-    protected $fillable = ['user_id','name', 'fullname'];
-
+    protected $fillable = ['user_id','updated_uid','name', 'fullname'];
 
     public function projects(): HasMany
     {

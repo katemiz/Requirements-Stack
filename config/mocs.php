@@ -2,6 +2,12 @@
 
 return [
 
+    "perms" => [
+        "r" => [],
+        "w" => "[Edit Projects]",
+        "x" => "[Delete Projects]"
+    ],
+
     "list" => [
         "title" => "Means of Compliances (MOC) / Validation Methods",
         "subtitle" => "List of all Means of Compliances (MOC) / Validation Methods",

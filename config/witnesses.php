@@ -2,6 +2,12 @@
 
 return [
 
+    "perms" => [
+        "r" => [],
+        "w" => "[Edit Projects]",
+        "x" => "[Delete Projects]"
+    ],
+
     "list" => [
         "title" => "Witnesses",
         "subtitle" => "List of all Witnesses",
@@ -21,8 +27,8 @@ return [
                 "direction" => "asc"
             ],
 
-            "company_name"=> [
-                "title" => "Company",
+            "project_name"=> [
+                "title" => "Project",
                 "sortable" => true,
                 "align" => "left",
                 "direction" => "asc"

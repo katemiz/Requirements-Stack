@@ -2,14 +2,16 @@
 
     <section class="section container">
 
-        <x-title :params="config('roles.list')" />
-        <x-table-action :params="config('roles')" />
+        <x-title :params="config('permissions.list')" />
+        <x-table-action :params="config('permissions')" />
 
         @if ($records->count() > 0)
-            <x-table :params="config('roles')" :records="$records" />
+
+            <x-table :params="config('permissions')" :records="$records" />
             {{ $records->links('pagination.bulma') }}
+
         @else
-            <x-notification type="is-warning is-light" message="{{ config('roles.list.noitem') }}" />
+            <x-notification type="is-warning is-light" message="{{ config('permissions.list.noitem') }}" />
         @endif
 
     </section>

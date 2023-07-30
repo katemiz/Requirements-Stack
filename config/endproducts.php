@@ -2,6 +2,12 @@
 
 return [
 
+    "perms" => [
+        "r" => [],
+        "w" => ['Edit Projects'],
+        "x" => ['Delete Projects']
+    ],
+
     "list" => [
         "title" => "End Products",
         "subtitle" => "List of all End Products",

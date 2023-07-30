@@ -2,6 +2,14 @@
 
 namespace Database\Seeders;
 
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+
+use App\Models\Company;
+use App\Models\Project;
+use App\Models\User;
+
+
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -18,5 +26,36 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+
+        $admin = User::create([
+            "name" => 'Admin',
+            "lastname" =>'Admin',
+            "email" => 'admin@admin.com',
+            "password" => 'admin@admin.com'
+        ]);
+
+        $role = Role::create(['name' => 'admin']);
+        $admin->assignRole('admin');
+
+
+        Company::create([
+            'user_id' => 1,
+            'updated_uid' =>1,
+            'name' => 'TÜBİTAK SAGE',
+            'fullname' => 'TÜBİTAK Savunma Sanayii Araştırma ve Geliştirme Enstitüsü'
+        ]);
+
+        Project::create([
+            'updated_uid' => 1,
+            'user_id' => 1,
+            'company_id' => 1,
+            'code' => 'PVR',
+            'title' => 'Pressure Regulating Valve'
+        ]);
+
+
+
+
+
     }
 }

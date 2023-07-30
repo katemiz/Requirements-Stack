@@ -46,18 +46,9 @@
               <p class="subtitle is-6">@ {{ $project->created_at }}</p>
             </div>
           </div>
-
-          <div class="content">
-            <p>{{ $project['title'] }}</p>
-
-            @if ($project->updated_at != $project->created_at)
-            <div class="is-size-7 has-text-grey-light">
-                Updated @ {{ $project->updated_at }}
-            </div>
-            @endif
-
-          </div>
         </div>
+
+        @can(config('projects.perms.w'))
 
         <footer class="card-footer">
             <a href="/projects/form/{{ $project->id}}" class="card-footer-item">
@@ -68,7 +59,11 @@
                 <span class="icon has-text-danger-dark"><x-carbon-close-outline /></span>
             </a>
         </footer>
+
+        @endcan
     </div>
+
+    <x-date-by :item="$project" />
   
   </section>
 </x-layout>

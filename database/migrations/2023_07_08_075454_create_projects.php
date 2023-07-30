@@ -16,6 +16,7 @@ return new class extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
+            $table->integer('updated_uid');
             $table->foreignIdFor(User::class);
             $table->foreignIdFor(Company::class);
             $table->string('code');

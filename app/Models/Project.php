@@ -15,7 +15,7 @@ class Project extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id','company_id','code', 'title'];
+    protected $fillable = ['user_id','updated_uid','company_id','code', 'title'];
 
     public function company(): BelongsTo
     {
@@ -47,6 +47,23 @@ class Project extends Model
     {
         return Company::find($this->company_id)->name;
     }
+
+
+
+    // Accessor to get the full name of the user
+    public function getCreatedByNameAttribute()
+    {
+        $usr = User::find($this->user_id);
+        return $usr->name.' '.$usr->name;
+    }
+
+    public function getUpdatedByNameAttribute()
+    {
+        $usr = User::find($this->updated_uid);
+        return $usr->name.' '.$usr->name;
+    }
+
+
 
 
 }

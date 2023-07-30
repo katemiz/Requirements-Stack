@@ -2,6 +2,12 @@
 
 return [
 
+    "roles" => [
+        "r" => ['admin'],
+        "w" => ['admin'],
+        "x" => ['admin']
+    ],
+
     "list" => [
         "title" => "Roles",
         "subtitle" => "List of all Roles",
@@ -29,24 +35,21 @@ return [
                 "direction" => "asc"
             ],
 
-
-
             "created_at"=> [
                 "title" => "Created On",
                 "sortable" => true,
                 "align" => "left",
                 "direction" => "asc"
             ]
-
         ],
         "actions" => [
-            "r" => "/roles/view/",
-            "w" => "/roles/form/",
-            "x" => "/roles/delete/"
+            "r" => "/admin/roles/view/",
+            "w" => "/admin/roles/form/",
+            "x" => "/admin/roles/delete/"
         ],
-        "noitem" => "No witnesses found in database yet!",
+        "noitem" => "No roles found in database yet!",
         "delete_confirm" => [
-            "question" => "Do you want to delete this witnesses from database?",
+            "question" => "Do you want to delete this role from database?",
             "last_warning" => "When done, it is not possible to revert back."
         ]
     ],

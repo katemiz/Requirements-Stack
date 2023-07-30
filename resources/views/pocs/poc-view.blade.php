@@ -49,16 +49,10 @@
 
           <div class="content">
             <p>{{ $poc['name'] }}</p>
-
-            @if ($poc->updated_at != $poc->created_at)
-            <div class="is-size-7 has-text-grey-light">
-                Updated @ {{ $poc->updated_at }}
-            </div>
-            @endif
-
           </div>
         </div>
 
+        @can(config('pocs.perms.w'))
         <footer class="card-footer">
             <a href="/pocs/form/{{ $poc->id}}" class="card-footer-item">
                 <span class="icon"><x-carbon-pen/></span>
@@ -68,7 +62,10 @@
                 <span class="icon has-text-danger-dark"><x-carbon-close-outline /></span>
             </a>
         </footer>
+        @endcan
     </div>
+
+    <x-date-by :item="$poc" />
 
   </section>
 </x-layout>

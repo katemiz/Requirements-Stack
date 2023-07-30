@@ -49,19 +49,10 @@
               <p class="subtitle is-6">@ {{ $endproduct->created_at }}</p>
             </div>
           </div>
-
-          <div class="content">
-            <p>{{ $endproduct['title'] }}</p>
-
-            @if ($endproduct->updated_at != $endproduct->created_at)
-            <div class="is-size-7 has-text-grey-light">
-                Updated @ {{ $endproduct->updated_at }}
-            </div>
-            @endif
-
-          </div>
         </div>
 
+            
+        @can(config('endproducts.perms.w'))
         <footer class="card-footer">
             <a href="/endproducts/form/{{ $endproduct->id}}" class="card-footer-item">
                 <span class="icon"><x-carbon-pen/></span>
@@ -71,7 +62,12 @@
                 <span class="icon has-text-danger-dark"><x-carbon-close-outline /></span>
             </a>
         </footer>
+        @endcan
+
     </div>
+
+    <x-date-by :item="$endproduct" />
+
   
   </section>
 </x-layout>

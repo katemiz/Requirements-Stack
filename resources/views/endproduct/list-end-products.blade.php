@@ -5,11 +5,11 @@
         <div class="column is-one"><x-info :info="config('definitions.endproduct')" /></div>
     </div>
     
-    <x-table-action :params="config('endproducts.list')" />
+    <x-table-action :params="config('endproducts')" />
 
     @if ($records->count() > 0)
 
-        <x-table :params="config('endproducts.list')" :records="$records" />
+        <x-table :params="config('endproducts')" :records="$records" />
         {{ $records->links('pagination.bulma') }}
 
     @else

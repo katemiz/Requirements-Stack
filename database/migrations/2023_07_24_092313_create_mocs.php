@@ -16,6 +16,7 @@ return new class extends Migration
     {
         Schema::create('mocs', function (Blueprint $table) {
             $table->id();
+            $table->integer('updated_uid');
             $table->foreignIdFor(User::class);
             $table->foreignIdFor(Project::class);
             $table->string('code');

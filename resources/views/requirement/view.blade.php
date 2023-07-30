@@ -133,41 +133,52 @@
           <div class="content">
             <p>{!! $requirement['text'] !!}</p>
 
+
+            @if ( !empty($requirement['cross_ref_no']) )
+            <h4 class="subtitle has-text-weight-normal mt-3">Source Requirement No</h4>
+            <p>{{ $requirement['cross_ref_no'] }}</p>
+            @endif
+
             @if ( !empty($requirement['remarks']) )
             <h4 class="subtitle has-text-weight-normal mt-3">Remarks</h4>
             <p>{!! $requirement['remarks'] !!}</p>
             @endif
 
+            @can(config('requirements.perms.w'))
             <a href="/requirements/verform/{{ $requirement->id}}" class="button is-link is-small" href="/verform/1"> Add Verification</a>
+            @endcan
 
             @if ( count($requirement->verifications) > 0 )
                 <h4 class="subtitle has-text-weight-normal mt-3">Verifications</h4>
 
                 <table class="table is-fullwidth">
+                <caption>Requirement Verification Table</caption>
 
                 <tbody>
                     <tr>
-                        <th>Witness</th>
                         <th>Decision Gate</th>
-                        <th>Verfifcation Method</th>
+                        <th>MOC/Verification Method</th>
                         <th>Proof of Compliance</th>
+                        <th>Witness</th>
+                        @can(config('requirements.perms.w'))
                         <th>Actions</th>
+                        @endcan
                     </tr>
 
                     @foreach ($requirement->verifications as $verification)
 
                       <tr>
-                          <td>{{ $verification->witness->code }}</td>
                           <td>{{ $verification->dgate->code }}</td>
                           <td>{{ $verification->moc->code }}</td>
                           <td>{{ $verification->poc->code }}</td>
+                          <td>{{ $verification->witness->code }}</td>
+                          @can(config('requirements.perms.w'))
                           <td>
                             <a href="/requirements/verform/{{ $requirement->id}}/{{ $verification->id}}">Edit</a> |
                             <a href="javascript:deleteConfirm('{{$requirement->id}}','{{$verification->id}}')">Delete</a>
-
-
-
                           </td>
+                          @endcan
+
                       </tr>
 
                     @endforeach
@@ -177,15 +188,12 @@
 
             @endif
 
-            @if ($requirement->updated_at != $requirement->created_at)
-            <div class="is-size-7 has-text-grey-light">
-                Updated @ {{ $requirement->updated_at }}
-            </div>
-            @endif
-
           </div>
         </div>
 
+
+
+        @can(config('requirements.perms.w'))
         <footer class="card-footer">
 
             <a href="/requirements/form/{{ $requirement->id}}" class="card-footer-item">
@@ -196,7 +204,10 @@
                 <span class="icon has-text-danger-dark"><x-carbon-trash-can /></span>
             </a>
         </footer>
+        @endcan
     </div>
+
+    <x-date-by :item="$requirement" />
 
 
   </section>

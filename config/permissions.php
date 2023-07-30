@@ -2,12 +2,18 @@
 
 return [
 
+    "roles" => [
+        "r" => ['admin'],
+        "w" => ['admin'],
+        "x" => ['admin']
+    ],
+
     "list" => [
-        "title" => "Users",
-        "subtitle" => "List of all Users",
+        "title" => "Permissions",
+        "subtitle" => "List of all Permissions",
         "addButton" => [
-            "text"=>"Add User",
-            "route"=>"/admin/user/form"
+            "text"=>"Add Permission",
+            "route"=>"/admin/permissions/form"
         ],
         "filterText" => "Search ...",
         "listCaption" => false,
@@ -21,16 +27,8 @@ return [
                 "direction" => "asc"
             ],
 
-
             "name"=> [
                 "title" => "Name",
-                "sortable" => true,
-                "align" => "left",
-                "direction" => "asc"
-            ],
-
-            "lastname"=> [
-                "title" => "Lastname",
                 "sortable" => true,
                 "align" => "left",
                 "direction" => "asc"
@@ -45,61 +43,44 @@ return [
 
         ],
         "actions" => [
-            "r" => "/witness/view/",
-            "w" => "/witness/form/",
-            "x" => "/witness/delete/"
+            "r" => "/admin/permissions/view/",
+            "w" => "/admin/permissions/form/",
+            "x" => "/admin/permissions/delete/"
         ],
-        "noitem" => "No witnesses found in database yet!",
+        "noitem" => "No permissions found in database yet!",
         "delete_confirm" => [
-            "question" => "Do you want to delete this witnesses from database?",
+            "question" => "Do you want to delete this permission from database?",
             "last_warning" => "When done, it is not possible to revert back."
         ]
     ],
 
-    // "select_current" => [
-    //     "title" => "Projects",
-    //     "subtitle" => "Select current project",
-    // ],
 
     "create" => [
-        "title" => "Witnesses",
-        "subtitle" => "Create a Witnesses",
-        "submitText" => "Add Witnesses",
+        "title" => "Permissions",
+        "subtitle" => "Create a Permission",
+        "submitText" => "Add Permission",
     ],
 
     "read" => [
-        "title" => "Witnesses",
-        "subtitle" => "View Witnesses Parameters",
-        "submitText" => "Add Witnesses",
+        "title" => "Permissions",
+        "subtitle" => "View Permission Parameters",
+        "submitText" => "Add Permission",
     ],
 
     "update" => [
-        "title" => "Witnesses",
-        "subtitle" => "Edit Witnesses Properties",
-        "submitText" => "Update Witnesses",
+        "title" => "Permissions",
+        "subtitle" => "Edit Permission Properties",
+        "submitText" => "Update Permission",
     ],
 
-    "cu_route" => "/witness/store/",
+    "cu_route" => "/admin/permissions/store/",
 
     "form" => [
 
-        "project"=> [
-            "label" => "Project",
-            "name" => "project",
-            "options" => ""
-        ],
-
-        "code" => [
-            "label" => "Witnesses",
-            "name" => "code",
-            "placeholder" => "Enter Witnesses Code",
-            "value" => ""
-        ],
-
-        "title" => [
-            "label" => "Witnesses Title",
+        "name" => [
+            "label" => "Permission Name",
             "name" => "name",
-            "placeholder" => "Enter Witnesses title/description",
+            "placeholder" => "eg Edit Articles",
             "value" => ""
         ],
 
@@ -111,5 +92,3 @@ return [
         ]
     ]
 ];
-
-

@@ -20,7 +20,7 @@ class Requirement extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id','project_id','text','rtype','remarks','cross_ref_no'];
+    protected $fillable = ['user_id','updated_uid','project_id','text','rtype','remarks','cross_ref_no'];
 
     public function project(): BelongsTo
     {
@@ -42,5 +42,24 @@ class Requirement extends Model
     {
         return $this->hasMany(Meeting::class,'verifications');
     }
+
+
+    public function getProjectNameAttribute()
+    {
+        return Project::find($this->project_id)->code;
+    }
+
+    public function getCreatedByNameAttribute()
+    {
+        $usr = User::find($this->user_id);
+        return $usr->name.' '.$usr->name;
+    }
+
+    public function getUpdatedByNameAttribute()
+    {
+        $usr = User::find($this->updated_uid);
+        return $usr->name.' '.$usr->name;
+    }
+
 
 }

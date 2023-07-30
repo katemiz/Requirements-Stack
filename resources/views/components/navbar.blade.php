@@ -23,18 +23,18 @@
 
             @if(Auth::check())
 
-                <a href="/companies" class="navbar-item icon-text">
+                {{-- <a href="/companies" class="navbar-item icon-text">
                     <span class="icon has-text-warning">
                         <x-carbon-letter-cc />
                     </span>
                     <span>Companies</span>
-                </a>
+                </a> --}}
 
 
 
                 <div class="navbar-item has-dropdown is-hoverable">
 
-                    <a href="/projects" class="navbar-link">
+                    <a class="navbar-link">
                         <span class="icon has-text-warning">
                             <x-carbon-letter-pp />
                         </span>
@@ -42,10 +42,11 @@
                     </a>
 
                     <div class="navbar-dropdown">
-                        <a href="/endproducts" class="navbar-item">End Products</a>
-                        <a href="/dgates" class="navbar-item">Decision Gates</a>
-                        <a href="/phases" class="navbar-item">Project Phases</a>
-                        <a href="/witness" class="navbar-item">Project Witnesses</a>
+                        <a href="/projects" class="navbar-item">Projects List</a>
+                        <a href="/endproducts" class="navbar-item">Project > End Products</a>
+                        <a href="/dgates" class="navbar-item">Project > Decision Gates</a>
+                        <a href="/phases" class="navbar-item">Project > Project Phases</a>
+                        <a href="/witness" class="navbar-item">Project > Witnesses</a>
 
                     </div>
                 </div>
@@ -80,15 +81,28 @@
                     <p class="navbar-link" href="/Admin">Export</p>
                     <div class="navbar-dropdown">
 
-                        <a href="/kayit-form/aidat" class="navbar-item">All Requirements</a>
-                        <a href="/kayit-form/alacak" class="navbar-item">Verification Matrix</a>
-                        <a href="/kayit-form/fatura" class="navbar-item">Req vs POCs</a>
+                        <a href="/all-requirements" class="navbar-item">All Requirements</a>
+                        <a href="/pocs-vs-requirements" class="navbar-item">POCs vs Requirements</a>
 
                     </div>
                 </div>
 
 
+                <div class="navbar-item has-dropdown is-hoverable">
 
+                    <a href="/projects" class="navbar-link">
+                        <span class="icon has-text-warning">
+                            <x-carbon-letter-aa />
+                        </span>
+                        <span class="ml-2">Adm</span>
+                    </a>
+
+                    <div class="navbar-dropdown">
+                        <a href="/admin/users" class="navbar-item">Users</a>
+                        <a href="/admin/roles" class="navbar-item">Roles</a>
+                        <a href="/admin/permissions" class="navbar-item">Permissions</a>
+                    </div>
+                </div>
 
             @endif
 

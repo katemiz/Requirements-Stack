@@ -16,6 +16,7 @@ return new class extends Migration
     {
         Schema::create('requirements', function (Blueprint $table) {
             $table->id();
+            $table->integer('updated_uid');
             $table->foreignIdFor(User::class);
             $table->foreignIdFor(Project::class);
             $table->string('cross_ref_no')->nullable();

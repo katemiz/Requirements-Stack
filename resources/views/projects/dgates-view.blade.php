@@ -59,6 +59,7 @@
           </div>
         </div>
 
+        @can(config('dgates.perms.w'))
         <footer class="card-footer">
             <a href="/dgates/form/{{ $dgate->id}}" class="card-footer-item">
                 <span class="icon"><x-carbon-pen/></span>
@@ -68,7 +69,11 @@
                 <span class="icon has-text-danger-dark"><x-carbon-close-outline /></span>
             </a>
         </footer>
+        @endcan
     </div>
+
+    <x-date-by :item="$dgate" />
+
   
   </section>
 </x-layout>

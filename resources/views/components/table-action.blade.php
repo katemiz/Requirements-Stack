@@ -2,12 +2,29 @@
 
     <!-- Left side -->
     <div class="level-left">
-        <div class="level-item  has-text-centered">
-            <a href="{{ $params['addButton']['route'] }}" class="button is-dark">
-                <span class="icon is-small"><x-carbon-add /></span>
-                <span>{{ $params['addButton']['text'] }}</span>
-            </a>
-        </div>
+
+        @if (isset($params['roles']['w']))
+        @role($params['roles']['w'])
+            <div class="level-item  has-text-centered">
+                <a href="{{ $params['list']['addButton']['route'] }}" class="button is-dark">
+                    <span class="icon is-small"><x-carbon-add /></span>
+                    <span>{{ $params['list']['addButton']['text'] }}</span>
+                </a>
+            </div>
+        @endrole
+        @endif
+
+        @if (isset($params['perms']['w']))
+        @can($params['perms']['w'])
+            <div class="level-item  has-text-centered">
+                <a href="{{ $params['list']['addButton']['route'] }}" class="button is-dark">
+                    <span class="icon is-small"><x-carbon-add /></span>
+                    <span>{{ $params['list']['addButton']['text'] }}</span>
+                </a>
+            </div>
+        @endcan
+        @endif
+
     </div>
 
         
@@ -23,14 +40,14 @@
                     </a>
                 </p>
                 <p class="control">
-                  <input class="input" type="text" placeholder="{{ $params['filterText'] }}" wire:model="search">
+                <input class="input" type="text" placeholder="{{ $params['list']['filterText'] }}" wire:model="search">
                 </p>
                 <p class="control">
-                  <a class="button">
+                <a class="button">
                     <span class="icon is-small is-left" wire:click="resetFilter">
                         <x-carbon-close />
                     </span>
-                  </a>
+                </a>
                 </p>
             </div>
 

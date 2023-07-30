@@ -26,17 +26,13 @@
 <div class="modal p-6" id="infomodal">
     <div class="modal-background" onclick="modalOff()"></div>
     <div class="modal-content card p-6">
-            <p class="subtitle">{!! $info['title'] !!}</p>
-            <p class="my-3">{!! $info['text'] !!}</p>
+        <p class="subtitle">{!! $info['title'] !!}</p>
+        <p class="my-3">{!! $info['text'] !!}</p>
 
-            @if (isset($info['link']))
+        @if (isset($info['link']))
             <p class="has-text-right mt-3">
-            <a href="{{ $info['link'] }}">{{ $info['source'] }}</a>
+                <a href="{{ $info['link'] }}">{{ $info['source'] }}</a>
             </p>
-            @else
-            <p class="has-text-right mt-3">
-                <a href="{{ $info['link'] }}">{!! $info['source'] !!}</a>
-            </p>
-            @endif
+        @endif
     </div>
 </div>

@@ -1,11 +1,11 @@
 <section class="section container">
 
     <x-title :params="config('mocs.list')" />
-    <x-table-action :params="config('mocs.list')" />
+    <x-table-action :params="config('mocs')" />
 
     @if ($records->count() > 0)
 
-        <x-table :params="config('mocs.list')" :records="$records" />
+        <x-table :params="config('mocs')" :records="$records" />
         {{ $records->links('pagination.bulma') }}
 
     @else

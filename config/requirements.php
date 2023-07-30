@@ -2,7 +2,14 @@
 
 return [
 
+    "perms" => [
+        "r" => [],
+        "w" => "[Edit Requirements]",
+        "x" => "[Delete Requirements]"
+    ],
+
     "list" => [
+
         "title" => "Requirements",
         "subtitle" => "List of all requirements",
         "addButton" => [
@@ -21,14 +28,14 @@ return [
                 "direction" => "asc"
             ],
 
-            "project_id"=> [
+            "project_name"=> [
                 "title" => "Project",
                 "sortable" => true,
                 "align" => "left",
                 "direction" => "asc"
             ],
 
-            "type"=> [
+            "rtype"=> [
                 "title" => "Type",
                 "sortable" => true,
                 "align" => "left",
@@ -38,7 +45,8 @@ return [
                 "title" => "Requirement Text",
                 "sortable" => true,
                 "align" => "left",
-                "direction" => "asc"
+                "direction" => "asc",
+                "is_html" => true
             ],
 
             "created_at"=> [
@@ -54,6 +62,7 @@ return [
             "w" => "/requirements/form/",
             "x" => "/requirements/delete/"
         ],
+        
         "noitem" => "No requirements found in database yet!",
         "delete_confirm" => [
             "question" => "Do you want to delete this requirement from database?",

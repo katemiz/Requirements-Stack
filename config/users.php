@@ -2,6 +2,12 @@
 
 return [
 
+    "roles" => [
+        "r" => ['admin'],
+        "w" => ['admin'],
+        "x" => ['admin']
+    ],
+
     "list" => [
         "title" => "Users",
         "subtitle" => "List of all Users",
@@ -36,6 +42,13 @@ return [
                 "direction" => "asc"
             ],
 
+            "email"=> [
+                "title" => "E-Mail",
+                "sortable" => true,
+                "align" => "left",
+                "direction" => "asc"
+            ],
+
             "created_at"=> [
                 "title" => "Created On",
                 "sortable" => true,
@@ -45,9 +58,9 @@ return [
 
         ],
         "actions" => [
-            "r" => "/witness/view/",
-            "w" => "/witness/form/",
-            "x" => "/witness/delete/"
+            "r" => "/admin/users/view/",
+            "w" => "/admin/users/form/",
+            "x" => "/admin/users/delete/"
         ],
         "noitem" => "No witnesses found in database yet!",
         "delete_confirm" => [
@@ -56,57 +69,47 @@ return [
         ]
     ],
 
-    // "select_current" => [
-    //     "title" => "Projects",
-    //     "subtitle" => "Select current project",
-    // ],
-
     "create" => [
-        "title" => "Witnesses",
-        "subtitle" => "Create a Witnesses",
-        "submitText" => "Add Witnesses",
+        "title" => "Users",
+        "subtitle" => "Create a User",
+        "submitText" => "Add User",
     ],
 
     "read" => [
-        "title" => "Witnesses",
-        "subtitle" => "View Witnesses Parameters",
-        "submitText" => "Add Witnesses",
+        "title" => "Users",
+        "subtitle" => "View User Parameters",
+        "submitText" => "Add User",
     ],
 
     "update" => [
-        "title" => "Witnesses",
-        "subtitle" => "Edit Witnesses Properties",
-        "submitText" => "Update Witnesses",
+        "title" => "Users",
+        "subtitle" => "Edit User Properties",
+        "submitText" => "Update User",
     ],
 
-    "cu_route" => "/witness/store/",
+    "cu_route" => "/admin/users/store/",
 
     "form" => [
 
-        "project"=> [
-            "label" => "Project",
-            "name" => "project",
-            "options" => ""
-        ],
-
-        "code" => [
-            "label" => "Witnesses",
-            "name" => "code",
-            "placeholder" => "Enter Witnesses Code",
-            "value" => ""
-        ],
-
-        "title" => [
-            "label" => "Witnesses Title",
+        "name" => [
+            "label" => "Name",
             "name" => "name",
-            "placeholder" => "Enter Witnesses title/description",
+            "placeholder" => "Enter name",
             "value" => ""
         ],
 
-        "description" => [
-            "label" => "Description/Remarks/Notes",
-            "name" => "description",
-            "placeholder" => "Enter remarks/notes",
+
+        "lastname" => [
+            "label" => "Lastname",
+            "name" => "lastname",
+            "placeholder" => "Enter lastname",
+            "value" => ""
+        ],
+
+        "email" => [
+            "label" => "E-Mail",
+            "name" => "email",
+            "placeholder" => "Enter e-mail",
             "value" => ""
         ]
     ]

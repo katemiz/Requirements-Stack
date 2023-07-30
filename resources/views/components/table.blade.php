@@ -6,8 +6,8 @@
             let id = event.detail.id
         
             Swal.fire({
-                title: {{ Js::from($params['delete_confirm']['question']) }},
-                text: {{ Js::from($params['delete_confirm']['last_warning']) }},
+                title: {{ Js::from($params['list']['delete_confirm']['question']) }},
+                text: {{ Js::from($params['list']['delete_confirm']['last_warning']) }},
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -39,13 +39,13 @@
 
     <table class="table is-fullwidth">
 
-        @if ($params['listCaption'])
-            <caption>{{ $params['listCaption'] }}</caption>
+        @if ($params['list']['listCaption'])
+            <caption>{{ $params['list']['listCaption'] }}</caption>
         @endif
 
         <thead>
             <tr>
-                @foreach ($params['headers'] as $col_name => $headerParams)
+                @foreach ($params['list']['headers'] as $col_name => $headerParams)
                     <th class="has-text-{{ $headerParams['align'] }}">
                         {{ $headerParams['title'] }}
 
@@ -67,7 +67,7 @@
                     </th>
                 @endforeach
 
-                @if ( isset($params['actions']) )
+                @if ( isset($params['list']['actions']) )
                     <th class="has-text-right"><span class="icon"><x-carbon-user-activity /></span></th>
                 @endif
 
@@ -79,13 +79,20 @@
             @foreach ($records as $record)
             <tr>
 
-                @foreach (array_keys($params['headers']) as $col_name)
-                <td>{{ $record[$col_name] }}</td>                
+                @foreach (array_keys($params['list']['headers']) as $col_name)
+                    <td>
+                        @if (isset($params['list']['headers'][$col_name]['is_html']) && $params['list']['headers'][$col_name]['is_html'])
+                            {!! $record[$col_name] !!}
+                        @else
+                            {{ $record[$col_name] }} 
+                        @endif
+                    </td>
                 @endforeach
 
-                @if ( isset($params['actions']) )
+
+                @if ( isset($params['list']['actions']) )
                 <td class="has-text-right">
-                    @foreach ($params['actions'] as $act => $route)
+                    @foreach ($params['list']['actions'] as $act => $route)
 
                         @switch($act)
                             @case('r')
@@ -94,14 +101,42 @@
                                 </a>                           
                                 @break
                             @case('w')
-                                <a href="{{ $route }}{{ $record->id}}">
-                                <span class="icon"><x-carbon-edit /></span>   
-                                </a>                                                    
+
+                                @if (isset($params['roles']['w']))
+                                    @role($params['roles']['w'])
+                                        <a href="{{ $route }}{{ $record->id}}">
+                                        <span class="icon"><x-carbon-edit /></span>   
+                                        </a>    
+                                    @endrole
+                                @endif
+
+                                @if (isset($params['perms']['w']))
+                                    @can($params['perms']['w'])
+                                        <a href="{{ $route }}{{ $record->id}}">
+                                        <span class="icon"><x-carbon-edit /></span>   
+                                        </a>    
+                                    @endcan
+                                @endif
+
                                 @break
                             @case('x')
-                                <a wire:click.prevent="deleteConfirm({{$record->id}})">
-                                <span class="icon has-text-danger-dark"><x-carbon-trash-can /></span>   
-                                </a>                                                   
+
+                                @if (isset($params['roles']['w']))
+                                @role($params['roles']['w'])
+                                    <a wire:click.prevent="deleteConfirm({{$record->id}})">
+                                    <span class="icon has-text-danger-dark"><x-carbon-trash-can /></span>   
+                                    </a>
+                                @endrole
+                                @endif
+
+                                @if (isset($params['perms']['w']))
+                                @can($params['perms']['w'])
+                                    <a wire:click.prevent="deleteConfirm({{$record->id}})">
+                                    <span class="icon has-text-danger-dark"><x-carbon-trash-can /></span>   
+                                    </a>
+                                @endcan
+                                @endif
+       
                                 @break
                         @endswitch
                         
@@ -111,8 +146,6 @@
 
             </tr>
             @endforeach
-
-
 
         </tbody>
     </table>

@@ -47,18 +47,9 @@
             </div>
           </div>
 
-          <div class="content">
-            <p>{{ $witness['name'] }}</p>
-
-            @if ($witness->updated_at != $witness->created_at)
-            <div class="is-size-7 has-text-grey-light">
-                Updated @ {{ $witness->updated_at }}
-            </div>
-            @endif
-
-          </div>
         </div>
 
+        @can(config('dgates.perms.w'))
         <footer class="card-footer">
             <a href="/witness/form/{{ $witness->id}}" class="card-footer-item">
                 <span class="icon"><x-carbon-pen/></span>
@@ -68,7 +59,11 @@
                 <span class="icon has-text-danger-dark"><x-carbon-close-outline /></span>
             </a>
         </footer>
+        @endcan
     </div>
+
+    <x-date-by :item="$witness" />
+
 
   </section>
 </x-layout>

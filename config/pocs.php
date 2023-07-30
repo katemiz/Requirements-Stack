@@ -2,6 +2,12 @@
 
 return [
 
+    "perms" => [
+        "r" => [],
+        "w" => "[Edit Projects]",
+        "x" => "[Delete Projects]"
+    ],
+
     "list" => [
         "title" => "Proof of Compliances (POC)",
         "subtitle" => "List of all Proof of Compliances (POC)",

@@ -14,9 +14,11 @@ use App\Http\Livewire\ListPocs;
 use App\Http\Livewire\ListWitnesses;
 use App\Http\Livewire\ListUsers;
 use App\Http\Livewire\ListRoles;
+use App\Http\Livewire\ListPermissions;
 
 
 use App\Http\Controllers\GateController;
+use App\Http\Controllers\ExportController;
 use App\Http\Controllers\MocController;
 use App\Http\Controllers\PocController;
 use App\Http\Controllers\ProjectController;
@@ -54,16 +56,38 @@ Route::get('lang/{lang}', [
 // Users
 Route::get('/admin/users', ListUsers::class);
 Route::get('/admin/roles', ListRoles::class);
+Route::get('/admin/permissions', ListPermissions::class);
 
-Route::get('/admin/users/view/{id}', [UserController::class, 'view']);
+
+
+
+
+
+
+
+
+Route::get('/acaba', [RolesPermissionsController::class, 'acaba']);
+
+
+
+
+
+
+
+
+
+
+Route::get('/admin/users/view/{id}', [RolesPermissionsController::class, 'usrview']);
 Route::get('/admin/roles/view/{id}', [RolesPermissionsController::class, 'roleview']);
+Route::get('/admin/permissions/view/{id}', [RolesPermissionsController::class, 'permissionview']);
 
-
-Route::get('/admin/users/form/{id?}', [UserController::class, 'form']);
+Route::get('/admin/users/form/{id?}', [RolesPermissionsController::class, 'usrform']);
 Route::get('/admin/roles/form/{id?}', [RolesPermissionsController::class, 'roleform']);
+Route::get('/admin/permissions/form/{id?}', [RolesPermissionsController::class, 'permissionform']);
 
-Route::post('/admin/users/store/{id?}', [UserController::class, 'store']);
+Route::post('/admin/users/store/{id?}', [RolesPermissionsController::class, 'usrstore']);
 Route::post('/admin/roles/store/{id?}', [RolesPermissionsController::class, 'rolestore']);
+Route::post('/admin/permissions/store/{id?}', [RolesPermissionsController::class, 'permissionstore']);
 
 
 Route::get('/admin/users/delete/{id}', [UserController::class, 'delete']);
@@ -147,6 +171,11 @@ Route::middleware('auth')->group(function () {
     Route::get('file-import-export', [UserController::class, 'fileImportExport']);
     Route::post('file-import', [UserController::class, 'fileImport'])->name('file-import');
     Route::get('file-export', [UserController::class, 'fileExport'])->name('file-export');
+
+    Route::get('/all-requirements', [ExportController::class, 'allreqs']);
+    Route::get('/pocs-vs-requirements', [ExportController::class, 'pocsvsreqs']);
+
+
 
 
 });
