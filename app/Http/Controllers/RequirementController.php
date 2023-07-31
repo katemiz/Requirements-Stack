@@ -106,9 +106,29 @@ class RequirementController extends Controller
     {
         $this->action = 'read';
 
+        $req = Requirement::find($request->id);
+        $previous = Requirement::where('id','<',$req->id)->orderBy('id','desc')->get()->take(1)->toArray();
+        $next = Requirement::where('id','>',$req->id)->limit(1)->get();
+
+        //dd($req->id);
+        //dd($previous['0']['id']);
+        $n = false;
+        $p = false;
+
+
+        if (count($previous) > 0 ) {
+            $p = $previous['0']['id'];
+        }
+
+        if (count($next) > 0 ) {
+            $n = $next['0']['id'];
+        }
+
         return view('requirement.view', [
             'action' => $this->action,
-            'requirement' => Requirement::find($request->id)
+            'requirement' => $req,
+            'previous' => $p,
+            'next' => $n
         ]);
     }
 

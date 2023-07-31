@@ -31,7 +31,6 @@
               @endforeach
             </div>
 
-
           </div>
 
           <div class="content">
@@ -42,15 +41,6 @@
             @if ( !empty($requirement['remarks']) )
             <p>{!! $requirement['remarks'] !!}</p>
             <h4 class="subtitle has-text-weight-normal mt-3">Verifications</h4>
-            @endif
-
-
-
-
-            @if ($requirement->updated_at != $requirement->created_at)
-            <div class="is-size-7 has-text-grey-light">
-                Updated @ {{ $requirement->updated_at }}
-            </div>
             @endif
 
           </div>
@@ -64,28 +54,13 @@
     <form action="{{ config('verifications.cu_route') }}{{ $requirement->id }}{{ $verification ? '/'.$verification->id: ''}}" method="POST" enctype="multipart/form-data">
     @csrf
 
-    <div class="columns">
-
-        <input type="hidden" name="reqid" value="{{ $requirement->id }}" />
-        <input type="hidden" name="projectid" value="{{ $requirement->project->id }}" />
-
-        <div class="column">
-            <x-select :params="config('verifications.form.dgate')" value=" {{ $verification ? $verification->meeting_id : ''}}"/>
-        </div>
-
-        <div class="column">
-            <x-select :params="config('verifications.form.moc')" value=" {{ $verification ? $verification->moc_id : ''}}"/>
-        </div>
-
-        <div class="column">
-            <x-select :params="config('verifications.form.poc')" value=" {{ $verification ? $verification->poc_id : ''}}"/>
-        </div>
-
-        <div class="column">
-            <x-select :params="config('verifications.form.witness')" value=" {{ $verification ? $verification->witness_id : ''}}"/>
-
-        </div>
-
+    <div class="column">
+      <input type="hidden" name="reqid" value="{{ $requirement->id }}" />
+      <input type="hidden" name="projectid" value="{{ $requirement->project->id }}" />
+      <x-select :params="config('verifications.form.dgate')" value=" {{ $verification ? $verification->meeting_id : ''}}"/>
+      <x-select :params="config('verifications.form.moc')" value=" {{ $verification ? $verification->moc_id : ''}}"/>
+      <x-select :params="config('verifications.form.poc')" value=" {{ $verification ? $verification->poc_id : ''}}"/>
+      <x-select :params="config('verifications.form.witness')" value=" {{ $verification ? $verification->witness_id : ''}}"/>
     </div>
 
 

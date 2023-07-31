@@ -28,15 +28,32 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $admin = User::create([
-            "name" => 'Admin',
-            "lastname" =>'Admin',
-            "email" => 'admin@admin.com',
-            "password" => 'admin@admin.com'
+            "name" => 'Kılı Ali',
+            "lastname" =>'Temiz',
+            "email" => 'katemiz@gmail.com',
+            "password" => 'kapkara'
+        ]);
+
+        $user1 = User::create([
+            "name" => 'Kılı Ali',
+            "lastname" =>'Temiz',
+            "email" => 'katemiz@masttech.com',
+            "password" => 'kapkara'
+        ]);
+
+        $user2 = User::create([
+            "name" => 'Ümit',
+            "lastname" =>'Kutluay',
+            "email" => 'umit.kutluay@tubitak.gov.tr',
+            "password" => 'Sage2023tubitak'
         ]);
 
         $role = Role::create(['name' => 'admin']);
-        $admin->assignRole('admin');
+        $reqeng = Role::create(['name' => 'requirement_engineer']);
 
+        $admin->assignRole('admin');
+        $user1->assignRole('requirement_engineer');
+        $user2->assignRole('requirement_engineer');
 
         Company::create([
             'user_id' => 1,

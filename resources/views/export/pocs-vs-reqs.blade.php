@@ -23,61 +23,55 @@
             <h2 class="subtitle has-text-weight-light">Evidence / Proof of Compliances / Deliverables vs Requirement</h2>
         </header>
 
+        <table class="table is-fullwidth">
 
-        @foreach ($matrix as $type => $type_reqs)
-            
+            <thead>
+                <tr>
+                    <th class="is-3 has-background-grey-lighter">Evidence Code<br>Proof of Compliance</th>
+                    <th class="has-background-grey-lighter">Linked Requirements</th>
+                </tr>
+            </thead>
 
-            <table class="table is-fullwidth">
-
-                <thead>
-                    <tr>
-                        <th class="is-4">
-                            Evidence Code<br>
-                            Proof of Compliance
-                        </th>
-
-                        <th>
-                            Requirements Binded to Proof of Compliance
-                        </th>
-                    </tr>
-                </thead>
-
-                <tbody>
-
-                </tbody>
-
-
+            <tbody>
                 @foreach ($matrix as $poc => $reqlist)
                 <tr>
-                    <td>
+                    <td class="has-background-white-ter">
                         <strong>{{ $poc }}</strong><br>
                         {{ $pocnames[$poc] }}
                     </td>
                     <td>
+                        <table class="table is-fullwidth">
+                            <caption>{{ count($reqlist)}} Requirement{{count($reqlist) > 1 ? 's':''}} Linked to This POC </caption>
 
+                            @php
+                                $count = 0;
+                            @endphp
 
-                        <nav class="breadcrumb has-bullet-separator" aria-label="breadcrumbs">
-                            <ul>
+                            @foreach ($reqlist as $rrr)
 
-                                @foreach ($reqlist as $rrr)
-                                <li><a href="#">{{ $rrr }}</a></li>
-                                @endforeach
+                                @if ($count % 8 === 0 )
+                                <tr>
+                                @endif
 
-                            </ul>
-                        </nav>
+                                <td><a href="/requirements/view/{{$rrr['id']}}">{{ $rrr['no'] }}</a></td>
+
+                                @php
+                                $count++;
+                                @endphp
+
+                                @if ($count % 8 === 0 )
+                                </tr>
+                                @endif
+                            @endforeach
+
+                        </table>
                     </td>
                 </tr>
-                    
                 @endforeach
+            <tbody>
 
-                <tbody>
+        </table>
 
-            </table>
-
-
-        @endforeach
-
-    
     </section>
 </body>
 </html>

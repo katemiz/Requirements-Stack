@@ -2,11 +2,12 @@
 
 return [
 
-    "perms" => [
+    "roles" => [
         "r" => [],
-        "w" => "[Edit Requirements]",
-        "x" => "[Delete Requirements]"
+        "w" => ['requirement_engineer'],
+        "x" => ['requirement_engineer'],
     ],
+
 
     "list" => [
 
@@ -30,7 +31,7 @@ return [
 
             "project_name"=> [
                 "title" => "Project",
-                "sortable" => true,
+                "sortable" => false,
                 "align" => "left",
                 "direction" => "asc"
             ],

@@ -2,10 +2,10 @@
 
 return [
 
-    "perms" => [
+    "roles" => [
         "r" => [],
-        "w" => "[Edit Projects]",
-        "x" => "[Delete Projects]"
+        "w" => ['requirement_engineer'],
+        "x" => ['requirement_engineer'],
     ],
 
     "list" => [

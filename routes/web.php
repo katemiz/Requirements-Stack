@@ -58,23 +58,7 @@ Route::get('/admin/users', ListUsers::class);
 Route::get('/admin/roles', ListRoles::class);
 Route::get('/admin/permissions', ListPermissions::class);
 
-
-
-
-
-
-
-
-
-Route::get('/acaba', [RolesPermissionsController::class, 'acaba']);
-
-
-
-
-
-
-
-
+Route::get('/convertOldToNew', [RolesPermissionsController::class, 'convertOldToNew']);
 
 
 Route::get('/admin/users/view/{id}', [RolesPermissionsController::class, 'usrview']);

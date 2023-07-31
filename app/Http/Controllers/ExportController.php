@@ -37,7 +37,7 @@ class ExportController extends Controller
 
             $pocnames[$poc->code] = $poc->name;
 
-            $matrix[$poc->code][] = $req->rtype.'-'.$req->id;
+            $matrix[$poc->code][] = ['id' => $req->id,'no' => $req->rtype.'-'.$req->id];
         }
 
         return view('export.pocs-vs-reqs', [

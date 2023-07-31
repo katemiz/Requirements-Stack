@@ -49,6 +49,9 @@
 
           <div class="content">
             <p>{{ $poc['name'] }}</p>
+
+            <p>{!! $poc['description'] !!}</p>
+
           </div>
         </div>
 

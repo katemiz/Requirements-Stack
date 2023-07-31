@@ -115,8 +115,10 @@ class RolesPermissionsController extends Controller
             $action = 'update';
         }
 
-        foreach($role->permissions as $perm) {
-            $available_perms[] = $perm->id;
+        if ( isset($role->permissions)) {
+            foreach($role->permissions as $perm) {
+                $available_perms[] = $perm->id;
+            }
         }
 
         return view('admin.role-form', [
@@ -270,17 +272,19 @@ class RolesPermissionsController extends Controller
         // Get Role Permissions
         $permissions = Permission::all()->sortBy('name');
 
-        foreach ($permissions as $permission) {
+        if ( count($permissions) > 0 ) {
+            foreach ($permissions as $permission) {
 
-            $degisken = 'perm'.$permission->id;
+                $degisken = 'perm'.$permission->id;
 
-            if (request($degisken)) {
+                if (request($degisken)) {
 
-                $selected_perms[] = Permission::find($permission->id);
+                    $selected_perms[] = Permission::find($permission->id);
+                }
             }
-        }
 
-        $role->syncPermissions($selected_perms);
+            $role->syncPermissions($selected_perms);
+        }
 
 
         return redirect('/admin/roles/view/'.$id);
@@ -329,7 +333,7 @@ class RolesPermissionsController extends Controller
 
 
 
-    public function acaba () {
+    public function convertOldToNew () {
 
 
         $meetings = DB::connection('Yeni')->select('select * from dgs');
@@ -392,7 +396,8 @@ class RolesPermissionsController extends Controller
             Poc::create($props);
         }
 
-
+        Endproduct::create(['id' => 1,'updated_uid'=>1,'user_id'=>1,'project_id'=>1,'code' => 'PVR','title'=>'Pressure Regulating Valve']);
+        Endproduct::create(['id' => 2,'updated_uid'=>1,'user_id'=>1,'project_id'=>1,'code' => 'HS','title'=>'Hydraulic System']);
 
         $reqs = DB::connection('Yeni')->select('select * from requirements');
 
@@ -410,19 +415,26 @@ class RolesPermissionsController extends Controller
             $props['created_at'] = $req->created_at;
             $props['updated_at'] = $req->updated_at;
 
-
-
             DB::insert('insert into requirements (id, user_id,updated_uid,project_id,cross_ref_no,rtype,text,created_at,updated_at) values (?, ?,?,?,?,?,?,?,?)', [$req->id, 1,1,1,$req->no,$req->type == 'SOW' ? 'GR':'TR',$req->text,$req->created_at,$req->updated_at]);
 
-            //dd($props);
 
-            //Requirement::create($props);
+            if ($req->product_id == 1) {
+                DB::insert('insert into endproduct_requirement (requirement_id,endproduct_id) values (?, ?)', [$req->id, 1]);
+                DB::insert('insert into endproduct_requirement (requirement_id,endproduct_id) values (?, ?)', [$req->id, 2]);
+            }
+
+            if ($req->product_id == 2) {
+                DB::insert('insert into endproduct_requirement (requirement_id,endproduct_id) values (?, ?)', [$req->id, 1]);
+            }
+
+            if ($req->product_id == 3) {
+                DB::insert('insert into endproduct_requirement (requirement_id,endproduct_id) values (?, ?)', [$req->id, 2]);
+            }
         }
 
 
 
-        Endproduct::create(['updated_uid'=>1,'user_id'=>1,'project_id'=>1,'code' => 'PVR','title'=>'Pressure Regulating Valve']);
-        Endproduct::create(['updated_uid'=>1,'user_id'=>1,'project_id'=>1,'code' => 'HS','title'=>'Hydraulic System']);
+
 
 
         Witness::create(['updated_uid'=>1,'user_id'=>1,'project_id'=>1,'code' => 'Administration','name'=>'Administration']);

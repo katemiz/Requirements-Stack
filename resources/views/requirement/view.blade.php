@@ -126,8 +126,6 @@
               <span class="tag is-info">{{ $ep->code}}</span>
               @endforeach
             </div>
-
-
           </div>
 
           <div class="content">
@@ -191,8 +189,6 @@
           </div>
         </div>
 
-
-
         @can(config('requirements.perms.w'))
         <footer class="card-footer">
 
@@ -205,6 +201,35 @@
             </a>
         </footer>
         @endcan
+
+
+        <nav class="level m-2">
+          <!-- Left side -->
+          <div class="level-left">
+            @if ($previous)
+            <a href="/requirements/view/{{ $previous}}" class="card-footer-item">
+              <span class="icon"><x-carbon-chevron-left /></span>
+            </a>                
+            @endif
+          </div>
+        
+          <!-- Right side -->
+          <div class="level-right">
+            @if ($next)
+            <a href="/requirements/view/{{ $next}}" class="card-footer-item">
+              <span class="icon"><x-carbon-chevron-right /></span>
+            </a>
+            @endif
+          </div>
+        </nav>
+
+
+
+
+
+
+
+
     </div>
 
     <x-date-by :item="$requirement" />

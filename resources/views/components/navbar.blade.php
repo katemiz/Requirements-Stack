@@ -88,7 +88,7 @@
                 </div>
 
 
-                <div class="navbar-item has-dropdown is-hoverable">
+                {{-- <div class="navbar-item has-dropdown is-hoverable">
 
                     <a href="/projects" class="navbar-link">
                         <span class="icon has-text-warning">
@@ -102,7 +102,7 @@
                         <a href="/admin/roles" class="navbar-item">Roles</a>
                         <a href="/admin/permissions" class="navbar-item">Permissions</a>
                     </div>
-                </div>
+                </div> --}}
 
             @endif
 
