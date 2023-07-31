@@ -52,13 +52,13 @@ class Requirement extends Model
     public function getCreatedByNameAttribute()
     {
         $usr = User::find($this->user_id);
-        return $usr->name.' '.$usr->name;
+        return $usr->name.' '.$usr->lastname;
     }
 
     public function getUpdatedByNameAttribute()
     {
         $usr = User::find($this->updated_uid);
-        return $usr->name.' '.$usr->name;
+        return $usr->name.' '.$usr->lastname;
     }
 
 

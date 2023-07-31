@@ -28,14 +28,14 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $admin = User::create([
-            "name" => 'Kılı Ali',
+            "name" => 'Kılıç Ali',
             "lastname" =>'Temiz',
             "email" => 'katemiz@gmail.com',
             "password" => 'kapkara'
         ]);
 
         $user1 = User::create([
-            "name" => 'Kılı Ali',
+            "name" => 'Kılıç Ali',
             "lastname" =>'Temiz',
             "email" => 'katemiz@masttech.com',
             "password" => 'kapkara'
