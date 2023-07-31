@@ -55,12 +55,12 @@ class ListUsers extends Component
 
         $this->sortField = $key;
 
-        if ($this->params['list']['headers'][$key]['direction'] == 'asc') {
-            $this->params['list']['headers'][$key]['direction'] = 'desc';
+        if (config('users.list.headers')[$key]['direction'] == 'asc') {
+            config('users.list.headers')[$key]['direction'] = 'desc';
         } else {
-            $this->params['list']['headers'][$key]['direction'] = 'asc';
+            config('users.list.headers')[$key]['direction'] = 'asc';
         }
 
-        $this->sortDirection = $this->params['list']['headers'][$key]['direction'];
+        $this->sortDirection = config('users.list.headers')[$key]['direction'];
     }
 }
