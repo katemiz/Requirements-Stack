@@ -10,6 +10,11 @@ class Moc extends Model
     use HasFactory;
     protected $fillable = ['user_id','updated_uid','project_id', 'code','name','description'];
 
+    public function getProjectNameAttribute()
+    {
+        return Project::find($this->project_id)->code;
+    }
+
     public function getCreatedByNameAttribute()
     {
         $usr = User::find($this->user_id);

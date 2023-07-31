@@ -83,6 +83,8 @@
 
                         <a href="/all-requirements" class="navbar-item">All Requirements</a>
                         <a href="/pocs-vs-requirements" class="navbar-item">POCs vs Requirements</a>
+                        <a href="/dgates-vs-pocs" class="navbar-item">Decision Gates vs POCs</a>
+
 
                     </div>
                 </div>

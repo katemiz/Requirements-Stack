@@ -158,6 +158,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/all-requirements', [ExportController::class, 'allreqs']);
     Route::get('/pocs-vs-requirements', [ExportController::class, 'pocsvsreqs']);
+    Route::get('/dgates-vs-pocs', [ExportController::class, 'dgatesvspocs']);
+
 
 
 

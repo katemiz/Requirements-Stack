@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 
 use App\Models\Requirement;
 use App\Models\Verification;
+use App\Models\Meeting;
 use App\Models\Poc;
+
 
 
 
@@ -47,6 +49,32 @@ class ExportController extends Controller
     }
 
 
+    public function dgatesvspocs() {
+
+        $allvers = Verification::all();
+        $pocs = Poc::all();
+        $dgates = Meeting::all();
+
+        // foreach (Poc::all()->toArray() as $poc) {
+        //     $pocs[$poc['id']][] = $poc;
+        // }
+
+        //dd($pocs);
+
+        foreach ($allvers as $verification) {
+            $matrix[$verification->meeting_id][] = 1;//$pocs[$verification->poc_id]['code'];
+        }
+
+        // foreach ($matrix as $key => $value) {
+        //     $matrix[$key] = array_unique($value);
+        // }
+
+        return view('export.dgates-vs-pocs', [
+            'matrix' => $matrix,
+            // 'pocs' => $pocs,
+            'dgates' => $dgates
+        ]);
+    }
 
     
 

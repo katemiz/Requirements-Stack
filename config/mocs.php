@@ -27,9 +27,9 @@ return [
                 "direction" => "asc"
             ],
 
-            "company_name"=> [
-                "title" => "Company",
-                "sortable" => true,
+            "project_name"=> [
+                "title" => "Project",
+                "sortable" => false,
                 "align" => "left",
                 "direction" => "asc"
             ],
