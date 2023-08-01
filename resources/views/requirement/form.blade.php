@@ -12,15 +12,15 @@
               <div class="select">
                 <select name="{{ config('requirements.form.project.name') }}">
                   <option value="notselected">Select</option>
-        
+
                   @foreach ($projects as $project)
                     <option value="{{ $project->id }}" @selected( count($projects) == 1 || $project->id == $value)>{{ $project->code }}</option>
                   @endforeach
-        
+
                 </select>
               </div>
             </div>
-        
+
             @error(config('requirements.form.project.name'))
             <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
             @enderror
@@ -30,32 +30,32 @@
 
         <div class="field">
           <label class="label">{{ config('requirements.form.endproduct.label') }}</label>
-      
+
           <div class="control">
-      
+
               @if ( count($endproducts) > 0)
-                  
+
                 @foreach ($endproducts as $endproduct)
-    
+
                     <label class="checkbox is-block">
-                        <input 
-                          type="checkbox" 
-                          name="{{ config('requirements.form.endproduct.name') }}{{$endproduct->id}}" 
+                        <input
+                          type="checkbox"
+                          name="{{ config('requirements.form.endproduct.name') }}{{$endproduct->id}}"
                           value="{{$endproduct->id}}"
                           @checked(in_array($endproduct->id,$current_ep_id_arr))>
                           {{ $endproduct->code }}
                     </label>
-    
+
                 @endforeach
-      
-              @else  
+
+              @else
                 <p>{{ config('requirements.form.endproduct.nooptions')}}</p>
               @endif
-      
+
           </div>
         </div>
 
-        @else 
+        @else
         <p>{{ config('requirements.form.endproduct.nooptions') }}</p>
         @endif
 
@@ -63,6 +63,7 @@
         <x-form-input :params="config('requirements.form.cross_ref_no')" value="{{ $requirement ? $requirement->cross_ref_no : '' }}"/>
         <x-form-editor :params="config('requirements.form.text')" value="{{ $requirement ? $requirement->text : '' }}" />
         <x-form-editor :params="config('requirements.form.remarks')" value="{{ $requirement ? $requirement->remarks : '' }}"/>
+
 
         <div class="buttons is-right">
             <button class="button is-dark">{{ config('requirements')[$action]['submitText'] }}</button>

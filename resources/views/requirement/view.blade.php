@@ -192,8 +192,12 @@
         @can(config('requirements.perms.w'))
         <footer class="card-footer">
 
+            <a href="/add-attach/requirement/{{ $requirement->id}}" class="card-footer-item">
+                <span class="icon"><x-carbon-document-attachment /></span>
+            </a>
+
             <a href="/requirements/form/{{ $requirement->id}}" class="card-footer-item">
-                <span class="icon"><x-carbon-pen/></span>
+                <span class="icon"><x-carbon-edit/></span>
             </a>
 
             <a href="javascript:deleteConfirm('{{ $requirement->id}}',0)" class="card-footer-item">
@@ -209,10 +213,10 @@
             @if ($previous)
             <a href="/requirements/view/{{ $previous}}" class="card-footer-item">
               <span class="icon"><x-carbon-chevron-left /></span>
-            </a>                
+            </a>
             @endif
           </div>
-        
+
           <!-- Right side -->
           <div class="level-right">
             @if ($next)

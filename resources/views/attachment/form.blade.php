@@ -1,10 +1,11 @@
-<x-layout>
 
-    <section class="bg-white">
+    <section class="section container">
 
-    {{$title}}
+        <script src="{{ asset('/js/attachment.js') }}"></script>
 
-    falan filan
+
+        <x-title :params="$headers" />
+
     <div class="mb-3">
         <label
           for="formFile"
@@ -17,5 +18,69 @@
           id="formFile" />
       </div>
 
+
+
+      <input type="hidden" id="filesToUpload" value="0" autocomplete="off">
+      <input type="hidden" id="filesToDelete" name="filesToDelete" value="" autocomplete="off">
+      <input type="hidden" id="filesToExclude" name="filesToExclude" value="0" autocomplete="off">
+
+
+    <div class="columns">
+
+        <div class="column is-2">
+            <div class="file is-boxed">
+                <label class="file-label">
+                <input
+                    class="file-input"
+                    type="file"
+                    name="dosyalar[]"
+                    id="fupload"
+                    multiple
+                    onchange="getNames()" />
+                <span class="file-cta">
+                    <span class="file-icon">
+                        <x-carbon-document-multiple-02 />
+                    </span>
+                    <span class="file-label">Files</span>
+                </span>
+                </label>
+            </div>
+
+            <div id="upButton" class="file is-boxed mt-2 is-hidden">
+                <label class="file-label">
+                <input
+                    class="file-input"
+                    type="file"
+                    name="dosyalar[]"
+                    id="fupload"
+                    multiple
+                    onchange="getNames()" />
+                <span class="file-cta">
+                    <span class="file-icon">
+                        <x-carbon-upload />
+                    </span>
+                    <span class="file-label">Upload</span>
+                </span>
+                </label>
+            </div>
+        </div>
+
+        <div class="column">
+            <table class="table is-striped is-fullwidth" >
+
+                <caption id="non_selected">No selected files yet!</caption>
+                <tbody id="filesList">
+                </tbody>
+
+
+            </table>
+        </div>
+
+    </div>
+
+
+
+
+
+
     </section>
-</x-layout>
