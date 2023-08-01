@@ -55,31 +55,23 @@ class ExportController extends Controller
         $pocs = Poc::all();
         $dgates = Meeting::all();
 
-        // foreach (Poc::all()->toArray() as $poc) {
-        //     $pocs[$poc['id']][] = $poc;
-        // }
-
-        //dd($pocs);
-
-        foreach ($allvers as $verification) {
-            $matrix[$verification->meeting_id][] = 1;//$pocs[$verification->poc_id]['code'];
+        foreach ($pocs as $poc) {
+            $pocsDizin[$poc['id']] = ['code'=>$poc->code,'name'=>$poc->name];
         }
 
-        // foreach ($matrix as $key => $value) {
-        //     $matrix[$key] = array_unique($value);
-        // }
+        $matrix = [];
+
+        foreach ($allvers as $verification) {
+
+            if ( !isset($matrix[$verification->meeting_id]) || !in_array($verification->poc_id,$matrix[$verification->meeting_id]) ) {
+                $matrix[$verification->meeting_id][] = $verification->poc_id;
+            }
+        }
 
         return view('export.dgates-vs-pocs', [
             'matrix' => $matrix,
-            // 'pocs' => $pocs,
+            'pocs' => $pocsDizin,
             'dgates' => $dgates
         ]);
     }
-
-    
-
-
-
-
-
 }

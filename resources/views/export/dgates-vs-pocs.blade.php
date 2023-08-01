@@ -32,12 +32,6 @@
                 </tr>
             </thead>
 
-
-            {{-- <pre>
-                @php
-                    print_r($matrix)
-                @endphp
-            </pre> --}}
             <tbody>
                 @foreach ($dgates as $dgate)
                 <tr>
@@ -47,27 +41,19 @@
                     </td>
                     <td>
 
-                            @if (isset($matrix[$dgate->id]))
-                                
-                            <h2 class="subtitle">{{ count($matrix[$dgate->id]) }} POCS for this Decison Gate </h2>
+                        @if (isset($matrix[$dgate->id]))
 
-                            @foreach ($matrix[$dgate->id] as $rrr)
-                            {{-- <p>AAA</p>
+                            <h2 class="subtitle has-text-info is-size-6">{{ count($matrix[$dgate->id]) }} POCS for this Decison Gate </h2>
 
-                            @php
-                                print_r($rrr)
-                            @endphp --}}
-
-                                {{ $rrr }}
-
-                                {{-- <a href="/requirements/view/{{$rrr['id']}}">{{ $rrr['no'] }}</a> --}}
-
+                            @foreach ($matrix[$dgate->id] as $idPoc)
+                                <p>
+                                <strong>{{ $pocs[$idPoc]['code'] }}</strong> - {{ $pocs[$idPoc]['name'] }}
+                                </p>
                             @endforeach
 
-                            @else
-                            -
-
-                            @endif
+                        @else
+                        -
+                        @endif
 
 
                     </td>
