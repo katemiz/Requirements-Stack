@@ -6,17 +6,7 @@
 
         <x-title :params="$headers" />
 
-    <div class="mb-3">
-        <label
-          for="formFile"
-          class="mb-2 inline-block text-neutral-700"
-          >Default file input example</label
-        >
-        <input
-          class="relative m-0 block w-full min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-clip-padding px-3 py-[0.32rem] text-base font-normal text-neutral-700 transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:py-[0.32rem] file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] hover:file:bg-neutral-200 focus:border-primary focus:text-neutral-700 focus:shadow-te-primary focus:outline-none"
-          type="file"
-          id="formFile" />
-      </div>
+
 
 
 
@@ -46,23 +36,7 @@
                 </label>
             </div>
 
-            <div id="upButton" class="file is-boxed mt-2 is-hidden">
-                <label class="file-label">
-                <input
-                    class="file-input"
-                    type="file"
-                    name="dosyalar[]"
-                    id="fupload"
-                    multiple
-                    onchange="getNames()" />
-                <span class="file-cta">
-                    <span class="file-icon">
-                        <x-carbon-upload />
-                    </span>
-                    <span class="file-label">Upload</span>
-                </span>
-                </label>
-            </div>
+
         </div>
 
         <div class="column">
@@ -77,6 +51,15 @@
         </div>
 
     </div>
+
+    <div id="upButton" class="mt-2 is-hidden">
+
+        <button class="button has-background-black has-text-white is-fullwidth">
+            <span class="icon"><x-carbon-upload /></span>
+            <span>Upload</span>
+        </button>
+    </div>
+
 
 
 
