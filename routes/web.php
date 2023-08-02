@@ -17,7 +17,7 @@ use App\Http\Livewire\ListUsers;
 use App\Http\Livewire\ListRoles;
 use App\Http\Livewire\ListPermissions;
 
-
+use App\Http\Controllers\AttachmentController;
 use App\Http\Controllers\GateController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\MocController;
@@ -88,6 +88,8 @@ Route::middleware('auth')->group(function () {
 
     // Attachment
     Route::get('/add-attach/{item}/{itemId}',  Attachment::class);
+    Route::post('/upload-attach/{itemName}/{itemId}',  [AttachmentController::class, 'upload']);
+
 
 
     // Current Project

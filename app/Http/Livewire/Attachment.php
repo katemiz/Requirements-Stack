@@ -3,9 +3,11 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class Attachment extends Component
 {
+    use WithFileUploads;
 
     public $item;
     public $itemId;

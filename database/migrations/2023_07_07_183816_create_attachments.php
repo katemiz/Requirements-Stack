@@ -17,12 +17,12 @@ return new class extends Migration
         Schema::create('attachments', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class);
-            // $table->foreignIdFor(Asset::class);
-            $table->string('mimetype');
-            $table->string('filename');
-            $table->string('stored_as');
-            $table->string('thumbnail')->nullable();
-            $table->integer('size');
+            $table->string('model_name');
+            $table->integer('model_item_id');
+            $table->string('original_file_name');
+            $table->string('mime_type');
+            $table->string('file_size');
+            $table->string('stored_file_as');
             $table->timestamps();
         });
     }
