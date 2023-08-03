@@ -82,7 +82,6 @@ class RequirementController extends Controller
             $id = $requirement->id;
         }
 
-
         // END PRODUCTS
         $endproducts = $this->getEndProducts($id);
 
@@ -110,11 +109,8 @@ class RequirementController extends Controller
         $previous = Requirement::where('id','<',$req->id)->orderBy('id','desc')->get()->take(1)->toArray();
         $next = Requirement::where('id','>',$req->id)->limit(1)->get();
 
-        //dd($req->id);
-        //dd($previous['0']['id']);
         $n = false;
         $p = false;
-
 
         if (count($previous) > 0 ) {
             $p = $previous['0']['id'];
@@ -244,10 +240,10 @@ class RequirementController extends Controller
 
 
 
-    public function excelExport() 
+    public function excelExport()
     {
         return Excel::download(new RequirementsExport, 'requirements.xlsx');
-    } 
+    }
 
 
 }

@@ -87,6 +87,14 @@
       })
     }
 
+    function toggleModal() {
+
+
+        console.log(document.getElementById('amodal').classList)
+        document.getElementById('amodal').classList.add('is-active');
+
+    }
+
 
 
 
@@ -192,7 +200,9 @@
         @can(config('requirements.perms.w'))
         <footer class="card-footer">
 
-            <a href="/add-attach/requirement/{{ $requirement->id}}" class="card-footer-item">
+            <a href="javascript:toggleModal()" class="card-footer-item">
+
+            {{-- <a href="/add-attach/requirement/{{ $requirement->id}}" class="card-footer-item"> --}}
                 <span class="icon"><x-carbon-document-attachment /></span>
             </a>
 
@@ -237,6 +247,10 @@
     </div>
 
     <x-date-by :item="$requirement" />
+
+
+
+    <x-attach-modal />
 
 
   </section>
