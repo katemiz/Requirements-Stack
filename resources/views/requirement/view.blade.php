@@ -174,17 +174,16 @@
                     @foreach ($requirement->verifications as $verification)
 
                       <tr>
-                          <td>{{ $verification->dgate->code }}</td>
-                          <td>{{ $verification->moc->code }}</td>
-                          <td>{{ $verification->poc->code }}</td>
-                          <td>{{ $verification->witness->code }}</td>
-                          @can(config('requirements.perms.w'))
-                          <td>
-                            <a href="/requirements/verform/{{ $requirement->id}}/{{ $verification->id}}">Edit</a> |
-                            <a href="javascript:deleteConfirm('{{$requirement->id}}','{{$verification->id}}')">Delete</a>
-                          </td>
-                          @endcan
-
+                        <td>{{ $verification->dgate->code }}</td>
+                        <td>{{ $verification->moc->code }}</td>
+                        <td>{{ $verification->poc->code }}</td>
+                        <td>{{ $verification->witness->code }}</td>
+                        @can(config('requirements.perms.w'))
+                        <td>
+                        <a href="/requirements/verform/{{ $requirement->id}}/{{ $verification->id}}">Edit</a> |
+                        <a href="javascript:deleteConfirm('{{$requirement->id}}','{{$verification->id}}')">Delete</a>
+                        </td>
+                        @endcan
                       </tr>
 
                     @endforeach

@@ -52,6 +52,12 @@ class Endproduct extends Model
         return $usr->name.' '.$usr->lastname;
     }
 
+    // public function getNameAttribute()
+    // {
+    //     $usr = User::find($this->updated_uid);
+    //     return $usr->name.' '.$usr->lastname;
+    // }
+
 
 
 

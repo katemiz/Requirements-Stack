@@ -63,7 +63,7 @@ return [
             "w" => "/requirements/form/",
             "x" => "/requirements/delete/"
         ],
-        
+
         "noitem" => "No requirements found in database yet!",
         "delete_confirm" => [
             "question" => "Do you want to delete this requirement from database?",
@@ -106,7 +106,6 @@ return [
             "placeholder" => "Enter project title/description",
             "value" => "",
             "options" => [
-
                 "GR" => 'General Requirement',
                 "TR" => 'Technical Requirement'
             ]

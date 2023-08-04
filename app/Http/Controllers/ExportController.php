@@ -10,7 +10,8 @@ use App\Models\Meeting;
 use App\Models\Poc;
 
 
-
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\CMExport;
 
 
 class ExportController extends Controller
@@ -74,4 +75,31 @@ class ExportController extends Controller
             'dgates' => $dgates
         ]);
     }
+
+
+
+
+    public function compliancematrix() {
+
+        $all = Requirement::all();
+        return view('export.compliance-matrix', [
+            'requirements' => $all
+        ]);
+    }
+
+
+
+    public function excelCMExport()
+    {
+        return Excel::download(new CMExport, 'CM.xlsx');
+    }
+
+
+
+
+
+
+
+
+
 }

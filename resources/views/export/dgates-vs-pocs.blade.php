@@ -9,8 +9,6 @@
 
     <link rel="stylesheet" href="{{ asset('/css/sweetalert2_min.css') }}">
     <script src="{{ asset('/js/sweetalert2.min.js') }}"></script>
-
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
 
 </head>
@@ -40,11 +38,9 @@
                         {{ $dgate->name }}
                     </td>
                     <td>
-
                         @if (isset($matrix[$dgate->id]))
 
                             <h2 class="subtitle has-text-info is-size-6">{{ count($matrix[$dgate->id]) }} POCS for this Decison Gate </h2>
-
                             @foreach ($matrix[$dgate->id] as $idPoc)
                                 <p>
                                 <strong>{{ $pocs[$idPoc]['code'] }}</strong> - {{ $pocs[$idPoc]['name'] }}
@@ -54,7 +50,6 @@
                         @else
                         -
                         @endif
-
 
                     </td>
                 </tr>
