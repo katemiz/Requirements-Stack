@@ -1,12 +1,12 @@
 
-<div class="modal" id="amodal">
+{{-- 
+<div class="has-background-info-light p-3">
 
     <script src="{{ asset('/js/attachment.js') }}"></script>
 
-    <div class="modal-background"></div>
-    <div class="modal-card  has-background-info m-3">
 
-    {{-- <x-title :params="$headers" /> --}}
+
+    <x-title :params="$headers" />
 
     <form action="/upload-attach/requirement/12" method="POST" enctype="multipart/form-data">
         @csrf
@@ -64,11 +64,48 @@
 
         @error('dosyalar') <span class="error">{{ $message }}</span> @enderror
 
-
     </form>
 
+</div> --}}
+
+{{-- @php
+    print_r($requirement->attachments)
+@endphp --}}
+
+
+
+<div class="column">
+<div class="columns">
+
+    <div class="column is-10">
+    <strong>Attachments</strong>
+
+
+    @if (count($requirement->attachments) > 0)
+
+    <table class="table is-fullwidth">
+
+        @foreach ($requirement->attachments as $attachment)
+
+        <tr>
+            <td><a href="/">{{ $attachment->original_file_name }}</a></td>
+            <td>{{ $attachment->file_size }}</td>
+            <td><a href="/"><span class="icon has-text-danger"><x-carbon-trash-can /></span></a></td>
+        </tr>
+        @endforeach
+
+    </table>
+        
+    @endif
+
+    
+
+
     </div>
+
+    <div class="column has-text-right is-2">
+    <a href="/"><span class="icon has-text-link"><x-carbon-document-attachment /></span></a>
+    </div>
+
 </div>
-
-
 </div>

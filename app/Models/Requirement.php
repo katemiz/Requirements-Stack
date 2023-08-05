@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-
+use App\Models\Attachment;
 use App\Models\Endproduct;
 use App\Models\Verification;
 use App\Models\Meeting;
@@ -35,6 +35,12 @@ class Requirement extends Model
     public function verifications(): HasMany
     {
         return $this->hasMany(Verification::class);
+    }
+
+
+    public function attachments(): HasMany
+    {
+        return $this->hasMany(Attachment::class,'model_item_id')->where(['model_name'=>'requirement']);
     }
 
 

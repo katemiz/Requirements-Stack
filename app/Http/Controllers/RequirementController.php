@@ -120,6 +120,8 @@ class RequirementController extends Controller
             $n = $next['0']['id'];
         }
 
+        // dd($req->attachments);
+
         return view('requirement.view', [
             'action' => $this->action,
             'requirement' => $req,

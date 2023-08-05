@@ -1,16 +1,12 @@
 <x-layout>
   <script>
 
-
     function deleteConfirm (rid,id) {
 
       rid = parseInt(rid)
       id = parseInt(id)
 
-
       let title,text,redirect
-
-      console.log(rid,typeof(id))
 
       // Requirement delete
       if (rid && id < 1) {
@@ -39,8 +35,6 @@
       confirmDialog(title,text,redirect)
     }
 
-
-
     function confirmDialog(title,text,redirect) {
 
       Swal.fire({
@@ -63,40 +57,10 @@
       })
     }
 
-
-
-    function SILconfirmDelete(id) {
-
-      Swal.fire({
-      title: {{ Js::from(config('requirements.list.delete_confirm.question')) }},
-      text: {{ Js::from(config('requirements.list.delete_confirm.last_warning')) }},
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Delete',
-      cancelButtonText: 'Ooops ...',
-
-      }).then((result) => {
-          if (result.isConfirmed) {
-
-              window.location.href = '/requirements/delete/'+id
-          } else {
-              return false
-          }
-      })
-    }
-
     function toggleModal() {
-
-
-        console.log(document.getElementById('amodal').classList)
-        document.getElementById('amodal').classList.add('is-active');
-
+      console.log(document.getElementById('amodal').classList)
+      document.getElementById('amodal').classList.add('is-active');
     }
-
-
-
 
   </script>
 
@@ -104,153 +68,148 @@
 
     <x-title :params="config('requirements')[$action]" />
 
-    <div class="card">
+    <div class="box">
+    <div class="column">
+    <div class="columns is-vcentered">
 
-        <div class="card-content">
-          <div class="media">
-            <div class="media-left">
-              <figure class="image is-48x48">
-                <a href="/requirements"><x-carbon-menu /></a>
-              </figure>
-            </div>
-            <div class="media-content">
-              <p class="title is-4">
-                <span>{{ $requirement->rtype }}-{{ $requirement->id }}</span>
-                {{-- <span class="has-text-weight-light"> {{ $requirement->id }}</span> --}}
-              </p>
-              <p class="subtitle is-6">@ {{ $requirement->created_at }}</p>
-            </div>
+      <div class="column is-8">
+        <p class="title has-text-weight-light is-size-2">{{ $requirement->rtype }}-{{ $requirement->id }}</p>
+        <p class="subtitle has-text-weight-light is-size-6">Source Requirement No  {{ $requirement['cross_ref_no'] }}</p>
+      </div>
 
-            <div class="media-content">
+      <div class="column has-text-right is-4">
+        <a href="/"><span class="icon has-text-link"><x-carbon-list /></span></a>
+        <a href="/"><span class="icon has-text-link"><x-carbon-edit /></span></a>
+        <a href="/"><span class="icon has-text-danger"><x-carbon-trash-can /></span></a>
+      </div>
 
-              <h4 class="subtitle has-text-weight-normal my-0">Project</h4>
-              <span class="tag is-black">{{ $requirement->project->code }}</span>
-            </div>
+    </div>
+    </div>
 
-            <div class="media-content">
+    <div class="column">
+    <div class="columns is-vcentered">
 
-              <h4 class="subtitle has-text-weight-normal my-0">End Products</h4>
-              @foreach ($requirement->endproducts as $ep)
-              <span class="tag is-info">{{ $ep->code}}</span>
-              @endforeach
-            </div>
-          </div>
+      <div class="column is-half">
+        <p class="has-text-weight-light is-size-6">Project</p>
+        <span class="tag is-black">PVR</span>
+      </div>
 
-          <div class="content">
-            <p>{!! $requirement['text'] !!}</p>
+      <div class="column is-half has-text-right">
+        <p class="has-text-weight-light is-size-6">End Products</p>
 
+        @foreach ($requirement->endproducts as $ep)
+        <span class="tag is-success">{{ $ep->code}}</span>
+        @endforeach
 
-            @if ( !empty($requirement['cross_ref_no']) )
-            <h4 class="subtitle has-text-weight-normal mt-3">Source Requirement No</h4>
-            <p>{{ $requirement['cross_ref_no'] }}</p>
-            @endif
+      </div>
 
-            @if ( !empty($requirement['remarks']) )
-            <h4 class="subtitle has-text-weight-normal mt-3">Remarks</h4>
-            <p>{!! $requirement['remarks'] !!}</p>
-            @endif
+    </div>
+    </div>
 
-            @can(config('requirements.perms.w'))
-            <a href="/requirements/verform/{{ $requirement->id}}" class="button is-link is-small" href="/verform/1"> Add Verification</a>
-            @endcan
+    {{-- DESCRIPTION --}}
+    <div class="column">
+      <p>{!! $requirement['text'] !!}</p>
 
-            @if ( count($requirement->verifications) > 0 )
-                <h4 class="subtitle has-text-weight-normal mt-3">Verifications</h4>
+      @if ( !empty($requirement['remarks']) )
+      <p class="has-text-weight-light has-text-grey mb-4 is-size-6">Notes and Remarks</p>
+      <p>{!! $requirement['remarks'] !!}</p>
+      @endif
+    </div>
 
-                <table class="table is-fullwidth">
-                <caption>Requirement Verification Table</caption>
-
-                <tbody>
-                    <tr>
-                        <th>Decision Gate</th>
-                        <th>MOC/Verification Method</th>
-                        <th>Proof of Compliance</th>
-                        <th>Witness</th>
-                        @can(config('requirements.perms.w'))
-                        <th>Actions</th>
-                        @endcan
-                    </tr>
-
-                    @foreach ($requirement->verifications as $verification)
-
-                      <tr>
-                        <td>{{ $verification->dgate->code }}</td>
-                        <td>{{ $verification->moc->code }}</td>
-                        <td>{{ $verification->poc->code }}</td>
-                        <td>{{ $verification->witness->code }}</td>
-                        @can(config('requirements.perms.w'))
-                        <td>
-                        <a href="/requirements/verform/{{ $requirement->id}}/{{ $verification->id}}">Edit</a> |
-                        <a href="javascript:deleteConfirm('{{$requirement->id}}','{{$verification->id}}')">Delete</a>
-                        </td>
-                        @endcan
-                      </tr>
-
-                    @endforeach
-
-                </tbody>
-                </table>
-
-            @endif
-
-          </div>
-        </div>
-
-        @can(config('requirements.perms.w'))
-        <footer class="card-footer">
-
-            <a href="javascript:toggleModal()" class="card-footer-item">
-
-            {{-- <a href="/add-attach/requirement/{{ $requirement->id}}" class="card-footer-item"> --}}
-                <span class="icon"><x-carbon-document-attachment /></span>
-            </a>
-
-            <a href="/requirements/form/{{ $requirement->id}}" class="card-footer-item">
-                <span class="icon"><x-carbon-edit/></span>
-            </a>
-
-            <a href="javascript:deleteConfirm('{{ $requirement->id}}',0)" class="card-footer-item">
-                <span class="icon has-text-danger-dark"><x-carbon-trash-can /></span>
-            </a>
-        </footer>
-        @endcan
+    {{-- ATTACHMENTS --}}
+    {{-- <x-attach :requirement="$requirement"/> --}}
 
 
-        <nav class="level m-2">
-          <!-- Left side -->
-          <div class="level-left">
-            @if ($previous)
-            <a href="/requirements/view/{{ $previous}}" class="card-footer-item">
-              <span class="icon"><x-carbon-chevron-left /></span>
-            </a>
-            @endif
-          </div>
+    {{-- VERIFICATIONS --}}
+    <div class="column">
+    <div class="columns is-vcentered">
+  
+      <div class="column is-10">
+        <strong>Verifications</strong>
+      </div>
 
-          <!-- Right side -->
-          <div class="level-right">
-            @if ($next)
-            <a href="/requirements/view/{{ $next}}" class="card-footer-item">
-              <span class="icon"><x-carbon-chevron-right /></span>
-            </a>
-            @endif
-          </div>
-        </nav>
+      <div class="column has-text-right is-2">
+        <a href="/"><span class="icon has-text-link"><x-carbon-add-alt /></span></a>
+      </div>
+  
+    </div>
+    </div>
 
+    <div class="column">
+      @if ( count($requirement->verifications) > 0 )
 
+        <table class="table is-fullwidth">
+        {{-- <caption>Requirement Verification Table</caption> --}}
 
+        <tbody>
+            <tr>
+                <th>Decision Gate</th>
+                <th>MOC/Verification Method</th>
+                <th>Proof of Compliance</th>
+                <th>Witness</th>
+                @can(config('requirements.perms.w'))
+                <th>Actions</th>
+                @endcan
+            </tr>
 
+            @foreach ($requirement->verifications as $verification)
 
+              <tr>
+                <td>{{ $verification->dgate->code }}</td>
+                <td>{{ $verification->moc->code }}</td>
+                <td>{{ $verification->poc->code }}</td>
+                <td>{{ $verification->witness->code }}</td>
+                @can(config('requirements.perms.w'))
+                <td>
+                  <a href="/requirements/verform/{{ $requirement->id}}/{{ $verification->id}}">
+                    <span class="icon has-text-link"><x-carbon-pen /></span>
+                  </a>
+                  <a href="javascript:deleteConfirm('{{$requirement->id}}','{{$verification->id}}')">
+                    <span class="icon has-text-danger"><x-carbon-trash-can /></span>
+                  </a>
+                </td>
+                @endcan
+              </tr>
 
+            @endforeach
 
+        </tbody>
+        </table>
+
+      @else
+        No verifications exist
+      @endif
+    </div>
 
     </div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <x-date-by :item="$requirement" />
-
-
-
-    <x-attach-modal />
-
+    {{-- <x-attach-modal /> --}}
 
   </section>
 </x-layout>

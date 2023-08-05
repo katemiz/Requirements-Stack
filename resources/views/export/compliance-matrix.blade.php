@@ -1,19 +1,7 @@
 <x-layout>
 <section class="section container">
 
-
-    <script src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
-
-    <script>
-        function ExportSkillsToExcel(type, fn, dl)
-{
-   var elt = document.getElementById('deneme');
-   var wb = XLSX.utils.table_to_book(elt, { sheet: "skills" });
-   return dl ?
-     XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }):
-     XLSX.writeFile(wb, fn || ('Skills.' + (type || 'xlsx')));
-}
-    </script>
+    <script src="{{ asset('js/table2excel.js') }}"></script>
 
     <header class="my-6">
         <h1 class="title has-text-weight-light is-size-1">Compliance Matrix</h1>
@@ -22,21 +10,20 @@
 
     <div class="column has-text-right">
 
-        <p onclick="ExportSkillsToExcel()">Export</p>
+        <a href="javascript:tableToExcel()">
 
-        <a href="/compliance-matrix-export">
-        <span class="icon-text">
-
-            <span class="icon">
-                <x-carbon-document-export />
+            <span class="icon-text">
+    
+                <span class="icon">
+                    <x-carbon-document-export />
+                </span>
+                <span>Excel Export</span>
             </span>
-            <span>Excel Export</span>
-        </span>
         </a>
 
     </div>
 
-    <table class="table is-fullwidth" id="deneme">
+    <table class="table is-fullwidth" id="CMMAtrix">
 
         <caption>Compliances Matrix</caption>
 
@@ -80,6 +67,18 @@
 
         </tbody>
     </table>
+
+
+
+    <script>
+        var table2excel = new Table2Excel();
+
+        function tableToExcel() {
+            table2excel.export(document.querySelectorAll('table'));
+        }
+    </script>
+
+
 
 </section>
 </x-layout>
