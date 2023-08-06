@@ -52,18 +52,13 @@ class AttachmentController extends Controller
 
     public function attachview()
     {
-
         $d = Attachment::find(request('id'));
-
-
 
         if (!$this->checkPermission()) {
             abort(404, 'No permission!');
         }
 
         $dosya = Storage::path($d->stored_file_as);
-
-        // dd($dosya);
 
         if (file_exists($dosya)) {
             $headers = [
@@ -80,6 +75,26 @@ class AttachmentController extends Controller
             abort(404, 'File not found!');
         }
     }
+
+    public function attachdelete()
+    {
+        $this->checkPermission();
+
+        switch (request('model')) {
+            case 'requirement':
+                $redirect = '/requirements/view/'.request('modelId');
+                break;
+            
+        }
+
+
+        Attachment::find(request('id'))->delete();
+
+        return redirect($redirect);
+    }
+    
+
+
 
     public function checkPermission()
     {

@@ -16,7 +16,7 @@ return [
         'app_login_logo' => 'app_login_logo.svg',
         'app_header_logo' => 'app_header_logo.svg',
         'app_footer_logo' => 'app_footer_logo.svg',
-        'version' => '23.01',
+        'version' => '23.02',
         'copyright' => '© 2023 All Rights Reserved',
 
         'favicon' => '/images/favicon.svg',

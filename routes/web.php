@@ -91,6 +91,7 @@ Route::middleware('auth')->group(function () {
     // Attachment
     Route::get('/add-attach/{item}/{itemId}',  Attachment::class);
     Route::get('/attach-view/{id}',  [AttachmentController::class, 'attachview']);
+    Route::get('/attach-delete/{model}/{modelId}/{id}',  [AttachmentController::class, 'attachdelete']);
     Route::post('/upload-attach/{itemName}/{itemId}',  [AttachmentController::class, 'upload']);
 
 
@@ -157,9 +158,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/requirements/export', [RequirementController::class, 'excelExport']);
     Route::post('/verifications/store/{rid}/{id?}', [RequirementController::class, 'verstore']);
     Route::get('/verifications/delete/{rid}/{id}', [RequirementController::class, 'delver']);
-
-    //Route::get('/requirements/delete/{id}', [RequirementController::class, 'delete']);
-
+    Route::get('/requirements/delete/{id}', [RequirementController::class, 'delete']);
 
     // Excel Import-Export
     Route::get('file-import-export', [UserController::class, 'fileImportExport']);

@@ -15,16 +15,11 @@ use App\Models\Requirement;
 use App\Models\Verification;
 use App\Models\Witness;
 
-
 use App\Rules\EditorRule;
 use App\Rules\SelectRule;
 
-
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\RequirementsExport;
-
-
-
 
 class RequirementController extends Controller
 {
@@ -40,11 +35,7 @@ class RequirementController extends Controller
                 'warning' => config('warnings.110')
             ]);
         }
-
     }
-
-
-
 
 
     public function getEndProducts($idReq) {
@@ -52,7 +43,6 @@ class RequirementController extends Controller
         $req = Requirement::find($idReq);
         return Project::find($req->project_id)->endproducts()->get();
     }
-
 
 
     public function store(Request $request)
@@ -120,8 +110,6 @@ class RequirementController extends Controller
             $n = $next['0']['id'];
         }
 
-        // dd($req->attachments);
-
         return view('requirement.view', [
             'action' => $this->action,
             'requirement' => $req,
@@ -133,6 +121,14 @@ class RequirementController extends Controller
 
     public function delete($id)
     {
+        // Delete first verifications for this requirement
+        $linked_vers = Verification::where('requirement_id',$id)->get();
+
+        foreach ($linked_vers as $ver) {
+            Verification::find($ver->id)->delete();
+        }
+
+        Requirement::find($id)->endproducts()->detach();    // Delete linked End Products
         Requirement::find($id)->delete();
         return redirect('/requirements');
     }
@@ -211,10 +207,7 @@ class RequirementController extends Controller
         $props['moc_id'] = $validated['moc'];
         $props['poc_id'] = $validated['poc'];
         $props['witness_id'] = $validated['witness'];
-
         $props['remarks'] = $request->input('remarks');
-
-        // dd($props);
 
         if ( isset($request->id) && !empty($request->id)) {
             // update

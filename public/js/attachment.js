@@ -1,40 +1,32 @@
 let fnamesToUpload = []
 
 
+function deleteAttachConfirm(model,modelId,id) {
 
-function deleteAttachmentConfirm (rid,id) {
+    let redirect = '/attach-delete/'+model+'/'+modelId+'/'+id
 
-    rid = parseInt(rid)
-    id = parseInt(id)
+    Swal.fire({
+        title: "Do you want to delete this attachment/file from database?",
+        text: "When done, it is not possible to revert back.",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Delete',
+        cancelButtonText: 'Ooops ...',
 
-    let title,text,redirect
+    }).then((result) => {
 
-    // Requirement delete
-    if (rid && id < 1) {
+        if (result.isConfirmed) {
+            window.location.href = redirect
+        } else {
+            return false
+        }
+    })
+}
 
-      title = {{ Js::from(config('requirements.list.delete_confirm.question')) }}
-      text = {{ Js::from(config('requirements.list.delete_confirm.last_warning')) }},
 
-      redirect = '/requirements/delete/'+rid
 
-      console.log("reg")
-
-    }
-
-    // Verification delete
-    if (rid && id > 0) {
-
-      title = {{ Js::from(config('verifications.list.delete_confirm.question')) }}
-      text = {{ Js::from(config('verifications.list.delete_confirm.last_warning')) }},
-
-      redirect = '/verifications/delete/'+rid+'/'+id
-
-      console.log("ver")
-
-    }
-
-    confirmDialog(title,text,redirect)
-  }
 
 
 
