@@ -117,7 +117,7 @@
     </div>
 
     {{-- ATTACHMENTS --}}
-    {{-- <x-attach :requirement="$requirement"/> --}}
+    <x-attach :requirement="$requirement"/>
 
 
     {{-- VERIFICATIONS --}}

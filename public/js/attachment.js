@@ -1,59 +1,54 @@
+let fnamesToUpload = []
 
 
-function removeFile(prefix,id) {
 
-    if (filesToDelete[prefix].includes(id)) {
-        filesToDelete[prefix].splice(filesToDelete[prefix].indexOf(id),1)
-    } else {
-        filesToDelete[prefix].push(id)
+function deleteAttachmentConfirm (rid,id) {
+
+    rid = parseInt(rid)
+    id = parseInt(id)
+
+    let title,text,redirect
+
+    // Requirement delete
+    if (rid && id < 1) {
+
+      title = {{ Js::from(config('requirements.list.delete_confirm.question')) }}
+      text = {{ Js::from(config('requirements.list.delete_confirm.last_warning')) }},
+
+      redirect = '/requirements/delete/'+rid
+
+      console.log("reg")
+
     }
 
-    document.getElementById('filesToDelete').value = JSON.stringify(filesToDelete)
+    // Verification delete
+    if (rid && id > 0) {
 
-    Array.from(document.getElementById(prefix+id).children).forEach(element => {
+      title = {{ Js::from(config('verifications.list.delete_confirm.question')) }}
+      text = {{ Js::from(config('verifications.list.delete_confirm.last_warning')) }},
 
-        if (element.dataset.name !== undefined && element.dataset.name === 'buttons') {
+      redirect = '/verifications/delete/'+rid+'/'+id
 
-            Array.from(element.children).forEach(el => {
+      console.log("ver")
 
-                if (Array.from(el.classList).includes('is-hidden')) {
-                    el.classList.remove('is-hidden')
-                } else {
-                    el.classList.add('is-hidden')
-                }
-            })
-        } else {
+    }
 
-            if (Array.from(element.classList).includes('iptal')) {
-                element.classList.remove('iptal')
-            } else {
-                element.classList.add('iptal')
-            }
-        }
-    });
-}
+    confirmDialog(title,text,redirect)
+  }
+
+
+
 
 function cancelFile(key,fname) {
 
-    document.getElementById(`K${key}`).remove()
+    let varid = 'f'+key
 
-    if (filesToExclude.includes(fname)) {
-        filesToExclude.splice(filesToExclude.indexOf(fname),1)
-    } else {
-        filesToExclude.push(fname)
-    }
+    document.getElementById(varid).remove()
+    fnamesToUpload = fnamesToUpload.filter(name => name != fname);
+    document.getElementById('filesToUpload').value = JSON.stringify(fnamesToUpload)
 
-    if (filesToExclude.length > 0) {
-        document.getElementById('filesToExclude').value = filesToExclude.join()
-    } else {
-        document.getElementById('filesToExclude').value = ''
-    }
-
-    document.getElementById('filesToUpload').value = document.getElementById('filesToUpload').value-1
-
-    if (document.getElementById('filesToUpload').value == 0) {
-        document.getElementById('noFile').classList.remove('is-hidden')
-    }
+    checkFilesNo()
+    return true
 }
 
 
@@ -61,32 +56,54 @@ function getNames() {
 
     var newFiles = document.getElementById('fupload')
 
-    if (Object.entries(newFiles.files).length < 1) {
-        document.getElementById('non_selected').classList.remove('is-hidden')
-        return true
-    }
+    let filesListDiv = document.getElementById('files_div')
+    let outerDiv,cancelBtn,nameLabel
 
-    document.getElementById('non_selected').classList.add('is-hidden')
-
-    let satir = ''
-    dosyalar = []
+    fnamesToUpload = []
 
     for (const [key, dosya] of Object.entries(newFiles.files)) {
 
-        satir = satir +`
-        <tr id="K${key}">
-            <td>${dosya.name}</td>
-            <td>${dosya.size}</td>
-            <td>${dosya.type}</td>
-            <td><a onclick="cancelFile('${key}','${dosya.name}')">x</a></td>
-        </tr>`
+        // <div class="tags has-addons">
+        //     <a class="tag is-danger is-light is-delete"></a>
+        //     <span class="tag is-black is-light">Alex Smith</span>
+        // </div>
 
-        dosyalar.push({key:dosya})
+        outerDiv = document.createElement('div')
+        outerDiv.id = 'f'+key
+        outerDiv.classList.add('tags','has-addons','my-0','py-0')
 
-        document.getElementById('upButton').classList.remove('is-hidden');
+        cancelBtn = document.createElement('a')
+        cancelBtn.classList.add('tag','is-danger','is-light','is-delete')
+        cancelBtn.addEventListener("click", function() {
+            cancelFile(key,dosya.name)}
+        ); 
+
+        nameLabel = document.createElement('span')
+        nameLabel.classList.add('tag','is-black','is-light')
+        nameLabel.innerHTML = dosya.name
+
+        outerDiv.append(cancelBtn)
+        outerDiv.append(nameLabel)
+
+        filesListDiv.append(outerDiv)
+        fnamesToUpload.push(dosya.name)
     }
 
-    document.getElementById('filesToUpload').value = Object.entries(newFiles.files).length
-    document.getElementById('filesToExclude').value = ''
-    document.getElementById('filesList').innerHTML = satir
+    document.getElementById('filesToUpload').value = JSON.stringify(fnamesToUpload)
+    checkFilesNo()
+}
+
+
+
+function checkFilesNo() {
+
+    let files = JSON.parse(document.getElementById('filesToUpload').value);
+
+    if (files.length > 0) {
+        document.getElementById('list_header').innerHTML = 'New Files to Upload'
+        document.getElementById('uploadButton').classList.remove('is-hidden')
+    } else {
+        document.getElementById('list_header').innerHTML = 'No files to upload yet!'
+        document.getElementById('uploadButton').classList.add('is-hidden')
+    }
 }

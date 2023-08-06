@@ -1,111 +1,147 @@
 
-{{-- 
-<div class="has-background-info-light p-3">
-
-    <script src="{{ asset('/js/attachment.js') }}"></script>
+<div class="column">
 
 
+<script src="{{ asset('/js/attachment.js') }}"></script>
 
-    <x-title :params="$headers" />
 
-    <form action="/upload-attach/requirement/12" method="POST" enctype="multipart/form-data">
-        @csrf
 
-        <input type="hidden" id="filesToUpload" value="0" autocomplete="off">
-        <input type="hidden" id="filesToDelete" name="filesToDelete" value="" autocomplete="off">
-        <input type="hidden" id="filesToExclude" name="filesToExclude" value="0" autocomplete="off">
 
-        <input type="hidden" id="route_redirect" name="route_redirect" value="requirements/view/{{}}" autocomplete="off">
 
-        <div class="columns">
+<div class="columns">
 
-            <div class="column is-2">
-                <div class="file is-boxed">
-                    <label class="file-label">
-                    <input
-                        class="file-input"
-                        type="file"
-                        name="dosyalar[]"
-                        id="fupload"
-                        multiple
-                        onchange="getNames()" />
-                    <span class="file-cta">
-                        <span class="file-icon">
-                            <x-carbon-document-multiple-02 />
+
+
+
+
+
+    <div class="column is-half">
+
+        <strong class="mt-6">Attachments</strong><br>
+
+        @if (count($requirement->attachments) > 0)
+        <table class="table is-fullwidth">
+
+            @foreach ($requirement->attachments as $attachment)
+
+            <tr>
+                <td><a href="/attach-view/{{ $attachment->id }}">{{ $attachment->original_file_name }}</a></td>
+                <td>{{ $attachment->file_size }}</td>
+                <td><a href="/"><span class="icon has-text-danger"><x-carbon-trash-can /></span></a></td>
+            </tr>
+            @endforeach
+
+        </table>
+        @endif
+
+    </div>
+
+    <div class="column is-half">
+
+        <form action="/upload-attach/requirement/{{$requirement->id}}" method="POST" enctype="multipart/form-data">
+            @csrf
+    
+            <input type="hidden" id="filesToUpload" name="filesToUpload" value="0" autocomplete="off">
+            <input type="hidden" id="route_redirect" name="route_redirect" value="requirements/view/{{$requirement->id}}" autocomplete="off">
+    
+
+            <div class="columns">
+
+                <div class="column is-narrow">
+
+
+
+                    <label class="file-label" id="fileLabelEl">
+                        <input
+                            class="file-input"
+                            type="file"
+                            name="dosyalar[]"
+                            id="fupload"
+                            multiple
+                            onchange="getNames()" />
+                        <span class="file-cta">
+                            <span class="file-icon"><x-carbon-document-multiple-02 /></span>
+                            <span class="file-label has-text-centered">Files</span>
                         </span>
-                        <span class="file-label">Files</span>
-                    </span>
+
                     </label>
                 </div>
 
+                <div class="column">
+                        
+
+                        <span class="block" id="list_header">No files to upload yet!</span>
+
+                        <div id="files_div" class="py-0">
+
+                        </div>
+
+
+                        <button class="button is-link is-fullwidth is-hidden" id="uploadButton">
+                            <span class="icon"><x-carbon-upload /></span>
+                            <span>Upload</span>
+                        </button>
+
+                        {{-- <span class="block has-background-info has-text-white " id="uploadButton">
+                            <span class="file-icon"><x-carbon-upload /></span>
+                            <span class="file-label has-text-centered">Upload</span>
+                        </span> --}}
+
+                </div>
 
             </div>
 
-            <div class="column">
-                <table class="table is-striped is-fullwidth" >
 
-                    <caption id="non_selected">No selected files yet!</caption>
-                    <tbody id="filesList">
-                    </tbody>
-
-
-                </table>
-            </div>
-
-        </div>
-
-        <div id="upButton" class="mt-2 is-hidden">
-
-            <button type="submit" class="button has-background-black has-text-white is-fullwidth">
-                <span class="icon"><x-carbon-upload /></span>
-                <span>Upload</span>
-            </button>
-        </div>
-
-        @error('dosyalar') <span class="error">{{ $message }}</span> @enderror
-
-    </form>
-
-</div> --}}
-
-{{-- @php
-    print_r($requirement->attachments)
-@endphp --}}
-
-
-
-<div class="column">
-<div class="columns">
-
-    <div class="column is-10">
-    <strong>Attachments</strong>
-
-
-    @if (count($requirement->attachments) > 0)
-
-    <table class="table is-fullwidth">
-
-        @foreach ($requirement->attachments as $attachment)
-
-        <tr>
-            <td><a href="/">{{ $attachment->original_file_name }}</a></td>
-            <td>{{ $attachment->file_size }}</td>
-            <td><a href="/"><span class="icon has-text-danger"><x-carbon-trash-can /></span></a></td>
-        </tr>
-        @endforeach
-
-    </table>
-        
-    @endif
 
     
 
+    
+    
 
+
+
+
+
+
+          
+    
+            @error('dosyalar') <span class="error">{{ $message }}</span> @enderror       
+    
+    
+        </form>
+
+
+
+        
     </div>
 
-    <div class="column has-text-right is-2">
-    <a href="/"><span class="icon has-text-link"><x-carbon-document-attachment /></span></a>
-    </div>
+
+
 
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </div>
+

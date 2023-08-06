@@ -19,37 +19,76 @@ class AttachmentController extends Controller
 
     public function upload(Request $request)
     {
-        if ($request->has('dosyalar')) {
+        // Real finenames to be uploaded
+        $real_fnames = json_decode($request->filesToUpload,true);
 
-            //dd($request->file('dosyalar'));
+        if ($request->has('dosyalar')) {
 
             foreach ($request->file('dosyalar') as $dosya) {
 
-                $props['user_id'] = Auth::id();
-                $props['model_name'] = $request->itemName;
-                $props['model_item_id'] = $request->itemId;
-                $props['original_file_name'] = $dosya->getClientOriginalName();
-                $props['mime_type'] = $dosya->getMimeType();
-                $props['file_size'] = $dosya->getSize();
+                if ( in_array($dosya->getClientOriginalName(), $real_fnames) ) {
 
-                $path = $props['model_name'].'/'.$props['model_item_id'];
+                    $props['user_id'] = Auth::id();
+                    $props['model_name'] = $request->itemName;
+                    $props['model_item_id'] = $request->itemId;
+                    $props['original_file_name'] = $dosya->getClientOriginalName();
+                    $props['mime_type'] = $dosya->getMimeType();
+                    $props['file_size'] = $dosya->getSize();
 
-                $stored_file_as = Storage::disk('local')->put($path, $dosya);
+                    $path = $props['model_name'].'/'.$props['model_item_id'];
 
-                $props['stored_file_as'] = $stored_file_as;
+                    $stored_file_as = Storage::disk('local')->put($path, $dosya);
 
-                Attachment::create($props);
+                    $props['stored_file_as'] = $stored_file_as;
 
-                dd($props);
-
-
-
+                    Attachment::create($props);
+                }
             }
+
+            return redirect($request->route_redirect);
         }
     }
 
 
+    public function attachview()
+    {
 
+        $d = Attachment::find(request('id'));
+
+
+
+        if (!$this->checkPermission()) {
+            abort(404, 'No permission!');
+        }
+
+        $dosya = Storage::path($d->stored_file_as);
+
+        // dd($dosya);
+
+        if (file_exists($dosya)) {
+            $headers = [
+                'Content-Type' => $d->mime_type,
+            ];
+
+            return response()->download(
+                $dosya,
+                $d->original_file_name,
+                $headers,
+                'inline'
+            );
+        } else {
+            abort(404, 'File not found!');
+        }
+    }
+
+    public function checkPermission()
+    {
+        if ( Auth::id() ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 
 

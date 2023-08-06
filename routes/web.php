@@ -90,6 +90,7 @@ Route::middleware('auth')->group(function () {
 
     // Attachment
     Route::get('/add-attach/{item}/{itemId}',  Attachment::class);
+    Route::get('/attach-view/{id}',  [AttachmentController::class, 'attachview']);
     Route::post('/upload-attach/{itemName}/{itemId}',  [AttachmentController::class, 'upload']);
 
 
