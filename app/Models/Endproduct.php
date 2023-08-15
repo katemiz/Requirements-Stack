@@ -15,16 +15,12 @@ class Endproduct extends Model
     use HasFactory;
 
     protected $table = 'endproducts';
-
-
     protected $fillable = ['user_id','updated_uid','project_id','code', 'title'];
-
 
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);
     }
-
 
     // Accessor to get the full name of the user
     public function getProjectCodeAttribute()
@@ -32,13 +28,10 @@ class Endproduct extends Model
         return Project::find($this->project_id)->code;
     }
 
-
-
     public function requirements(): BelongsToMany
     {
         return $this->belongsToMany(Requirement::class);
     }
-
 
     public function getCreatedByNameAttribute()
     {
@@ -57,10 +50,5 @@ class Endproduct extends Model
     //     $usr = User::find($this->updated_uid);
     //     return $usr->name.' '.$usr->lastname;
     // }
-
-
-
-
-
 
 }
