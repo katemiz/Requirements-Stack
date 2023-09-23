@@ -5,12 +5,8 @@
         <link  rel="icon" type="image/svg+xml" href="{{ asset(config('appconstants.favicon')) }}" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-
         <title>{{ config('constants.app.title') }}</title>
-
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-
-        {{-- <link rel="stylesheet" href="{{ asset('css/bulma.css') }}"> --}}
 
         <style>
             html {height: 100%;}
@@ -68,8 +64,6 @@
                     </div>
 
                     <div class="column is-offset-one-quarter has-text-right has-text-centered-mobile">
-                        {{-- <a href="{{config('appconstants.company.link')}}">{{config('appconstants.kapkara.name')}}</a> --}}
-
                         <p class="has-text-right is-size-6 has-text-weight-light my-0">
                             <a href="/register">{{__('ui.links.register.text')}}</a>
                         </p>

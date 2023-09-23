@@ -13,6 +13,6 @@ class LogLayout extends Component
      */
     public function render()
     {
-        return view('layouts.log');
+        return view('components.layouts.log');
     }
 }

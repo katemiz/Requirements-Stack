@@ -13,9 +13,11 @@
     </head>
     <body>
 
-        @include('components.layouts.navbar')
+        @include('components.navbar')
+
         {{ $slot }}
-        @include('components.layouts.footer')
+
+        @include('components.footer')
 
         @livewireScripts
     </body>
