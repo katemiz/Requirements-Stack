@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Livewire;
 
 use Illuminate\Http\Request;
 use Livewire\Component;
@@ -42,14 +42,14 @@ class ListCompanies extends Component
 
     public function deleteConfirm ($id)
     {
-        $this->dispatchBrowserEvent('jsConfirmDelete', ['id' => $id]);
+        $this->dispatch('jsConfirmDelete', id: $id);
     }
 
 
     public function deleteReal($id)
     {
         Company::find($id)->delete();
-        $this->dispatchBrowserEvent('informUserOnDelete');
+        $this->dispatch('informUserOnDelete');
     }
 
 

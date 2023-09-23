@@ -40,7 +40,7 @@
                     </a>
                 </p>
                 <p class="control">
-                <input class="input" type="text" placeholder="{{ $params['list']['filterText'] }}" wire:model="search">
+                <input class="input" type="text" placeholder="{{ $params['list']['filterText'] }}" wire:model.live="search">
                 </p>
                 <p class="control">
                 <a class="button">

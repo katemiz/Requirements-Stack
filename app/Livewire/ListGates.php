@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Livewire;
 
 use Illuminate\Http\Request;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-use App\Models\Poc;
+use App\Models\Meeting;
 
-
-class ListPocs extends Component
+class ListGates extends Component
 {
     use WithPagination;
 
@@ -23,10 +22,10 @@ class ListPocs extends Component
 
     public function render(Request $request)
     {
-        $mocs = Poc::search('name',$this->search)->orderBy($this->sortField,$this->sortDirection)->paginate(env('RESULTS_PER_PAGE'));
+        $projects = Meeting::search('name',$this->search)->orderBy($this->sortField,$this->sortDirection)->paginate(env('RESULTS_PER_PAGE'));
 
-        return view('pocs.list-pocs',[
-            'records' => $mocs
+        return view('projects.list-gates',[
+            'records' => $projects
         ]);
     }
 
@@ -38,14 +37,14 @@ class ListPocs extends Component
 
     public function deleteConfirm ($id)
     {
-        $this->dispatchBrowserEvent('jsConfirmDelete', ['id' => $id]);
+        $this->dispatch('jsConfirmDelete', id:$id);
     }
 
 
     public function deleteReal($id)
     {
         Project::find($id)->delete();
-        $this->dispatchBrowserEvent('informUserOnDelete');
+        $this->dispatch('informUserOnDelete');
     }
 
 
@@ -53,12 +52,12 @@ class ListPocs extends Component
 
         $this->sortField = $key;
 
-        if (config('pocs.list.headers')[$key]['direction'] == 'asc') {
-            config('pocs.list.headers')[$key]['direction'] = 'desc';
+        if (config('dgates.list.headers')[$key]['direction'] == 'asc') {
+            config('dgates.list.headers')[$key]['direction'] = 'desc';
         } else {
-            config('pocs.list.headers')[$key]['direction'] = 'asc';
+            config('dgates.list.headers')[$key]['direction'] = 'asc';
         }
 
-        $this->sortDirection = config('pocs.list.headers')[$key]['direction'];
+        $this->sortDirection = config('dgates.list.headers')[$key]['direction'];
     }
 }

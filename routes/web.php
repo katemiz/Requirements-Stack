@@ -3,19 +3,19 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Livewire\Attachment;
-use App\Http\Livewire\ListCompanies;
-use App\Http\Livewire\ListProjects;
-use App\Http\Livewire\ListRequirements;
-use App\Http\Livewire\RequirementLivewire;
-use App\Http\Livewire\ListEndproducts;
-use App\Http\Livewire\ListGates;
-use App\Http\Livewire\ListMocs;
-use App\Http\Livewire\ListPocs;
-use App\Http\Livewire\ListWitnesses;
-use App\Http\Livewire\ListUsers;
-use App\Http\Livewire\ListRoles;
-use App\Http\Livewire\ListPermissions;
+use App\Livewire\Attachment;
+use App\Livewire\ListCompanies;
+use App\Livewire\ListProjects;
+use App\Livewire\ListRequirements;
+use App\Livewire\RequirementLivewire;
+use App\Livewire\ListEndproducts;
+use App\Livewire\ListGates;
+use App\Livewire\ListMocs;
+use App\Livewire\ListPocs;
+use App\Livewire\ListWitnesses;
+use App\Livewire\ListUsers;
+use App\Livewire\ListRoles;
+use App\Livewire\ListPermissions;
 
 use App\Http\Controllers\AttachmentController;
 use App\Http\Controllers\GateController;

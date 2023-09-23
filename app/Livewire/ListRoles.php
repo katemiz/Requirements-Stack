@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Livewire;
 
 use Illuminate\Http\Request;
 use Livewire\Component;
@@ -10,7 +10,7 @@ use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
 
-class ListPermissions extends Component
+class ListRoles extends Component
 {
     use WithPagination;
 
@@ -26,10 +26,10 @@ class ListPermissions extends Component
 
     public function render(Request $request)
     {
-        $permissions = Permission::search('name',$this->search)->orderBy($this->sortField,$this->sortDirection)->paginate(env('RESULTS_PER_PAGE'));
+        $roles = Role::search('name',$this->search)->orderBy($this->sortField,$this->sortDirection)->paginate(env('RESULTS_PER_PAGE'));
 
-        return view('admin.permissions-list',[
-            'records' => $permissions
+        return view('admin.roles-list',[
+            'records' => $roles
         ]);
     }
 
@@ -41,14 +41,14 @@ class ListPermissions extends Component
 
     public function deleteConfirm ($id)
     {
-        $this->dispatchBrowserEvent('jsConfirmDelete', ['id' => $id]);
+        $this->dispatch('jsConfirmDelete', id:$id);
     }
 
 
     public function deleteReal($id)
     {
         Company::find($id)->delete();
-        $this->dispatchBrowserEvent('informUserOnDelete');
+        $this->dispatch('informUserOnDelete');
     }
 
 
@@ -56,12 +56,12 @@ class ListPermissions extends Component
 
         $this->sortField = $key;
 
-        if (config('permissions.list.headers')[$key]['direction'] == 'asc') {
-            config('permissions.list.headers')[$key]['direction'] = 'desc';
+        if (config('roles.list.headers')[$key]['direction'] == 'asc') {
+            config('roles.list.headers')[$key]['direction'] = 'desc';
         } else {
-            config('permissions.list.headers')[$key]['direction'] = 'asc';
+            config('roles.list.headers')[$key]['direction'] = 'asc';
         }
 
-        $this->sortDirection = config('permissions.list.headers')[$key]['direction'];
+        $this->sortDirection = config('roles.list.headers')[$key]['direction'];
     }
 }

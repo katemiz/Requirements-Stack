@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Livewire;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -86,14 +86,14 @@ class ListUsers extends Component
 
     public function deleteConfirm ($id)
     {
-        $this->dispatchBrowserEvent('jsConfirmDelete', ['id' => $id]);
+        $this->dispatch('jsConfirmDelete', id:$id);
     }
 
 
     public function deleteReal($id)
     {
         Company::find($id)->delete();
-        $this->dispatchBrowserEvent('informUserOnDelete');
+        $this->dispatch('informUserOnDelete');
     }
 
 
