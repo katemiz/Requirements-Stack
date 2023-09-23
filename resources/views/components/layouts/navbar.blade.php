@@ -93,17 +93,16 @@
         <div class="navbar-end">
 
             @if(Auth::check())
-
                 <div class="navbar-item has-dropdown is-hoverable">
 
                     <p class="navbar-link">
                         <span class="mx-3 has-text-right">
                             {{ Auth::user()->name }} {{ Auth::user()->lastname }}
-                            {{-- <span class="block has-text-warning is-size-7">{{session('selected_bina')}}</span> --}}
+                            <span class="block has-text-warning is-size-7">YHRT-PVR</span>
                         </span>
                     </p>
 
-                    <div class="navbar-dropdown">
+                    <div class="navbar-dropdown">                  
 
                         <a href="/profile" class="navbar-item">Profile</a>
 
