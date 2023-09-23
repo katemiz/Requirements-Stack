@@ -9,7 +9,6 @@ use App\Models\Verification;
 use App\Models\Meeting;
 use App\Models\Poc;
 
-
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\CMExport;
 
@@ -19,6 +18,8 @@ class ExportController extends Controller
     public function allreqs() {
 
         $all = Requirement::all();
+
+        $allreqs = [];
 
         foreach ($all as $requirement) {
             $allreqs[$requirement->rtype][] = $requirement;
@@ -34,12 +35,14 @@ class ExportController extends Controller
 
         $allvers = Verification::all();
 
+        $matrix = [];
+        $pocnames = [];
+
         foreach ($allvers as $verification) {
             $req = Requirement::find($verification->requirement_id);
             $poc = Poc::find($verification->poc_id);
 
             $pocnames[$poc->code] = $poc->name;
-
             $matrix[$poc->code][] = ['id' => $req->id,'no' => $req->rtype.'-'.$req->id];
         }
 
@@ -55,6 +58,8 @@ class ExportController extends Controller
         $allvers = Verification::all();
         $pocs = Poc::all();
         $dgates = Meeting::all();
+
+        $pocsDizin = [];
 
         foreach ($pocs as $poc) {
             $pocsDizin[$poc['id']] = ['code'=>$poc->code,'name'=>$poc->name];

@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -22,9 +23,54 @@ class ListUsers extends Component
     public $msg = false;
 
 
+
+    public function userHasRoles($usr) {
+
+        $usr->is_admin = false;
+        $usr->is_company_admin = false;
+
+        if ($usr->hasRole('admin')) {
+            $usr->is_admin = true;
+        }
+
+        if ($usr->hasRole('company_admin')) {
+            $usr->is_company_admin = true;
+        }
+
+        return $usr;
+    }
+
+
+
+
     public function render(Request $request)
     {
-        $users = User::search('lastname',$this->search)->orderBy($this->sortField,$this->sortDirection)->paginate(env('RESULTS_PER_PAGE'));
+        $current_user = $this->userHasRoles(Auth::user());
+
+        if ($current_user->is_admin) {
+            $users = User::where([
+                ['lastname', 'LIKE', "%".$this->search."%"],
+            ])
+            ->orwhere([
+                ['name', 'LIKE', "%".$this->search."%"],
+            ])
+            ->orderBy($this->sortField,$this->sortDirection)
+            ->paginate(env('RESULTS_PER_PAGE'));
+        }
+
+        if ($current_user->is_company_admin) {
+
+            $users = User::where([
+                ['company_id', '=', $current_user->company_id],
+                ['lastname', 'LIKE', "%".$this->search."%"],
+            ])
+            ->orwhere([
+                ['company_id', '=', $current_user->company_id],
+                ['name', 'LIKE', "%".$this->search."%"],
+            ])
+            ->orderBy($this->sortField,$this->sortDirection)
+            ->paginate(env('RESULTS_PER_PAGE'));
+        }
 
         return view('admin.users-list',[
             'records' => $users,

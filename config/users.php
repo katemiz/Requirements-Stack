@@ -4,8 +4,8 @@ return [
 
     "roles" => [
         "r" => ['admin'],
-        "w" => ['admin'],
-        "x" => ['admin']
+        "w" => ['admin','company_admin'],
+        "x" => ['admin','company_admin']
     ],
 
     "list" => [
@@ -13,7 +13,7 @@ return [
         "subtitle" => "List of all Users",
         "addButton" => [
             "text"=>"Add User",
-            "route"=>"/admin/user/form"
+            "route"=>"/admin/users/form"
         ],
         "filterText" => "Search ...",
         "listCaption" => false,
@@ -62,9 +62,9 @@ return [
             "w" => "/admin/users/form/",
             "x" => "/admin/users/delete/"
         ],
-        "noitem" => "No witnesses found in database yet!",
+        "noitem" => "No users found in database yet!",
         "delete_confirm" => [
-            "question" => "Do you want to delete this witnesses from database?",
+            "question" => "Do you want to delete this user from database?",
             "last_warning" => "When done, it is not possible to revert back."
         ]
     ],
@@ -98,7 +98,6 @@ return [
             "value" => ""
         ],
 
-
         "lastname" => [
             "label" => "Lastname",
             "name" => "lastname",
@@ -110,6 +109,13 @@ return [
             "label" => "E-Mail",
             "name" => "email",
             "placeholder" => "Enter e-mail",
+            "value" => ""
+        ],
+
+        "company" => [
+            "label" => "Company",
+            "name" => "company",
+            "placeholder" => "Select company",
             "value" => ""
         ]
     ]

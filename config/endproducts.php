@@ -92,7 +92,7 @@ return [
 
         "project"=> [
             "label" => "Project",
-            "name" => "project",
+            "name" => "project_id",
             "options" => ""
         ],
 

@@ -51,15 +51,17 @@ class EndProductsController extends Controller
     {
         $id = false;
 
-        $props['user_id'] = 1; //Auth::id();
         $props['project_id'] = $request->input('project');
 
         if ( isset($request->id) && !empty($request->id)) {
 
             $validated = $request->validate([
+                'project_id' => ['required', 'integer','size:1'],
                 'code' => ['required', 'max:12'],
                 'title' => ['required','max:128'],
             ]);
+
+            $props['updated_uid'] = Auth::id();
 
             // update
             $endproduct = Endproduct::find($request->id)->update(array_merge($props,$validated));
@@ -67,7 +69,11 @@ class EndProductsController extends Controller
             $id = $request->id;
         } else {
 
+            $props['user_id'] = Auth::id();
+            $props['updated_uid'] = Auth::id();
+
             $validated = $request->validate([
+                'project_id' => ['required', 'integer','size:1'],
                 'code' => ['required', 'unique:endproducts', 'max:64'],
                 'title' => ['required','max:128'],
             ]);
@@ -84,8 +90,6 @@ class EndProductsController extends Controller
     public function view(Request $request)
     {
         $this->action = 'read';
-
-
 
         return view('endproduct.view', [
             'action' => $this->action,

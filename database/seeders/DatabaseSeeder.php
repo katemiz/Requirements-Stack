@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
         $admin = User::create([
             "name" => 'Kılıç Ali',
             "lastname" =>'Temiz',
+            "company_id" => 0,
             "email" => 'katemiz@gmail.com',
             "password" => 'kapkara'
         ]);
@@ -37,6 +38,7 @@ class DatabaseSeeder extends Seeder
         $user1 = User::create([
             "name" => 'Kılıç Ali',
             "lastname" =>'Temiz',
+            "company_id" => 0,
             "email" => 'katemiz@masttech.com',
             "password" => 'kapkara'
         ]);
@@ -44,16 +46,20 @@ class DatabaseSeeder extends Seeder
         $user2 = User::create([
             "name" => 'Ümit',
             "lastname" =>'Kutluay',
+            "company_id" => 1,
             "email" => 'umit.kutluay@tubitak.gov.tr',
             "password" => 'Sage2023tubitak'
         ]);
 
         $role = Role::create(['name' => 'admin']);
+        $cadmin = Role::create(['name' => 'company_admin']);
         $reqeng = Role::create(['name' => 'requirement_engineer']);
 
         $admin->assignRole('admin');
         $user1->assignRole('requirement_engineer');
+        $user2->assignRole('company_admin');
         $user2->assignRole('requirement_engineer');
+
 
         Company::create([
             'user_id' => 1,

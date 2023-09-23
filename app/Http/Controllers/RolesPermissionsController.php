@@ -4,14 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 use App\Models\User;
-
-
-
-
-
-
 use App\Models\Meeting;
 use App\Models\Moc;
 use App\Models\Poc;
@@ -19,17 +15,6 @@ use App\Models\Requirement;
 use App\Models\Endproduct;
 use App\Models\Witness;
 use App\Models\Verification;
-
-
-
-
-
-
-
-
-
-
-
 
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -39,6 +24,26 @@ use Illuminate\Support\Facades\DB;
 class RolesPermissionsController extends Controller
 {
     
+    public function userHasRoles($usr) {
+
+        $usr->is_admin = false;
+        $usr->is_company_admin = false;
+
+        if ($usr->hasRole('admin')) {
+            $usr->is_admin = true;
+        }
+
+        if ($usr->hasRole('company_admin')) {
+            $usr->is_company_admin = true;
+        }
+
+        return $usr;
+    }
+
+
+
+
+
     public function usrview (Request $request) {
 
         $this->action = 'read';
@@ -70,10 +75,23 @@ class RolesPermissionsController extends Controller
     }
 
 
-
-
-
     public function usrform (Request $request) {
+
+        $current_user = $this->userHasRoles(Auth::user());
+
+        $companies['name'] = 'company_id';
+        $companies['label'] = 'Select Company';
+        $companies['options'] = [];
+
+        if ($current_user->is_admin) {
+            foreach (Company::all() as $cmp) {
+                $companies['options'][$cmp->id] = $cmp->name;
+            }
+        }
+
+        if ($current_user->is_company_admin) {
+            $companies['options'][$current_user->company_id] = $current_user->company_name;
+        }
 
         $action = 'create';
         $user = false;
@@ -83,6 +101,8 @@ class RolesPermissionsController extends Controller
 
         if ( isset($request->id) && !empty($request->id) ) {
             $user = User::find($request->id);
+            $user = $this->userHasRoles($user);
+
             $action = 'update';
 
             foreach ($user->roles as $role) {
@@ -94,13 +114,16 @@ class RolesPermissionsController extends Controller
             }
         }
 
+
         return view('admin.user-form', [
             'action' => $action,
+            'current_user' => $current_user,
             'user' => $user,
             'roles' => Role::all()->sortBy('name'),
             'permissions' => Permission::all()->sortBy('name'),
             'available_usr_perms' => $available_usr_perms,
             'available_usr_roles' => $available_usr_roles,
+            'companies' => $companies
         ]);
     }
 
@@ -155,12 +178,14 @@ class RolesPermissionsController extends Controller
         if ( isset($request->id) && !empty($request->id)) {
 
             $validated = $request->validate([
+                'company_id' => ['required'],
                 'name' => ['required'],
                 'lastname' => ['required'],
                 'email' => ['required'],
+                'password' => Hash::make($request->password),
             ]);
 
-            // $props['user_id'] = Auth::id();
+            $props['company_id'] = $request->company_id;
             $props['name'] = $request->name;
             $props['lastname'] = $request->lastname;
             $props['email'] = $request->email;
@@ -172,15 +197,17 @@ class RolesPermissionsController extends Controller
         } else {
 
             $validated = $request->validate([
+                'company_id' => ['required'],
                 'name' => ['required'],
                 'lastname' => ['required'],
                 'email' => ['required', 'unique:users'],
             ]);
 
-            // $props['user_id'] = Auth::id();
+            $props['company_id'] = $request->company_id;
             $props['name'] = $request->name;
             $props['lastname'] = $request->lastname;
             $props['email'] = $request->email;
+            $props['password'] = Hash::make(Str::password(6));
 
             // create
             $user = User::create($props);

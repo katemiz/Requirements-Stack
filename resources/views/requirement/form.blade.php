@@ -14,7 +14,7 @@
                   <option value="notselected">Select</option>
 
                   @foreach ($projects as $project)
-                    <option value="{{ $project->id }}" @selected( count($projects) == 1 || $project->id == $value)>{{ $project->code }}</option>
+                    <option value="{{ $project->id }}" @selected( count($projects) == 1 || ($requirement && $project->id == $requirement->project_id))>{{ $project->code }}</option>
                   @endforeach
 
                 </select>

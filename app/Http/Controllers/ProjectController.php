@@ -51,13 +51,12 @@ class ProjectController extends Controller
     {
         $id = false;
 
-        $props['user_id'] = 1; //Auth::id();
 
         $props['company_id'] = $request->input('company');
 
-
-
         if ( isset($request->id) && !empty($request->id)) {
+
+            $props['updated_uid'] = Auth::id();
 
             $validated = $request->validate([
                 'code' => ['required', 'max:12'],
@@ -69,6 +68,9 @@ class ProjectController extends Controller
 
             $id = $request->id;
         } else {
+
+            $props['user_id'] = Auth::id();
+            $props['updated_uid'] = Auth::id();
 
             $validated = $request->validate([
                 'code' => ['required', 'unique:projects', 'max:12'],

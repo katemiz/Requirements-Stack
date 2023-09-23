@@ -1,4 +1,4 @@
-@role('admin')
+@role(['admin','company_admin'])
 
     <section class="section container">
         <x-title :params="config('users.list')" />

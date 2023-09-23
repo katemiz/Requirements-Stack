@@ -8,9 +8,6 @@ use App\Models\EndProduct;
 use App\Models\Project;
 use App\Models\Requirement;
 
-
-
-
 use Livewire\Component;
 
 class RequirementLivewire extends Component

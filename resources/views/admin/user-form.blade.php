@@ -6,6 +6,7 @@
     <form action="{{ config('users.cu_route') }}{{ $user ? $user->id : '' }}" method="POST" enctype="multipart/form-data">
     @csrf
 
+        <x-select :params="$companies" value="{{ $user ? $user->company_id : '' }}"/>
         <x-form-input :params="config('users.form.name')" value="{{ $user ? $user->name : '' }}"/>
         <x-form-input :params="config('users.form.lastname')" value="{{ $user ? $user->lastname : '' }}"/>
         <x-form-input :params="config('users.form.email')" value="{{ $user ? $user->email : '' }}"/>
@@ -21,14 +22,14 @@
 
                     @if ( count($roles) > 0)
                     
-                    @foreach ($roles as $role)
-        
-                        <label class="checkbox is-block">
-                            <input type="checkbox" name="role{{$role->id}}" value="{{$role->id}}" 
-                            @checked(in_array($role->id,$available_usr_roles))> {{ $role->name }}
-                        </label>
-        
-                    @endforeach
+                        @foreach ($roles as $role)
+            
+                            <label class="checkbox is-block">
+                                <input type="checkbox" name="role{{$role->id}}" value="{{$role->id}}" 
+                                @checked(in_array($role->id,$available_usr_roles))> {{ $role->name }}
+                            </label>
+            
+                        @endforeach
         
                     @else  
                         <p>{{ config('roles.list.noitem') }}</p>

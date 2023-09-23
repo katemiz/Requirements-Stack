@@ -4,8 +4,8 @@ return [
 
     "roles" => [
         "r" => ['admin'],
-        "w" => ['admin'],
-        "x" => ['admin']
+        "w" => ['admin','company_admin'],
+        "x" => ['admin','company_admin']
     ],
 
     "list" => [
