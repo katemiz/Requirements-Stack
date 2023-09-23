@@ -12,8 +12,6 @@ class ListCompanies extends Component
 {
     use WithPagination;
 
-    public $params;
-
     protected $listeners = ['delete' => 'deleteReal'];
 
     public $search = '';
@@ -32,7 +30,6 @@ class ListCompanies extends Component
 
         return view('companies.list-companies',[
             'records' => $companies,
-            'params' => $this->params,
             'msg' => $this->msg
         ]);
     }

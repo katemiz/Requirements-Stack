@@ -45,6 +45,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/help', function () {
+    return view('help');
+});
 
 Route::get('lang/{lang}', [
     'as' => 'lang.switch',
@@ -81,9 +84,15 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/admin/users/delete/{id}', [UserController::class, 'delete']);
 
+    // Companies
+    Route::get('/companies', ListCompanies::class);
+    Route::get('/companies/view/{id}', [CompanyController::class, 'view']);
+    Route::get('/companies/form/{id?}', [CompanyController::class, 'form']);
+    Route::post('/companies/store/{id?}', [CompanyController::class, 'store']);
+    Route::get('/companies/delete/{id}', [CompanyController::class, 'delete']);
+
+    // APP
     // ************************************************************
-
-
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -94,18 +103,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/attach-delete/{model}/{modelId}/{id}',  [AttachmentController::class, 'attachdelete']);
     Route::post('/upload-attach/{itemName}/{itemId}',  [AttachmentController::class, 'upload']);
 
-
-
     // Current Project
     Route::get('/selectcurrentproject', [CurrentProjectController::class, 'selectCurrent']);
     Route::get('/setcurrentproject/{id}', [CurrentProjectController::class, 'setCurrent']);
-
-    // Companies
-    Route::get('/companies', ListCompanies::class);
-    Route::get('/companies/view/{id}', [CompanyController::class, 'view']);
-    Route::get('/companies/form/{id?}', [CompanyController::class, 'form']);
-    Route::post('/companies/store/{id?}', [CompanyController::class, 'store']);
-    Route::get('/companies/delete/{id}', [CompanyController::class, 'delete']);
 
     // Projects
     Route::get('/projects', ListProjects::class);
@@ -173,7 +173,8 @@ Route::middleware('auth')->group(function () {
 
 
 
-
+    // HELP
+    // ************************************************************
 
 
 
