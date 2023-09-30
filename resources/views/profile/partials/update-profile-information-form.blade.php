@@ -24,6 +24,17 @@
             <x-input-error class="mt-2" :messages="$errors->get('name')" />
         </div>
 
+
+        <div class="field">
+            <label class="label">{{ __('Lastname') }}</label>
+            <div class="control">
+              <input class="input" type="text" name="lastname" value="{{ old('lastname', $user->lastname) }}" required autofocus autocomplete="name">
+            </div>
+            <x-input-error class="mt-2" :messages="$errors->get('lastname')" />
+        </div>
+
+
+
         <div class="field">
             <label class="label">{{ __('Email') }}</label>
 

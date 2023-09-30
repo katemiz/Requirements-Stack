@@ -30,7 +30,6 @@
                     </a>
 
                     <div class="navbar-dropdown">
-                        <a href="/admin/users" class="navbar-item">Users Eski</a>
                         <a href="/admin-users/list" class="navbar-item">Users</a>
 
                         @role('admin')
@@ -105,7 +104,7 @@
                     <div class="navbar-dropdown">                  
 
                         <a href="/change-project" class="navbar-item">Change Project</a>
-                        <a href="/profile" class="navbar-item">Profile</a>
+                        <a href="/profile" class="navbar-item">Change Password</a>
 
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">

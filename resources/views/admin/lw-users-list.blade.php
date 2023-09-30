@@ -18,7 +18,7 @@
 
             @role(['admin','company_admin'])
             <div class="level-item has-text-centered">
-                    <a href="{{ $constants['list']['addButton']['route'] }}" class="button is-dark">
+                    <a wire:click='addUser' class="button is-dark">
                         <span class="icon is-small"><x-carbon-add /></span>
                         <span>{{ $constants['list']['addButton']['text'] }}</span>
                     </a>
@@ -112,14 +112,13 @@
 
                     @role(['admin','company_admin'])
                         {{-- <a href="/cr/form/{{ $record->id}}"> --}}
-                        <a wire:click="editItem({{ $record->id}})">
-
+                        <a wire:click="editItem({{ $record->id }})">
                             <span class="icon"><x-carbon-edit /></span>
                         </a>
 
-                        <a wire:click.prevent="startCRDelete({{$record->id}})">
+                        {{-- <a wire:click.prevent="startCRDelete({{$record->id}})">
                             <span class="icon has-text-danger-dark"><x-carbon-trash-can /></span>
-                        </a>
+                        </a> --}}
                     @endrole
 
                 </td>

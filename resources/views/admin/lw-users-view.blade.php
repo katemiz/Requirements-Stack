@@ -6,7 +6,7 @@
         <div class="media">
             <div class="media-left">
             <figure class="image is-48x48">
-                <a href="/admin/users"><x-carbon-list /></a>
+                <a href="/admin-users/list"><x-carbon-list /></a>
             </figure>              
             </div>
 
@@ -29,7 +29,7 @@
                 <td>
                     @if ( count($user->projects) > 0)
                         @foreach ($user->projects as $project)
-                            <p>{{ $project->name}}</p>
+                            <p>{{ $project->code}}</p>
                         @endforeach
                     @else
                         None

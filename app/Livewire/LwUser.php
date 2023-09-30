@@ -3,13 +3,14 @@
 namespace App\Livewire;
 
 use App\Models\Company;
+use App\Models\Project;
 use App\Models\User;
 
-
+use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
-use Livewire\Component;
+use Livewire\Attributes\Rule;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -26,8 +27,7 @@ class LwUser extends Component
 
     public $companies;
 
-    public $uid;
-
+    public $uid = false;
 
     public $query = '';
     public $sortField = 'created_at';
@@ -36,17 +36,30 @@ class LwUser extends Component
     public $logged_user;
     public $user;
 
-    public $uroles = [];
+    #[Rule('required', message: 'Please select company')] 
+    public $company_id;
+
+    #[Rule('required|min:2')] 
+    public $name;
+
+    #[Rule('required|min:2')] 
+    public $lastname;
+
+    #[Rule('required|email', onUpdate: false)]
+    public $email;
+
     public $allroles;
+    public $allprojects = [];
+    public $permissions;
 
-
-
-
-    
+    public $user_roles = [];
+    public $user_permissions = [];
+    public $user_projects = [];
 
 
     public function mount()
     {
+
         if (request('action')) {
             $this->action = strtoupper(request('action'));
         }
@@ -56,49 +69,49 @@ class LwUser extends Component
         }
 
         $this->constants = config('users');
+
+        $this->allroles = Role::all();
+        $this->permissions = Permission::all();
+        
+        if ( $this->action === 'VIEW') {
+            $this->setProps();
+        }
+
+        if ( $this->action === 'FORM' && $this->uid) {
+            $this->setProps();
+        }
     }
 
 
     public function render()
     {
-        $this->logged_user = $this->userHasRoles(Auth::user());
+        $this->logged_user = $this->checkUserRoles(Auth::user());
 
-        $users = false;
+        $this->getCompaniesList();
+        $this->getProjects();
 
-        if ( $this->action === 'VIEW') {
-            $this->setUnsetProps();
-        }
-
-        if ( $this->action === 'FORM' && $this->uid) {
-            $this->setUnsetProps();
-
-            $this->companies['name'] = 'company_id';
-            $this->companies['label'] = 'Select Company';
-            $this->companies['options'] = [];
-    
-            if ($this->logged_user->is_admin) {
-                foreach (Company::all() as $cmp) {
-                    $this->companies['options'][$cmp->id] = $cmp->name;
-                }
-            }
-    
-            if ($this->logged_user->is_company_admin) {
-                $this->companies['options'][$this->logged_user->company_id] = $this->logged_user->company_name;
-            }
-
-        }
-
-        if ( $this->action === 'LIST') {
-            $users = $this->getUsersList();
-        }
 
         return view('admin.lw-users',[
-            'users' => $users
+            'users' => $this->getUsersList()
         ]);
     }
 
 
-    public function userHasRoles($usr) {
+    public function changeSortDirection ($key) {
+
+        $this->sortField = $key;
+
+        if ($this->constants['list']['headers'][$key]['direction'] == 'asc') {
+            $this->constants['list']['headers'][$key]['direction'] = 'desc';
+        } else {
+            $this->constants['list']['headers'][$key]['direction'] = 'asc';
+        }
+
+        $this->sortDirection = $this->constants['list']['headers'][$key]['direction'];
+    }
+
+
+    public function checkUserRoles($usr) {
 
         $usr->is_admin = false;
         $usr->is_company_admin = false;
@@ -115,9 +128,30 @@ class LwUser extends Component
     }
 
 
-    public function getUsersList() {
+
+    public function getCompaniesList() {
 
         if ($this->logged_user->is_admin) {
+            $this->companies = Company::all();
+        }
+
+        if ($this->logged_user->is_company_admin) {
+            $this->companies = Company::where('id',$this->logged_user->company_id)->get();
+            $this->company_id = $this->logged_user->company_id;
+        }
+    }
+
+
+
+
+    public function getUsersList() {
+
+        if ($this->action != 'LIST') {
+            return false;
+        }
+
+        if ($this->logged_user->is_admin) {
+
             $users = User::where([
                 ['lastname', 'LIKE', "%".$this->query."%"],
             ])
@@ -150,6 +184,7 @@ class LwUser extends Component
         $this->query = '';
     }
 
+
     public function viewItem($uid) {
         $this->uid = $uid;
         $this->action = 'VIEW';
@@ -163,34 +198,77 @@ class LwUser extends Component
         $this->action = 'FORM';
 
         $this->user = User::find($uid);
+        $this->setProps();
+    }
+
+    public function addUser() {
+        $this->uid = false;
+        $this->action = 'FORM';
+    }
+
+    public function getProjects() {
+
+        if ($this->company_id > 0) {
+            $this->allprojects = Project::where('company_id',$this->company_id)->get();
+        }
     }
 
 
-    public function setUnsetProps($opt = 'set') {
+    public function setProps() {
 
-        if ($opt === 'set') {
+        $this->user = User::find($this->uid);
 
-            $allroles = Role::all()->get();
+        $this->name = $this->user->name;
+        $this->lastname = $this->user->lastname;
+        $this->email = $this->user->email;
+        $this->company_id = $this->user->company_id;
 
-            $this->user = User::find($this->uid);
+        // User Roles
+        foreach ($this->user->roles as $role) {
+            array_push($this->user_roles,$role->id);
+        }
 
-            // foreach ($this->user->roles as $role) {
-            //     array_push($role->id,$this->uroles);
-            // }
+        // User Permissions
+        foreach ($this->user->permissions as $permission) {
+            array_push($this->user_permissions,$permission->id);
+        }
 
-
-
-
-        } 
+        // User Projects
+        foreach ($this->user->projects as $project) {
+            array_push($this->user_projects,$project->id);
+        }
     }
 
 
+
+    public function storeUpdateUser () {
+
+        $this->validate();
+
+        $props['company_id'] = $this->company_id;
+        $props['name'] = $this->name;
+        $props['lastname'] = $this->lastname;
+        $props['email'] = $this->email;
+
+        if ( $this->uid ) {
+            // update
+            User::find($this->uid)->update($props);
+            $user = User::find($this->uid);
+
+        } else {
+            // create
+            $props['password'] = Hash::make(Str::password(6));
+            $user = User::create($props);
+            $this->uid = $user->id;
+        }
+
+        $user->syncRoles($this->user_roles);
+        $user->syncPermissions($this->user_permissions);
+
+        $user->projects()->detach();
+        $user->projects()->attach($this->user_projects);
+
+        $this->action = 'VIEW';
+    }
 
 }
-
-
-
-
-
-
-

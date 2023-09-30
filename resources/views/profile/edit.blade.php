@@ -5,7 +5,7 @@
         </h2>
     </x-slot> --}}
 
-    @include('profile.partials.update-profile-information-form')
+    {{-- @include('profile.partials.update-profile-information-form') --}}
 
     @include('profile.partials.update-password-form')
 

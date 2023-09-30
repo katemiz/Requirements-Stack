@@ -6,7 +6,7 @@
     @if ($records->count() > 0)
 
         <x-table :params="config('projects')" :records="$records" />
-        {{ $records->links('pagination.bulma') }}
+        {{ $records->links('components.pagination.bulma') }}
 
     @else
         <x-notification type="is-warning is-light" message="{{ config('projects.list.noitem') }}" />

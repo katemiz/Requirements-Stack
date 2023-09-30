@@ -1,7 +1,7 @@
 <section class="section container">
 
     <header class="my-6">
-        <h1 class="title has-text-weight-light is-size-3">{{ __('Update Password') }}</h1>
+        <h1 class="title has-text-weight-light is-size-3">{{ __('Change Password') }}</h1>
         <h2 class="subtitle has-text-weight-light">{{ __("Ensure your account is using a long, random password to stay secure.") }}</h2>
     </header>
 

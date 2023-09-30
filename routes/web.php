@@ -69,19 +69,19 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/admin-users/{action}/{id?}', LwUser::class);
 
-    Route::get('/admin/users', ListUsers::class);
+    // Route::get('/admin/users', ListUsers::class);
     Route::get('/admin/roles', ListRoles::class);
     Route::get('/admin/permissions', ListPermissions::class);
 
-    Route::get('/admin/users/view/{id}', [RolesPermissionsController::class, 'usrview']);
+    // Route::get('/admin/users/view/{id}', [RolesPermissionsController::class, 'usrview']);
     Route::get('/admin/roles/view/{id}', [RolesPermissionsController::class, 'roleview']);
     Route::get('/admin/permissions/view/{id}', [RolesPermissionsController::class, 'permissionview']);
 
-    Route::get('/admin/users/form/{id?}', [RolesPermissionsController::class, 'usrform']);
+    // Route::get('/admin/users/form/{id?}', [RolesPermissionsController::class, 'usrform']);
     Route::get('/admin/roles/form/{id?}', [RolesPermissionsController::class, 'roleform']);
     Route::get('/admin/permissions/form/{id?}', [RolesPermissionsController::class, 'permissionform']);
 
-    Route::post('/admin/users/store/{id?}', [RolesPermissionsController::class, 'usrstore']);
+    // Route::post('/admin/users/store/{id?}', [RolesPermissionsController::class, 'usrstore']);
     Route::post('/admin/roles/store/{id?}', [RolesPermissionsController::class, 'rolestore']);
     Route::post('/admin/permissions/store/{id?}', [RolesPermissionsController::class, 'permissionstore']);
 
