@@ -170,6 +170,8 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\VoltServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        // App\Providers\SetUserProjectsProductsProvider::class,
+
     ])->toArray(),
 
     /*

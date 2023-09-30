@@ -17,6 +17,9 @@ use App\Livewire\ListUsers;
 use App\Livewire\ListRoles;
 use App\Livewire\ListPermissions;
 
+use App\Livewire\LwUser;
+
+
 use App\Http\Controllers\AttachmentController;
 use App\Http\Controllers\GateController;
 use App\Http\Controllers\ExportController;
@@ -60,11 +63,11 @@ Route::get('lang/{lang}', [
 
 Route::middleware('auth')->group(function () {
 
-
     // ADMIN
     // ************************************************************
     Route::get('/convertOldToNew', [RolesPermissionsController::class, 'convertOldToNew']);
 
+    Route::get('/admin-users/{action}/{id?}', LwUser::class);
 
     Route::get('/admin/users', ListUsers::class);
     Route::get('/admin/roles', ListRoles::class);

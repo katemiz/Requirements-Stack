@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 use App\Models\Company;
 
@@ -52,10 +53,21 @@ class User extends Authenticatable
 
     public function getCompanyNameAttribute($value) {
 
-        $cmp = Company::find($this->company_id);
-
-        return $cmp->name;
+        if ($this->company_id == 0) {
+            return 'App Admin';
+        }
+        return Company::find($this->company_id)->name;
     }
 
+    
+    public function getCompanyProjectsAttribute($value) {
+        return Company::find($this->company_id)->projects;
+    }
+
+
+    public function projects()
+    {
+        return $this->belongsToMany(Project::class)->withTimestamps();
+    }
 
 }

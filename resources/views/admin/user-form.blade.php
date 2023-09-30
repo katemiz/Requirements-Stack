@@ -7,6 +7,8 @@
     @csrf
 
         <x-select :params="$companies" value="{{ $user ? $user->company_id : '' }}"/>
+        <x-select :params="$companies" value="{{ $user ? $user->company_id : '' }}"/>
+
         <x-form-input :params="config('users.form.name')" value="{{ $user ? $user->name : '' }}"/>
         <x-form-input :params="config('users.form.lastname')" value="{{ $user ? $user->lastname : '' }}"/>
         <x-form-input :params="config('users.form.email')" value="{{ $user ? $user->email : '' }}"/>

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 use App\Models\Company;
+use App\Models\User;
 
 
 class Project extends Model
@@ -21,6 +22,14 @@ class Project extends Model
     {
         return $this->belongsTo(Company::class);
     }
+
+
+    public function users(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+
 
     public function endproducts(): HasMany
     {

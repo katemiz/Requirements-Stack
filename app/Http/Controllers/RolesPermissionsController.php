@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
+use App\Models\Company;
 use App\Models\User;
 use App\Models\Meeting;
 use App\Models\Moc;

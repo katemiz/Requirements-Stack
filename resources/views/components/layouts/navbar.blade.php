@@ -30,7 +30,9 @@
                     </a>
 
                     <div class="navbar-dropdown">
-                        <a href="/admin/users" class="navbar-item">Users</a>
+                        <a href="/admin/users" class="navbar-item">Users Eski</a>
+                        <a href="/admin-users/list" class="navbar-item">Users</a>
+
                         @role('admin')
                             <a href="/admin/roles" class="navbar-item">Roles</a>
                             <a href="/admin/permissions" class="navbar-item">Permissions</a>
@@ -83,8 +85,6 @@
                     </div>
                 </div>
 
-
-
             @endif
 
         </div>
@@ -97,13 +97,14 @@
 
                     <p class="navbar-link">
                         <span class="mx-3 has-text-right">
-                            {{ Auth::user()->name }} {{ Auth::user()->lastname }}
-                            <span class="block has-text-warning is-size-7">YHRT-PVR</span>
+                            {{ Auth::user()->name }} {{ Auth::user()->lastname }} / {{ Auth::user()->company_name }}
+                            <span class="block has-text-warning is-size-7">Current Project</span>
                         </span>
                     </p>
 
                     <div class="navbar-dropdown">                  
 
+                        <a href="/change-project" class="navbar-item">Change Project</a>
                         <a href="/profile" class="navbar-item">Profile</a>
 
                         <!-- Authentication -->

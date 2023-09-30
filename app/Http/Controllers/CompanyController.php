@@ -33,7 +33,6 @@ class CompanyController extends Controller
     public function store(Request $request)
     {
         $id = false;
-
         $props['user_id'] = Auth::id();
 
         if ( isset($request->id) && !empty($request->id)) {
@@ -45,7 +44,6 @@ class CompanyController extends Controller
 
             // update
             $company = Company::find($request->id)->update(array_merge($props,$validated));
-
             $id = $request->id;
         } else {
 

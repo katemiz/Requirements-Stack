@@ -5,6 +5,9 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Query\Builder;
 
+use DB;
+use Log;
+
 
 // use Illuminate\Pagination\Paginator;
 
@@ -31,6 +34,15 @@ class AppServiceProvider extends ServiceProvider
 
             return $string ? $this->where($field,'like','%'.$string.'%'): $this;
 
+        });
+
+
+        DB::listen(function($query) {
+            Log::info(
+                $query->sql,
+                $query->bindings,
+                $query->time
+            );
         });
 
 

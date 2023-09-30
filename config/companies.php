@@ -2,6 +2,15 @@
 
 return [
 
+    "roles" => [
+        "r" => ['admin'],
+        "w" => ['admin'],
+        "x" => ['admin']
+    ],
+
+
+
+
     "list" => [
         "title" => "Companies",
         "subtitle" => "List of all companies",
