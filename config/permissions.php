@@ -2,12 +2,6 @@
 
 return [
 
-    "roles" => [
-        "r" => ['admin'],
-        "w" => ['admin'],
-        "x" => ['admin']
-    ],
-
     "list" => [
         "title" => "Permissions",
         "subtitle" => "List of all Permissions",
@@ -72,23 +66,4 @@ return [
         "subtitle" => "Edit Permission Properties",
         "submitText" => "Update Permission",
     ],
-
-    "cu_route" => "/admin/permissions/store/",
-
-    "form" => [
-
-        "name" => [
-            "label" => "Permission Name",
-            "name" => "name",
-            "placeholder" => "eg Edit Articles",
-            "value" => ""
-        ],
-
-        "description" => [
-            "label" => "Description/Remarks/Notes",
-            "name" => "description",
-            "placeholder" => "Enter remarks/notes",
-            "value" => ""
-        ]
-    ]
 ];

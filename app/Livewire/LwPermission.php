@@ -2,8 +2,6 @@
 
 namespace App\Livewire;
 
-use App\Models\User;
-
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\On;
@@ -13,25 +11,23 @@ use Livewire\Attributes\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
-use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
-class LwRole extends Component
+
+class LwPermission extends Component
 {
     use WithPagination;
 
     public $action = 'LIST'; // LIST,FORM,VIEW
     public $constants;
 
-    public $rid = false;
+    public $pid = false;
 
     public $query = '';
     public $sortField = 'created_at';
     public $sortDirection = 'DESC';
 
-    public $logged_user;
-    public $user;
-
-    #[Rule('required', message: 'Please enter role name')] 
+    #[Rule('required', message: 'Please permission role name')] 
     public $name;
 
     public $created_at;
@@ -44,24 +40,24 @@ class LwRole extends Component
         }
 
         if (request('id')) {
-            $this->rid = request('id');
+            $this->pid = request('id');
             $this->setProps();
         }
 
-        $this->constants = config('roles');
+        $this->constants = config('permissions');
     }
 
 
     public function render()
     {
-        $roles = Role::where([
+        $permissions = Permission::where([
             ['name', 'LIKE', "%".$this->query."%"],
         ])
         ->orderBy($this->sortField,$this->sortDirection)
         ->paginate(env('RESULTS_PER_PAGE'));
 
-        return view('admin.roles.lw-roles',[
-            'roles' => $roles
+        return view('admin.permissions.lw-permissions',[
+            'permissions' => $permissions
         ]);
     }
 
@@ -83,38 +79,40 @@ class LwRole extends Component
         $this->query = '';
     }
 
-    public function viewRole($rid) {
-        $this->rid = $rid;
+    public function viewPermission($pid) {
+        $this->pid = $pid;
         $this->action = 'VIEW';
 
         $this->setProps();
     }
 
-    public function editRole($rid) {
-        $this->rid = $rid;
+    public function editPermission($pid) {
+        $this->id = $pid;
         $this->action = 'FORM';
 
         $this->setProps();
     }
 
-    public function addRole() {
-        $this->rid = false;
+    public function addPermission() {
+        $this->pid = false;
         $this->action = 'FORM';
+
+        $this->reset('name');
     }
 
 
     public function setProps() {
 
-        $r = Role::find($this->rid);
+        $p = Permission::find($this->pid);
 
-        $this->name = $r->name;
-        $this->created_at = $r->created_at;
-        $this->updated_at = $r->updated_at;
+        $this->name = $p->name;
+        $this->created_at = $p->created_at;
+        $this->updated_at = $p->updated_at;
     }
 
 
-    public function triggerDelete($rid) {
-        $this->rid = $rid;
+    public function triggerDelete($pid) {
+        $this->pid = $pid;
         $this->dispatch('ConfirmDelete');
     }
 
@@ -122,29 +120,30 @@ class LwRole extends Component
     #[On('onDeleteConfirmed')]
     public function deleteRole()
     {
-        Role::find($this->rid)->delete();
-        session()->flash('message','Role has been deleted successfully.');
+        Permission::find($this->pid)->delete();
+        session()->flash('message','Permission has been deleted successfully.');
         $this->action = 'LIST';
         $this->resetPage();
     }
 
     
-    public function storeUpdateRole () {
+    public function storeUpdatePermission () {
 
         $this->validate();
 
         $props['name'] = $this->name;
 
-        if ( $this->rid ) {
+        if ( $this->pid ) {
             // update
-            Role::find($this->rid)->update($props);
-            session()->flash('message','Role has been updated successfully.');
+            Permission::find($this->pid)->update($props);
+            session()->flash('message','Permission has been updated successfully.');
 
         } else {
             // create
-            $role = Role::create($props);
-            $this->rid = $role->id;
-            session()->flash('message','Role has been created successfully.');
+            $permission = Permission::create($props);
+            $this->pid = $permission->id;
+
+            session()->flash('message','Permission has been created successfully.');
         }
 
         $this->action = 'VIEW';
