@@ -22,8 +22,7 @@ class ListUsers extends Component
     public $sortDirection = 'asc';
     public $msg = false;
 
-
-
+    
     public function userHasRoles($usr) {
 
         $usr->is_admin = false;

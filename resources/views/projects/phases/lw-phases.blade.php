@@ -4,7 +4,7 @@
 
         window.addEventListener('ConfirmDelete',function(e) {
 
-            let sa_title = 'Do you really want to delete this Company?'
+            let sa_title = 'Do you really want to delete this Project Phase?'
             let sa_text = 'Once deleted, there is no reverting back!'
 
             Swal.fire({
@@ -50,16 +50,16 @@
     @switch($action)
 
         @case('FORM')
-            @include('admin.companies.lw-companies-form')
+            @include('projects.phases.lw-phases-form')
             @break
 
         @case('VIEW')
-            @include('admin.companies.lw-companies-view')
+            @include('projects.phases.lw-phases-view')
             @break
 
         @case('LIST')
         @default
-            @include('admin.companies.lw-companies-list')
+            @include('projects.phases.lw-phases-list')
             @break
 
     @endswitch

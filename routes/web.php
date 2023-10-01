@@ -78,6 +78,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin-permissions/{action}/{id?}', LwPermission::class);
     Route::get('/admin-companies/{action}/{id?}', LwCompany::class);
 
+
+    // ADMIN / COMPANY-ADMIN
+    // ************************************************************
     Route::get('/projects-projects/{action}/{id?}', LwProject::class);
     // Route::get('/projects-eproducts/{action}/{id?}', LwEndProduct::class);
     // Route::get('/projects-gates/{action}/{id?}', LwGate::class);

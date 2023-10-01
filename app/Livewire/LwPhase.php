@@ -11,7 +11,7 @@ use Livewire\Attributes\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
-use App\Models\Company;
+use App\Models\Phase;
 
 class LwPhase extends Component
 {
@@ -26,11 +26,16 @@ class LwPhase extends Component
     public $sortField = 'created_at';
     public $sortDirection = 'DESC';
 
-    #[Rule('required', message: 'Please enter company short name')] 
+    #[Rule('required', message: 'Please select project')] 
+    public $project_id;
+
+    #[Rule('required', message: 'Please enter phase code. (eg P1)')] 
+    public $code;
+
+    #[Rule('required', message: 'Please enter phase name (eg Feasibility Phase)')] 
     public $name;
 
-    #[Rule('required', message: 'Please enter company fullname')] 
-    public $fullname;
+    public $description;
 
     public $created_by;
     public $updated_by;
@@ -48,19 +53,20 @@ class LwPhase extends Component
             $this->setProps();
         }
 
-        $this->constants = config('companies');
+        $this->constants = config('phases');
     }
 
 
     public function render()
     {
-        $companies = Company::where('name', 'LIKE', "%".$this->query."%")
-        ->orWhere('fullname','LIKE',"%".$this->query."%")
+        $phases = Phase::where('code', 'LIKE', "%".$this->query."%")
+        ->orWhere('name','LIKE',"%".$this->query."%")
+        ->orWhere('description','LIKE',"%".$this->query."%")
         ->orderBy($this->sortField,$this->sortDirection)
         ->paginate(env('RESULTS_PER_PAGE'));
 
-        return view('admin.companies.lw-companies',[
-            'companies' => $companies
+        return view('projects.phases.lw-phases',[
+            'phases' => $phases
         ]);
     }
 
