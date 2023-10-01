@@ -17,6 +17,7 @@ use App\Livewire\ListUsers;
 use App\Livewire\ListRoles;
 use App\Livewire\ListPermissions;
 
+use App\Livewire\LwCompany;
 use App\Livewire\LwPermission;
 use App\Livewire\LwRole;
 use App\Livewire\LwUser;
@@ -73,6 +74,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin-users/{action}/{id?}', LwUser::class);
     Route::get('/admin-roles/{action}/{id?}', LwRole::class);
     Route::get('/admin-permissions/{action}/{id?}', LwPermission::class);
+    Route::get('/admin-companies/{action}/{id?}', LwCompany::class);
+
 
 
 

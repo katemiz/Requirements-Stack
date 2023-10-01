@@ -2,15 +2,6 @@
 
 return [
 
-    "roles" => [
-        "r" => ['admin'],
-        "w" => ['admin'],
-        "x" => ['admin']
-    ],
-
-
-
-
     "list" => [
         "title" => "Companies",
         "subtitle" => "List of all companies",
@@ -80,24 +71,6 @@ return [
         "subtitle" => "Edit Company Properties",
         "submitText" => "Update Company",
     ],
-
-    "cu_route" => "/companies/store/",
-
-    "form" => [
-        "name" => [
-            "label" => "Company Short Name",
-            "name" => "name",
-            "placeholder" => "Enter company short name",
-            "value" => ""
-        ],
-
-        "fullname" => [
-            "label" => "Full Official Company Name",
-            "name" => "fullname",
-            "placeholder" => "Enter official full company name",
-            "value" => ""
-        ]
-    ]
 ];
 
 

@@ -11,25 +11,29 @@ use Livewire\Attributes\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
-use Spatie\Permission\Models\Permission;
+use App\Models\Company;
 
-
-class LwPermission extends Component
+class LwCompany extends Component
 {
     use WithPagination;
 
     public $action = 'LIST'; // LIST,FORM,VIEW
     public $constants;
 
-    public $pid = false;
+    public $cid = false;
 
     public $query = '';
     public $sortField = 'created_at';
     public $sortDirection = 'DESC';
 
-    #[Rule('required', message: 'Please permission role name')] 
+    #[Rule('required', message: 'Please enter company short name')] 
     public $name;
 
+    #[Rule('required', message: 'Please enter company fullname')] 
+    public $fullname;
+
+    public $created_by;
+    public $updated_by;
     public $created_at;
     public $updated_at;
 
@@ -40,24 +44,23 @@ class LwPermission extends Component
         }
 
         if (request('id')) {
-            $this->pid = request('id');
+            $this->cid = request('id');
             $this->setProps();
         }
 
-        $this->constants = config('permissions');
+        $this->constants = config('companies');
     }
 
 
     public function render()
     {
-        $permissions = Permission::where([
-            ['name', 'LIKE', "%".$this->query."%"],
-        ])
+        $companies = Company::where('name', 'LIKE', "%".$this->query."%")
+        ->orWhere('fullname','LIKE',"%".$this->query."%")
         ->orderBy($this->sortField,$this->sortDirection)
         ->paginate(env('RESULTS_PER_PAGE'));
 
-        return view('admin.permissions.lw-permissions',[
-            'permissions' => $permissions
+        return view('admin.companies.lw-companies',[
+            'companies' => $companies
         ]);
     }
 
@@ -79,40 +82,43 @@ class LwPermission extends Component
         $this->query = '';
     }
 
-    public function viewPermission($pid) {
-        $this->pid = $pid;
+    public function viewItem($cid) {
+        $this->cid = $cid;
         $this->action = 'VIEW';
 
         $this->setProps();
     }
 
-    public function editPermission($pid) {
-        $this->pid = $pid;
+    public function editItem($cid) {
+        $this->cid = $cid;
         $this->action = 'FORM';
 
         $this->setProps();
     }
 
-    public function addPermission() {
-        $this->pid = false;
+    public function addItem() {
+        $this->cid = false;
         $this->action = 'FORM';
 
-        $this->reset('name');
+        $this->reset('name','fullname');
     }
 
 
     public function setProps() {
 
-        $p = Permission::find($this->pid);
+        $c = Company::find($this->cid);
 
-        $this->name = $p->name;
-        $this->created_at = $p->created_at;
-        $this->updated_at = $p->updated_at;
+        $this->name = $c->name;
+        $this->fullname = $c->fullname;
+        $this->created_at = $c->created_at;
+        $this->updated_at = $c->updated_at;
+        $this->created_by = $c->user_id;
+        $this->updated_by = $c->updated_uid;
     }
 
 
-    public function triggerDelete($pid) {
-        $this->pid = $pid;
+    public function triggerDelete($cid) {
+        $this->cid = $cid;
         $this->dispatch('ConfirmDelete');
     }
 
@@ -120,30 +126,33 @@ class LwPermission extends Component
     #[On('onDeleteConfirmed')]
     public function deleteRole()
     {
-        Permission::find($this->pid)->delete();
-        session()->flash('message','Permission has been deleted successfully.');
+        Company::find($this->cid)->delete();
+        session()->flash('message','Company has been deleted successfully.');
         $this->action = 'LIST';
         $this->resetPage();
     }
 
     
-    public function storeUpdatePermission () {
+    public function storeUpdateItem () {
 
         $this->validate();
 
+        $props['user_id'] = Auth::id();
         $props['name'] = $this->name;
+        $props['fullname'] = $this->fullname;
 
-        if ( $this->pid ) {
+        if ( $this->cid ) {
             // update
-            Permission::find($this->pid)->update($props);
-            session()->flash('message','Permission has been updated successfully.');
+            $props['updated_uid'] = Auth::id();
+            Company::find($this->cid)->update($props);
+            session()->flash('message','Company has been updated successfully.');
 
         } else {
             // create
-            $permission = Permission::create($props);
-            $this->pid = $permission->id;
+            $c = Company::create($props);
+            $this->cid = $c->id;
 
-            session()->flash('message','Permission has been created successfully.');
+            session()->flash('message','Company has been created successfully.');
         }
 
         $this->action = 'VIEW';
