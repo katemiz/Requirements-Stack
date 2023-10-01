@@ -4,8 +4,8 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 use App\Livewire\Attachment;
-use App\Livewire\ListCompanies;
-use App\Livewire\ListProjects;
+// use App\Livewire\ListCompanies;
+// use App\Livewire\ListProjects;
 use App\Livewire\ListRequirements;
 use App\Livewire\RequirementLivewire;
 use App\Livewire\ListEndproducts;
@@ -13,12 +13,14 @@ use App\Livewire\ListGates;
 use App\Livewire\ListMocs;
 use App\Livewire\ListPocs;
 use App\Livewire\ListWitnesses;
-use App\Livewire\ListUsers;
-use App\Livewire\ListRoles;
-use App\Livewire\ListPermissions;
+// use App\Livewire\ListUsers;
+// use App\Livewire\ListRoles;
+// use App\Livewire\ListPermissions;
 
 use App\Livewire\LwCompany;
 use App\Livewire\LwPermission;
+use App\Livewire\LwPhase;
+use App\Livewire\LwProject;
 use App\Livewire\LwRole;
 use App\Livewire\LwUser;
 
@@ -76,6 +78,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin-permissions/{action}/{id?}', LwPermission::class);
     Route::get('/admin-companies/{action}/{id?}', LwCompany::class);
 
+    Route::get('/projects-projects/{action}/{id?}', LwProject::class);
+    // Route::get('/projects-eproducts/{action}/{id?}', LwEndProduct::class);
+    // Route::get('/projects-gates/{action}/{id?}', LwGate::class);
+    Route::get('/projects-phases/{action}/{id?}', LwPhase::class);
+    // Route::get('/projects-witnesses/{action}/{id?}', LwWitness::class);
+
+
+
+    
 
 
 
@@ -98,11 +109,11 @@ Route::middleware('auth')->group(function () {
     // Route::get('/admin/users/delete/{id}', [UserController::class, 'delete']);
 
     // Companies
-    Route::get('/companies', ListCompanies::class);
-    Route::get('/companies/view/{id}', [CompanyController::class, 'view']);
-    Route::get('/companies/form/{id?}', [CompanyController::class, 'form']);
-    Route::post('/companies/store/{id?}', [CompanyController::class, 'store']);
-    Route::get('/companies/delete/{id}', [CompanyController::class, 'delete']);
+    // Route::get('/companies', ListCompanies::class);
+    // Route::get('/companies/view/{id}', [CompanyController::class, 'view']);
+    // Route::get('/companies/form/{id?}', [CompanyController::class, 'form']);
+    // Route::post('/companies/store/{id?}', [CompanyController::class, 'store']);
+    // Route::get('/companies/delete/{id}', [CompanyController::class, 'delete']);
 
     // APP
     // ************************************************************
@@ -121,11 +132,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/setcurrentproject/{id}', [CurrentProjectController::class, 'setCurrent']);
 
     // Projects
-    Route::get('/projects', ListProjects::class);
-    Route::get('/projects/view/{id}', [ProjectController::class, 'view']);
-    Route::get('/projects/form/{id?}', [ProjectController::class, 'form']);
-    Route::post('/projects/store/{id?}', [ProjectController::class, 'store']);
-    Route::get('/projects/delete/{id}', [ProjectController::class, 'delete']);
+    // Route::get('/projects', ListProjects::class);
+    // Route::get('/projects/view/{id}', [ProjectController::class, 'view']);
+    // Route::get('/projects/form/{id?}', [ProjectController::class, 'form']);
+    // Route::post('/projects/store/{id?}', [ProjectController::class, 'store']);
+    // Route::get('/projects/delete/{id}', [ProjectController::class, 'delete']);
 
     // Decision Gates / Meetings
     Route::get('/dgates', ListGates::class);

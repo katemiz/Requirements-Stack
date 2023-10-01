@@ -2,12 +2,6 @@
 
 return [
 
-    "roles" => [
-        "r" => ['admin'],
-        "w" => ['admin','company_admin'],
-        "x" => ['admin','company_admin']
-    ],
-
     "list" => [
         "title" => "Projects",
         "subtitle" => "List of all projects",
@@ -26,6 +20,20 @@ return [
                 "align" => "left",
                 "direction" => "asc"
             ],
+
+            "code"=> [
+                "title" => "Project Code",
+                "sortable" => true,
+                "align" => "left",
+                "direction" => "asc"
+            ],
+
+            "title"=> [
+                "title" => "Project Title",
+                "sortable" => true,
+                "align" => "left",
+                "direction" => "asc"
+            ],
     
             "company_name"=> [
                 "title" => "Company",
@@ -34,18 +42,7 @@ return [
                 "direction" => "asc"
             ],
 
-            "code"=> [
-                "title" => "Code",
-                "sortable" => true,
-                "align" => "left",
-                "direction" => "asc"
-            ],
-            "title"=> [
-                "title" => "Title",
-                "sortable" => true,
-                "align" => "left",
-                "direction" => "asc"
-            ],
+
 
             "created_at"=> [
                 "title" => "Created On",
@@ -68,10 +65,8 @@ return [
     ],
 
     "select_current" => [
-
         "title" => "Projects",
         "subtitle" => "Select current project",
-
     ],
 
     "create" => [
@@ -92,31 +87,6 @@ return [
         "submitText" => "Update Project",
     ],
 
-    "cu_route" => "/projects/store/",
-
-
-    "form" => [
-
-        "company"=> [
-            "label" => "Company",
-            "name" => "company",
-            "options" => ""
-        ],
-
-        "code" => [
-            "label" => "Project Code",
-            "name" => "code",
-            "placeholder" => "Enter project code eg RLS",
-            "value" => ""
-        ],
-
-        "title" => [
-            "label" => "Project Title",
-            "name" => "title",
-            "placeholder" => "Enter project title/description",
-            "value" => ""
-        ]
-    ]
 ];
 
 

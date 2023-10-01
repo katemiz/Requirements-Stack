@@ -45,17 +45,17 @@
 
                 <div class="navbar-item has-dropdown is-hoverable">
 
-                    <a class="navbar-link">
+                    <a href="/projects-projects/home" class="navbar-link">
                         <span class="icon has-text-warning"><x-carbon-letter-pp /></span>
                         <span class="ml-2">Projects</span>
                     </a>
 
                     <div class="navbar-dropdown">
-                        <a href="/projects" class="navbar-item">Projects List</a>
-                        <a href="/endproducts" class="navbar-item">Project > End Products</a>
-                        <a href="/dgates" class="navbar-item">Project > Decision Gates</a>
-                        <a href="/phases" class="navbar-item">Project > Project Phases</a>
-                        <a href="/witness" class="navbar-item">Project > Witnesses</a>
+                        <a href="/projects-projects/list" class="navbar-item">Projects List</a>
+                        <a href="/projects-ep/list" class="navbar-item">Project > End Products</a>
+                        <a href="/projects-dg/list" class="navbar-item">Project > Decision Gates</a>
+                        <a href="/projects-phase/list" class="navbar-item">Project > Project Phases</a>
+                        <a href="/projects-witness/list" class="navbar-item">Project > Witnesses</a>
                     </div>
                 </div>
 

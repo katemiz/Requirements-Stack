@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Storage;
 
 use App\Models\Company;
 
-class LwCompany extends Component
+class LwPhase extends Component
 {
     use WithPagination;
 
@@ -137,18 +137,18 @@ class LwCompany extends Component
 
         $this->validate();
 
-        $props['updated_uid'] = Auth::id();
+        $props['user_id'] = Auth::id();
         $props['name'] = $this->name;
         $props['fullname'] = $this->fullname;
 
         if ( $this->cid ) {
             // update
+            $props['updated_uid'] = Auth::id();
             Company::find($this->cid)->update($props);
             session()->flash('message','Company has been updated successfully.');
 
         } else {
             // create
-            $props['user_id'] = Auth::id();
             $c = Company::create($props);
             $this->cid = $c->id;
 
