@@ -8,7 +8,7 @@
         @if ($records->count() > 0)
 
             <x-table :params="config('permissions')" :records="$records" />
-            {{ $records->links('pagination.bulma') }}
+            {{ $records->links('components.pagination.bulma') }}
 
         @else
             <x-notification type="is-warning is-light" message="{{ config('permissions.list.noitem') }}" />

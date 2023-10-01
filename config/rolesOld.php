@@ -2,12 +2,18 @@
 
 return [
 
+    "roles" => [
+        "r" => ['admin'],
+        "w" => ['admin'],
+        "x" => ['admin']
+    ],
+
     "list" => [
-        "title" => "Application Roles",
-        "subtitle" => "List of all Application Roles",
+        "title" => "Roles",
+        "subtitle" => "List of all Roles",
         "addButton" => [
             "text"=>"Add Role",
-            "route"=>"/admin-roles/form"
+            "route"=>"/admin/roles/form"
         ],
         "filterText" => "Search ...",
         "listCaption" => false,
@@ -20,6 +26,7 @@ return [
                 "align" => "left",
                 "direction" => "asc"
             ],
+
 
             "name"=> [
                 "title" => "Name",
@@ -36,9 +43,9 @@ return [
             ]
         ],
         "actions" => [
-            "r" => "/admin-roles/view/",
-            "w" => "/admin-roles/form/",
-            "x" => "/admin-roles/delete/"
+            "r" => "/admin/roles/view/",
+            "w" => "/admin/roles/form/",
+            "x" => "/admin/roles/delete/"
         ],
         "noitem" => "No roles found in database yet!",
         "delete_confirm" => [
@@ -66,7 +73,24 @@ return [
         "submitText" => "Update Role",
     ],
 
+    "cu_route" => "/admin/roles/store/",
 
+    "form" => [
+
+        "name" => [
+            "label" => "Role Name",
+            "name" => "name",
+            "placeholder" => "Enter role name",
+            "value" => ""
+        ],
+
+        "description" => [
+            "label" => "Description/Remarks/Notes",
+            "name" => "description",
+            "placeholder" => "Enter remarks/notes",
+            "value" => ""
+        ]
+    ]
 ];
 
 

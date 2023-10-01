@@ -91,7 +91,7 @@ class LwUser extends Component
         $this->getProjects();
 
 
-        return view('admin.lw-users',[
+        return view('admin.users.lw-users',[
             'users' => $this->getUsersList()
         ]);
     }

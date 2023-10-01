@@ -66,16 +66,16 @@
     @switch($action)
 
         @case('FORM')
-            @include('admin.lw-users-form')
+            @include('admin.users.lw-users-form')
             @break
 
         @case('VIEW')
-            @include('admin.lw-users-view')
+            @include('admin.users.lw-users-view')
             @break
 
         @case('LIST')
         @default
-            @include('admin.lw-users-list')
+            @include('admin.users.lw-users-list')
             @break
 
     @endswitch

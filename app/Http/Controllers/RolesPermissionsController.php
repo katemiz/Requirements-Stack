@@ -252,21 +252,14 @@ class RolesPermissionsController extends Controller
 
         $user->syncPermissions($selected_perms);
 
-
-
-
-
-
-
-
-
-
-
-
-
         return redirect('/admin/users/view/'.$id);
     }
 
+
+
+
+
+    
     public function rolestore (Request $request) {
 
         $id = false;
