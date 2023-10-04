@@ -63,27 +63,23 @@ return [
         ]
     ],
 
-    "select_current" => [
-        "title" => "Projects",
-        "subtitle" => "Select current project",
-    ],
 
     "create" => [
-        "title" => "Projects",
-        "subtitle" => "Create a New Project",
-        "submitText" => "Add Project",
+        "title" => "Project Phases",
+        "subtitle" => "Create a New Project Phase",
+        "submitText" => "Add Project Phase",
     ],
 
     "read" => [
-        "title" => "Projects",
-        "subtitle" => "View Project Parameters",
-        "submitText" => "Add Project",
+        "title" => "Project Phases",
+        "subtitle" => "View Project Phase Parameters",
+        "submitText" => "Add Project Phase",
     ],
 
     "update" => [
         "title" => "Projects",
-        "subtitle" => "Edit Project Properties",
-        "submitText" => "Update Project",
+        "subtitle" => "Edit Project PhaseProperties",
+        "submitText" => "Update Project Phase",
     ],
 
 ];

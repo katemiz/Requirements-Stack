@@ -16,7 +16,7 @@
         <!-- Left side -->
         <div class="level-left">
 
-            @role(['admin'])
+            @role(['admin','company_admin'])
             <div class="level-item has-text-centered">
                     <a wire:click='addItem' class="button is-dark">
                         <span class="icon is-small"><x-carbon-add /></span>
@@ -51,7 +51,7 @@
 
     </nav>
 
-    @if ($companies->count() > 0)
+    @if ($phases->count() > 0)
     <table class="table is-fullwidth">
 
         @if ($constants['list']['listCaption'])
@@ -91,7 +91,7 @@
 
         <tbody>
 
-            @foreach ($companies as $record)
+            @foreach ($phases as $record)
             <tr wire:key="{{ $record->id }}">
 
                 @foreach (array_keys($constants['list']['headers']) as $col_name)
@@ -128,7 +128,7 @@
         </tbody>
     </table>
 
-    {{ $companies->links('components.pagination.bulma') }}
+    {{ $phases->links('components.pagination.bulma') }}
 
     @else
         <div class="notification is-warning is-light">{{ $constants['list']['noitem'] }}</div>

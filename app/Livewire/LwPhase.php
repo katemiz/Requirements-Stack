@@ -20,11 +20,13 @@ class LwPhase extends Component
     public $action = 'LIST'; // LIST,FORM,VIEW
     public $constants;
 
-    public $cid = false;
+    public $uid = false;
 
     public $query = '';
     public $sortField = 'created_at';
     public $sortDirection = 'DESC';
+
+    public $logged_user;
 
     #[Rule('required', message: 'Please select project')] 
     public $project_id;
@@ -49,7 +51,7 @@ class LwPhase extends Component
         }
 
         if (request('id')) {
-            $this->cid = request('id');
+            $this->uid = request('id');
             $this->setProps();
         }
 
@@ -59,16 +61,71 @@ class LwPhase extends Component
 
     public function render()
     {
-        $phases = Phase::where('code', 'LIKE', "%".$this->query."%")
-        ->orWhere('name','LIKE',"%".$this->query."%")
-        ->orWhere('description','LIKE',"%".$this->query."%")
-        ->orderBy($this->sortField,$this->sortDirection)
-        ->paginate(env('RESULTS_PER_PAGE'));
+        $this->logged_user = $this->checkUserRoles(Auth::user());
 
         return view('projects.phases.lw-phases',[
-            'phases' => $phases
+            'phases' => $this->getPhasesList()
         ]);
     }
+
+
+    public function checkUserRoles($usr) {
+
+        $usr->is_admin = false;
+        $usr->is_company_admin = false;
+
+        if ($usr->hasRole('admin')) {
+            $usr->is_admin = true;
+        }
+
+        if ($usr->hasRole('company_admin')) {
+            $usr->is_company_admin = true;
+        }
+
+        return $usr;
+    }
+
+
+
+    public function getPhasesList()  {
+
+        if ($this->logged_user->is_admin) {
+
+            $phases = Phase::where('code', 'LIKE', "%".$this->query."%")
+                ->orWhere('name','LIKE',"%".$this->query."%")
+                ->orWhere('description','LIKE',"%".$this->query."%")
+                ->orderBy($this->sortField,$this->sortDirection)
+                ->paginate(env('RESULTS_PER_PAGE'));
+        }
+
+        if ($this->logged_user->is_company_admin) {
+
+            $phases = Phase::where([
+                ['company_id', '=', $this->logged_user->company_id],
+                ['code', 'LIKE', "%".$this->query."%"],
+                ['name', 'LIKE', "%".$this->query."%"],
+                ['description', 'LIKE', "%".$this->query."%"],
+            ])
+            ->orwhere([
+                ['company_id', '=', $this->logged_user->company_id],
+                ['code', 'LIKE', "%".$this->query."%"],
+                ['name', 'LIKE', "%".$this->query."%"],
+                ['description', 'LIKE', "%".$this->query."%"],
+            ])
+            ->orderBy($this->sortField,$this->sortDirection)
+            ->paginate(env('RESULTS_PER_PAGE'));
+        }
+
+        return $phases;
+    }
+
+
+
+
+
+
+
+
 
 
     public function changeSortDirection ($key) {
@@ -88,43 +145,43 @@ class LwPhase extends Component
         $this->query = '';
     }
 
-    public function viewItem($cid) {
-        $this->cid = $cid;
+    public function viewItem($uid) {
+        $this->uid = $uid;
         $this->action = 'VIEW';
 
         $this->setProps();
     }
 
-    public function editItem($cid) {
-        $this->cid = $cid;
+    public function editItem($uid) {
+        $this->uid = $uid;
         $this->action = 'FORM';
 
         $this->setProps();
     }
 
     public function addItem() {
-        $this->cid = false;
+        $this->uid = false;
         $this->action = 'FORM';
 
-        $this->reset('name','fullname');
+        $this->reset('code','name');
     }
 
 
     public function setProps() {
 
-        $c = Company::find($this->cid);
+        $c = Phase::find($this->uid);
 
+        $this->code = $c->code;
         $this->name = $c->name;
-        $this->fullname = $c->fullname;
+        $this->description = $c->description;
         $this->created_at = $c->created_at;
         $this->updated_at = $c->updated_at;
         $this->created_by = $c->user_id;
-        $this->updated_by = $c->updated_uid;
     }
 
 
-    public function triggerDelete($cid) {
-        $this->cid = $cid;
+    public function triggerDelete($uid) {
+        $this->uid = $uid;
         $this->dispatch('ConfirmDelete');
     }
 
@@ -132,8 +189,8 @@ class LwPhase extends Component
     #[On('onDeleteConfirmed')]
     public function deleteRole()
     {
-        Company::find($this->cid)->delete();
-        session()->flash('message','Company has been deleted successfully.');
+        Phase::find($this->uid)->delete();
+        session()->flash('message','Project phase has been deleted successfully.');
         $this->action = 'LIST';
         $this->resetPage();
     }
@@ -147,18 +204,18 @@ class LwPhase extends Component
         $props['name'] = $this->name;
         $props['fullname'] = $this->fullname;
 
-        if ( $this->cid ) {
+        if ( $this->uid ) {
             // update
             $props['updated_uid'] = Auth::id();
-            Company::find($this->cid)->update($props);
-            session()->flash('message','Company has been updated successfully.');
+            Phase::find($this->uid)->update($props);
+            session()->flash('message','Project phase has been updated successfully.');
 
         } else {
             // create
-            $c = Company::create($props);
-            $this->cid = $c->id;
+            $c = Phase::create($props);
+            $this->uid = $c->id;
 
-            session()->flash('message','Company has been created successfully.');
+            session()->flash('message','Project phase has been created successfully.');
         }
 
         $this->action = 'VIEW';
