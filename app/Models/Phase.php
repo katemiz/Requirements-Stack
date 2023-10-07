@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Phase extends Model
 {
     use HasFactory;
+
+    protected $table = 'phases';
+
+    protected $fillable = ['user_id','company_id','project_id','endproduct_id','code', 'name','description'];
 }

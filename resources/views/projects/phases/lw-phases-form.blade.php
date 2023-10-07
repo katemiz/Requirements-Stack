@@ -12,9 +12,9 @@
             <div class="select">
             <select wire:model='company_id' wire:change='getProjects'>
                 <option>Select a company...</option>
-                @foreach ($companies as $company)
-                    <option value="{{ $company->id }}">{{ $company->name }}</option>
-                @endforeach
+                    @foreach ($companies as $company)
+                        <option value="{{ $company->id }}">{{ $company->name }}</option>
+                    @endforeach
             </select>
             </div>
         </div>
@@ -23,6 +23,58 @@
         <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
         @enderror
     </div>
+
+
+
+    <div class="field">
+        <label class="label">Projects</label>
+        <div class="control">
+            <div class="select">
+            <select wire:model='project_id' wire:change='getProjects'>
+                <option>Select a project...</option>
+                    @foreach ($projects as $project)
+                        <option value="{{ $project->id }}">{{ $project->title }}</option>
+                    @endforeach
+            </select>
+            </div>
+        </div>
+    
+        @error('company_id')
+        <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
+        @enderror
+    </div>
+
+
+
+
+
+    <div class="field">
+        <label class="label">End Products</label>
+        <div class="control">
+
+            @if ($project_id && count($project_eproducts[$project_id]) > 0)
+
+            <div class="select">
+
+                <select wire:model='eproduct_id' wire:change='getProjects'>
+                    <option>Select a End Product...</option>
+                        @foreach ($project_eproducts[$project_id] as $endproduct)
+                            <option value="{{ $endproduct->id }}">{{ $endproduct->title }}</option>
+                        @endforeach
+                </select>
+
+            </div>
+
+            @else
+                <p>No end product found</p>
+            @endif
+        </div>
+    
+        @error('endproduct_id')
+        <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
+        @enderror
+    </div>
+
 
 
 

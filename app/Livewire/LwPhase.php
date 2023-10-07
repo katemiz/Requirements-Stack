@@ -11,7 +11,11 @@ use Livewire\Attributes\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
+use App\Models\Company;
+use App\Models\Endproduct;
 use App\Models\Phase;
+use App\Models\Project;
+
 
 class LwPhase extends Component
 {
@@ -27,9 +31,27 @@ class LwPhase extends Component
     public $sortDirection = 'DESC';
 
     public $logged_user;
+    public $companies = [];
+    public $projects = [];
+    public $endproducts = [];
+
+    public $the_company = false;    // Viewed Phase Company
+    public $the_project = false;    // Viewed Phase Project
+    public $the_endproduct = false; // Viewed Phase EndProduct
+
+
+
+    public $project_eproducts = [];
+
+
+    #[Rule('required', message: 'Please select company')] 
+    public $company_id = false;
 
     #[Rule('required', message: 'Please select project')] 
-    public $project_id;
+    public $project_id = false;
+
+    // #[Rule('required', message: 'Please select End Product')] 
+    public $endproduct_id = false;
 
     #[Rule('required', message: 'Please enter phase code. (eg P1)')] 
     public $code;
@@ -63,6 +85,9 @@ class LwPhase extends Component
     {
         $this->logged_user = $this->checkUserRoles(Auth::user());
 
+        $this->getCompaniesList();
+        $this->getProjectsList();
+
         return view('projects.phases.lw-phases',[
             'phases' => $this->getPhasesList()
         ]);
@@ -91,41 +116,77 @@ class LwPhase extends Component
 
         if ($this->logged_user->is_admin) {
 
-            $phases = Phase::where('code', 'LIKE', "%".$this->query."%")
+            if (strlen(trim($this->query)) > 0 ) {
+
+                $phases = Phase::orderBy($this->sortField,$this->sortDirection)
+                ->paginate(env('RESULTS_PER_PAGE'));
+
+            } else {
+
+                $phases = Phase::where('code', 'LIKE', "%".$this->query."%")
                 ->orWhere('name','LIKE',"%".$this->query."%")
                 ->orWhere('description','LIKE',"%".$this->query."%")
                 ->orderBy($this->sortField,$this->sortDirection)
                 ->paginate(env('RESULTS_PER_PAGE'));
+            }
         }
 
         if ($this->logged_user->is_company_admin) {
 
-            $phases = Phase::where([
-                ['company_id', '=', $this->logged_user->company_id],
-                ['code', 'LIKE', "%".$this->query."%"],
-                ['name', 'LIKE', "%".$this->query."%"],
-                ['description', 'LIKE', "%".$this->query."%"],
-            ])
-            ->orwhere([
-                ['company_id', '=', $this->logged_user->company_id],
-                ['code', 'LIKE', "%".$this->query."%"],
-                ['name', 'LIKE', "%".$this->query."%"],
-                ['description', 'LIKE', "%".$this->query."%"],
-            ])
-            ->orderBy($this->sortField,$this->sortDirection)
-            ->paginate(env('RESULTS_PER_PAGE'));
+            if (strlen(trim($this->query)) > 0 ) {
+
+                $phases = Phase::where('company_id',$this->logged_user->company_id)
+                ->where(function ($sqlquery) {
+                    $sqlquery->where('code', 'LIKE', "%".$this->query."%")
+                          ->orWhere('name', 'LIKE', "%".$this->query."%")
+                          ->orWhere('description', 'LIKE', "%".$this->query."%");
+                })
+                ->orderBy($this->sortField,$this->sortDirection)
+                ->paginate(env('RESULTS_PER_PAGE'));
+
+            } else {
+
+                $phases = Phase::where('company_id', $this->logged_user->company_id)
+                ->orderBy($this->sortField,$this->sortDirection)
+                ->paginate(env('RESULTS_PER_PAGE'));
+            }
         }
 
         return $phases;
     }
 
 
+    public function getCompaniesList()  {
+
+        if ($this->logged_user->is_admin) {
+            $this->companies = Company::all();
+        }
+
+        if ($this->logged_user->is_company_admin) {
+            $this->companies = Company::find($this->logged_user->company_id)->get();
+            $this->company_id = $this->logged_user->company_id;
+        }
+    }
 
 
+    public function getProjectsList()  {
 
+        if ($this->logged_user->is_admin) {
+            $this->projects = Project::all();
+        }
 
+        if ($this->logged_user->is_company_admin) {
+            $this->projects = Project::where('company_id',$this->logged_user->company_id)->get();
+        }
 
+        if (count($this->projects) == 1) {
+            $this->project_id = $this->projects['0']->id;
+        }
 
+        foreach($this->projects as $prj) {
+            $this->project_eproducts[$prj->id] = Endproduct::where('project_id',$prj->id)->get();
+        }
+    }
 
 
     public function changeSortDirection ($key) {
@@ -141,9 +202,11 @@ class LwPhase extends Component
         $this->sortDirection = $this->constants['list']['headers'][$key]['direction'];
     }
 
+
     public function resetFilter() {
         $this->query = '';
     }
+
 
     public function viewItem($uid) {
         $this->uid = $uid;
@@ -152,12 +215,14 @@ class LwPhase extends Component
         $this->setProps();
     }
 
+
     public function editItem($uid) {
         $this->uid = $uid;
         $this->action = 'FORM';
 
         $this->setProps();
     }
+
 
     public function addItem() {
         $this->uid = false;
@@ -177,6 +242,14 @@ class LwPhase extends Component
         $this->created_at = $c->created_at;
         $this->updated_at = $c->updated_at;
         $this->created_by = $c->user_id;
+
+        $this->the_company = Company::find($c->company_id);
+        $this->the_project = Project::find($c->project_id);
+
+        if ($c->endproduct_id > 0) {
+            $this->the_endproduct = Endproduct::find($c->endproduct_id);
+        }
+
     }
 
 
@@ -187,7 +260,7 @@ class LwPhase extends Component
 
 
     #[On('onDeleteConfirmed')]
-    public function deleteRole()
+    public function deleteItem()
     {
         Phase::find($this->uid)->delete();
         session()->flash('message','Project phase has been deleted successfully.');
@@ -201,8 +274,11 @@ class LwPhase extends Component
         $this->validate();
 
         $props['user_id'] = Auth::id();
+        $props['company_id'] = $this->company_id;
+        $props['project_id'] = $this->project_id;
+        $props['endproduct_id'] = $this->endproduct_id ? $this->endproduct_id : 0;
+        $props['code'] = $this->code;
         $props['name'] = $this->name;
-        $props['fullname'] = $this->fullname;
 
         if ( $this->uid ) {
             // update
@@ -212,9 +288,8 @@ class LwPhase extends Component
 
         } else {
             // create
-            $c = Phase::create($props);
-            $this->uid = $c->id;
-
+            //dd($props);
+            $this->uid = Phase::create($props)->id;
             session()->flash('message','Project phase has been created successfully.');
         }
 

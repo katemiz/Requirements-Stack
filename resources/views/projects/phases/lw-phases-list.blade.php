@@ -110,7 +110,7 @@
                         <span class="icon"><x-carbon-view/></span>
                     </a>
 
-                    @role(['admin'])
+                    @role(['admin','company_admin'])
                         <a wire:click="editItem({{ $record->id }})">
                             <span class="icon"><x-carbon-edit /></span>
                         </a>
