@@ -42,9 +42,9 @@ class LwMoc extends Component
     public $the_project = false;    // Viewed Phase Project
     public $the_endproduct = false; // Viewed Phase EndProduct
 
+    public $description;
 
     public $project_eproducts = [];
-
 
     #[Rule('required', message: 'Please select company')] 
     public $company_id = false;
@@ -280,6 +280,8 @@ class LwMoc extends Component
         $props['endproduct_id'] = $this->endproduct_id ? $this->endproduct_id : 0;
         $props['code'] = $this->code;
         $props['name'] = $this->name;
+        $props['description'] = $this->description;
+
 
         if ( $this->uid ) {
             // update

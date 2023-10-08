@@ -11,6 +11,10 @@
         <div class="notification is-info is-light">{{ session('message') }}</div>
     @endif
 
+
+
+
+
     <nav class="level my-6">
 
         <!-- Left side -->
@@ -18,7 +22,8 @@
 
             @role(['admin','company_admin'])
             <div class="level-item has-text-centered">
-                    <a wire:click='addItem' class="button is-dark">
+                    <a href="/projects-mocs/form" class="button is-dark">
+                    {{-- <a wire:click='addItem' class="button is-dark"> --}}
                         <span class="icon is-small"><x-carbon-add /></span>
                         <span>{{ $constants['list']['addButton']['text'] }}</span>
                     </a>
@@ -111,7 +116,8 @@
                     </a>
 
                     @role(['admin','company_admin'])
-                        <a wire:click="editItem({{ $record->id }})">
+                        <a href="/projects-mocs/form/{{ $record->id }}">
+                        {{-- <a wire:click="editItem({{ $record->id }})"> --}}
                             <span class="icon"><x-carbon-edit /></span>
                         </a>
 

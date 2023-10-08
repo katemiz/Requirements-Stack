@@ -67,6 +67,12 @@
             <span class="has-text-weignt-bold">{{ $the_endproduct ? ' - ' .$the_endproduct->title : ''}}</span>
         </p>
 
+        @if (strlen(trim($description)) > 0) 
+        <p class="subtitle is-6">
+            {!! $description !!}
+        </p>
+        @endif
+
         <div class="columns is-size-7 has-text-grey mt-6">
 
             <div class="column">

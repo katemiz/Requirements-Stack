@@ -286,6 +286,7 @@ class LwPhase extends Component
         $props['endproduct_id'] = $this->endproduct_id ? $this->endproduct_id : 0;
         $props['code'] = $this->code;
         $props['name'] = $this->name;
+        $props['description'] = $this->description;
 
         if ( $this->uid ) {
             // update

@@ -11,6 +11,41 @@
         <div class="notification is-info is-light">{{ session('message') }}</div>
     @endif
 
+
+
+
+
+
+{{-- 
+    <pre>
+        @foreach ($mocs as $record)
+
+        Moc::create([
+            'updated_uid' => 1,
+            'user_id' => 1,
+            'company_id' => 0,
+            'project_id' => 0,
+            'endproduct_id' => 0,
+            'code' => '{{ $record->code}}',
+            'name' => '{{ $record->name}}',
+            'description' => '{{ $record->description}}'
+        ]);
+
+        @endforeach
+
+    </pre>
+
+
+ --}}
+
+
+
+
+
+
+
+
+
     <nav class="level my-6">
 
         <!-- Left side -->
@@ -18,11 +53,11 @@
 
             @role(['admin','company_admin'])
             <div class="level-item has-text-centered">
-                    <a wire:click='addItem' class="button is-dark">
-                        <span class="icon is-small"><x-carbon-add /></span>
-                        <span>{{ $constants['list']['addButton']['text'] }}</span>
-                    </a>
-                </div>
+                <a href="/projects-pocs/form" class="button is-dark">
+                    <span class="icon is-small"><x-carbon-add /></span>
+                    <span>{{ $constants['list']['addButton']['text'] }}</span>
+                </a>
+            </div>
             @endrole
 
         </div>
@@ -111,7 +146,8 @@
                     </a>
 
                     @role(['admin','company_admin'])
-                        <a wire:click="editItem({{ $record->id }})">
+                        <a href="/projects-pocs/form/{{ $record->id }}">
+                        {{-- <a wire:click="editItem({{ $record->id }})"> --}}
                             <span class="icon"><x-carbon-edit /></span>
                         </a>
 

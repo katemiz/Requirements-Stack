@@ -111,7 +111,8 @@
                     </a>
 
                     @role(['admin','company_admin'])
-                        <a wire:click="editItem({{ $record->id }})">
+                        <a href="/projects-phases/form/{{ $record->id }}">
+                        {{-- <a wire:click="editItem({{ $record->id }})"> --}}
                             <span class="icon"><x-carbon-edit /></span>
                         </a>
 

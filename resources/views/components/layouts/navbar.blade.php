@@ -24,10 +24,10 @@
                 @role(['admin','company_admin'])
                 <div class="navbar-item has-dropdown is-hoverable">
 
-                    <a href="/projects" class="navbar-link">
+                    <p class="navbar-link">
                         <span class="icon has-text-warning"><x-carbon-letter-aa /></span>
                         <span class="ml-2">Adm</span>
-                    </a>
+                    </p>
 
                     <div class="navbar-dropdown">
                         <a href="/admin-users/list" class="navbar-item">Users</a>

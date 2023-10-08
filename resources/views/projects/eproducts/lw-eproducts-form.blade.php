@@ -1,3 +1,6 @@
+<script src="{{ asset('/ckeditor5/ckeditor.js') }}"></script>
+
+
 <x-title :params="$uid ? $constants['update'] : $constants['create']" />
 
 
@@ -5,52 +8,47 @@
     @csrf
 
 
+    <div class="field ">
+        <div class="field-body">
 
-    <div class="field">
-        <label class="label">Company</label>
-        <div class="control">
-            <div class="select">
-            <select wire:model='company_id' wire:change='getProjects'>
-                <option>Select a company...</option>
-                    @foreach ($companies as $company)
-                        <option value="{{ $company->id }}">{{ $company->name }}</option>
-                    @endforeach
-            </select>
+            <div class="field">
+                <label class="label">Company</label>
+                <div class="control">
+                    <div class="select">
+                    <select wire:model='company_id' wire:change='getProjects'>
+                        <option>Select a company...</option>
+                            @foreach ($companies as $company)
+                                <option value="{{ $company->id }}">{{ $company->name }}</option>
+                            @endforeach
+                    </select>
+                    </div>
+                </div>
+            
+                @error('company_id')
+                <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
+                @enderror
             </div>
-        </div>
-    
-        @error('company_id')
-        <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
-        @enderror
-    </div>
-
-
-
-    <div class="field">
-        <label class="label">Projects</label>
-        <div class="control">
-            <div class="select">
-            <select wire:model='project_id' wire:change='getProjects'>
-                <option>Select a project...</option>
-                    @foreach ($projects as $project)
-                        <option value="{{ $project->id }}">{{ $project->title }}</option>
-                    @endforeach
-            </select>
+        
+            <div class="field">
+                <label class="label">Project</label>
+                <div class="control">
+                    <div class="select">
+                    <select wire:model='project_id' wire:change='getProjects'>
+                        <option>Select a project...</option>
+                            @foreach ($projects as $project)
+                                <option value="{{ $project->id }}">{{ $project->title }}</option>
+                            @endforeach
+                    </select>
+                    </div>
+                </div>
+            
+                @error('company_id')
+                <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
+                @enderror
             </div>
+
         </div>
-    
-        @error('company_id')
-        <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
-        @enderror
     </div>
-
-
-
-
-
-
-
-
 
 
     <div class="field">
@@ -87,6 +85,28 @@
         <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
         @enderror
     </div>
+
+
+
+
+    <livewire:ck-editor
+        edId="ed10"
+        wire:model="description"
+        label='Description'
+        placeholder='Detailed description ....'
+        :content="$description"/>
+
+    @error('description')
+        <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
+    @enderror
+
+
+
+
+
+
+
+
 
 
     <div class="buttons is-right">

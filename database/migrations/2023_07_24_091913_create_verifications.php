@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 use App\Models\User;
-use App\Models\Meeting;
+use App\Models\Gate;
 use App\Models\Moc;
 use App\Models\Poc;
 use App\Models\Project;
@@ -25,7 +25,7 @@ return new class extends Migration
             $table->foreignIdFor(User::class);
             $table->foreignIdFor(Project::class);
             $table->foreignIdFor(Requirement::class);
-            $table->foreignIdFor(Meeting::class);
+            $table->foreignIdFor(Gate::class);
             $table->foreignIdFor(Moc::class);
             $table->foreignIdFor(Poc::class);
             $table->foreignIdFor(Witness::class);

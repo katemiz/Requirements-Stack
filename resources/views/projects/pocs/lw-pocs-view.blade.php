@@ -1,6 +1,6 @@
 <header class="mb-6">
-    <h1 class="title has-text-weight-light is-size-1">Project MOC Definitions</h1>
-    <h2 class="subtitle has-text-weight-light">View Means of Compliance (MOC) Definition Attributes</h2>
+    <h1 class="title has-text-weight-light is-size-1">Project POC Definitions</h1>
+    <h2 class="subtitle has-text-weight-light">View Proof of Compliance (POC) Definition Attributes</h2>
 </header>
 
 @if (session()->has('message'))
@@ -18,14 +18,14 @@
             <div class="level-left">
         
                 <p class="level-item">
-                    <a href="/projects-witnesses/list">                    
+                    <a href="/projects-pocs/list">                    
                         <span class="icon is-small"><x-carbon-table /></span>
                         <span>List All</span>
                     </a>
                 </p>
         
                 <p class="level-item">
-                    <a href="/projects-witnesses/form/">
+                    <a href="/projects-pocs/form/">
                         <span class="icon is-small"><x-carbon-add-large /></span>
                         <span>Add</span>
                     </a>
@@ -37,7 +37,7 @@
             <div class="level-right">
         
                 <p class="level-item">
-                    <a href='/projects-witnesses/form/{{ $uid }}'>
+                    <a href='/projects-pocs/form/{{ $uid }}'>
                         <span class="icon"><x-carbon-edit /></span>
                     </a>
                 </p>
@@ -53,10 +53,10 @@
 
         <div class="media">
             <div class="media-left has-text-centered">
-                <figure class="image is-48x48"><x-carbon-rule /></figure>
+                <figure class="image is-48x48"><x-carbon-policy /></figure>
             </div>
             <div class="media-content">
-                <p class="title is-4">MoC-{{ $uid }}</p>
+                <p class="title is-4">PoC-{{ $uid }}</p>
                 <p class="subtitle is-6">{{ $code}} - {{ $name}}</p>
             </div>
         </div>
@@ -66,6 +66,14 @@
             <span class="has-text-success-dark">{{ $the_project->code }} / {{ $the_project->title }}</span>
             <span class="has-text-weignt-bold">{{ $the_endproduct ? ' - ' .$the_endproduct->title : ''}}</span>
         </p>
+
+
+        @if (strlen(trim($description)) > 0) 
+        <p class="subtitle is-6">
+            {!! $description !!}
+        </p>
+        @endif
+
 
         <div class="columns is-size-7 has-text-grey mt-6">
 

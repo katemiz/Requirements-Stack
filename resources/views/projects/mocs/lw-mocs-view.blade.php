@@ -18,14 +18,14 @@
             <div class="level-left">
         
                 <p class="level-item">
-                    <a href="/projects-witnesses/list">                    
+                    <a href="/projects-mocs/list">                    
                         <span class="icon is-small"><x-carbon-table /></span>
                         <span>List All</span>
                     </a>
                 </p>
         
                 <p class="level-item">
-                    <a href="/projects-witnesses/form/">
+                    <a href="/projects-mocs/form/">
                         <span class="icon is-small"><x-carbon-add-large /></span>
                         <span>Add</span>
                     </a>
@@ -37,7 +37,7 @@
             <div class="level-right">
         
                 <p class="level-item">
-                    <a href='/projects-witnesses/form/{{ $uid }}'>
+                    <a href='/projects-mocs/form/{{ $uid }}'>
                         <span class="icon"><x-carbon-edit /></span>
                     </a>
                 </p>
@@ -56,7 +56,7 @@
                 <figure class="image is-48x48"><x-carbon-rule /></figure>
             </div>
             <div class="media-content">
-                <p class="title is-4">MoC-{{ $uid }}</p>
+                <p class="title is-4">{{ $uid }}</p>
                 <p class="subtitle is-6">{{ $code}} - {{ $name}}</p>
             </div>
         </div>
@@ -66,6 +66,12 @@
             <span class="has-text-success-dark">{{ $the_project->code }} / {{ $the_project->title }}</span>
             <span class="has-text-weignt-bold">{{ $the_endproduct ? ' - ' .$the_endproduct->title : ''}}</span>
         </p>
+
+        @if (strlen(trim($description)) > 0) 
+        <p class="subtitle is-6">
+            {!! $description !!}
+        </p>
+        @endif
 
         <div class="columns is-size-7 has-text-grey mt-6">
 

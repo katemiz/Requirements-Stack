@@ -23,6 +23,7 @@ return new class extends Migration
             $table->foreignIdFor(Project::class);
             $table->string('code');
             $table->string('title');
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }

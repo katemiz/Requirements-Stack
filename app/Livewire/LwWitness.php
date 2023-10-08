@@ -61,6 +61,8 @@ class LwWitness extends Component
     #[Rule('required', message: 'Please enter phase name (eg Feasibility Phase)')] 
     public $name;
 
+    public $description;
+
     public $created_by;
     public $updated_by;
     public $created_at;
@@ -280,6 +282,7 @@ class LwWitness extends Component
         $props['endproduct_id'] = $this->endproduct_id ? $this->endproduct_id : 0;
         $props['code'] = $this->code;
         $props['name'] = $this->name;
+        $props['description'] = $this->description;
 
         if ( $this->uid ) {
             // update

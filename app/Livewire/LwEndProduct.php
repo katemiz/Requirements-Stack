@@ -51,6 +51,8 @@ class LwEndProduct extends Component
     #[Rule('required', message: 'Please enter End Product title (eg Forward Section)')] 
     public $title;
 
+    public $description;
+
     public $created_by;
     public $updated_by;
     public $created_at;
@@ -222,11 +224,11 @@ class LwEndProduct extends Component
 
             $this->code = $c->code;
             $this->title = $c->title;
+            $this->description = $c->description;
             $this->created_at = $c->created_at;
             $this->updated_at = $c->updated_at;
             $this->created_by = User::find($c->user_id)->fullname;
             $this->updated_by = User::find($c->updated_uid)->fullname;
-
 
             $this->the_company = Company::find($c->company_id);
             $this->the_project = Project::find($c->project_id);
@@ -259,7 +261,7 @@ class LwEndProduct extends Component
         $props['project_id'] = $this->project_id;
         $props['code'] = $this->code;
         $props['title'] = $this->title;
-
+        $props['description'] = $this->description;
 
         if ( $this->uid ) {
             // update
