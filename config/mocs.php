@@ -2,12 +2,6 @@
 
 return [
 
-    "roles" => [
-        "r" => [],
-        "w" => ['requirement_engineer'],
-        "x" => ['requirement_engineer'],
-    ],
-
     "list" => [
         "title" => "Means of Compliances (MOC) / Validation Methods",
         "subtitle" => "List of all Means of Compliances (MOC) / Validation Methods",
@@ -67,59 +61,22 @@ return [
         ]
     ],
 
-    // "select_current" => [
-    //     "title" => "Projects",
-    //     "subtitle" => "Select current project",
-    // ],
-
     "create" => [
         "title" => "MOC - Means of Compliance",
         "subtitle" => "Create a New MOC - Means of Compliance",
-        "submitText" => "Add MOC - Means of Compliance",
+        "submitText" => "Add MOC",
     ],
 
     "read" => [
         "title" => "MOC - Means of Compliance",
         "subtitle" => "View MOC - Means of Compliance Parameters",
-        "submitText" => "Add MOC - Means of Compliance",
+        "submitText" => "Add MOC",
     ],
 
     "update" => [
         "title" => "MOC - Means of Compliance",
         "subtitle" => "Edit MOC - Means of Compliance Properties",
-        "submitText" => "Update MOC - Means of Compliance",
-    ],
-
-    "cu_route" => "/mocs/store/",
-
-    "form" => [
-
-        "project"=> [
-            "label" => "Project",
-            "name" => "project",
-            "options" => ""
-        ],
-
-        "code" => [
-            "label" => "MOC - Means of Compliance Code",
-            "name" => "code",
-            "placeholder" => "Enter MOC - Means of Compliance Code",
-            "value" => ""
-        ],
-
-        "title" => [
-            "label" => "MOC - Means of Compliance Title",
-            "name" => "name",
-            "placeholder" => "Enter MOC - Means of Compliance title/description",
-            "value" => ""
-        ],
-
-        "description" => [
-            "label" => "Description/Remarks/Notes",
-            "name" => "description",
-            "placeholder" => "Enter remarks/notes",
-            "value" => ""
-        ]
+        "submitText" => "Update MOC",
     ]
 ];
 

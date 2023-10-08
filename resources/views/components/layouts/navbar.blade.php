@@ -64,12 +64,12 @@
                     <span>Requirements</span>
                 </a>
 
-                <a href="/mocs" class="navbar-item icon-text">
+                <a href="/projects-mocs/list" class="navbar-item icon-text">
                     <span class="icon has-text-warning"><x-carbon-rule /></span>
                     <span>MoCs</span>
                 </a>
 
-                <a href="/pocs" class="navbar-item icon-text">
+                <a href="/projects-pocs/list" class="navbar-item icon-text">
                     <span class="icon has-text-warning"><x-carbon-policy /></span>
                     <span>PoCs</span>
                 </a>

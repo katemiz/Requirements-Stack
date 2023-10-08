@@ -2,12 +2,6 @@
 
 return [
 
-    "roles" => [
-        "r" => [],
-        "w" => ['requirement_engineer'],
-        "x" => ['requirement_engineer'],
-    ],
-
     "list" => [
         "title" => "Proof of Compliances (POC)",
         "subtitle" => "List of all Proof of Compliances (POC)",
@@ -67,11 +61,6 @@ return [
         ]
     ],
 
-    // "select_current" => [
-    //     "title" => "Projects",
-    //     "subtitle" => "Select current project",
-    // ],
-
     "create" => [
         "title" => "POC - Proof of Compliance",
         "subtitle" => "Create a New POC - Proof of Compliance",
@@ -88,38 +77,6 @@ return [
         "title" => "POC - Proof of Compliance",
         "subtitle" => "Edit POC - Proof of Compliance Properties",
         "submitText" => "Update POC - Proof of Compliance",
-    ],
-
-    "cu_route" => "/pocs/store/",
-
-    "form" => [
-
-        "project"=> [
-            "label" => "Project",
-            "name" => "project",
-            "options" => ""
-        ],
-
-        "code" => [
-            "label" => "POC - Proof of Compliance Code",
-            "name" => "code",
-            "placeholder" => "Enter POC - Means of Compliance Code",
-            "value" => ""
-        ],
-
-        "title" => [
-            "label" => "POC - Proof of Compliance Title",
-            "name" => "name",
-            "placeholder" => "Enter POC - Proof of Compliance title/description",
-            "value" => ""
-        ],
-
-        "description" => [
-            "label" => "Description/Remarks/Notes",
-            "name" => "description",
-            "placeholder" => "Enter remarks/notes",
-            "value" => ""
-        ]
     ]
 ];
 

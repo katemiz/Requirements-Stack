@@ -10,8 +10,8 @@ use App\Livewire\ListRequirements;
 use App\Livewire\RequirementLivewire;
 // use App\Livewire\ListEndproducts;
 // use App\Livewire\ListGates;
-use App\Livewire\ListMocs;
-use App\Livewire\ListPocs;
+// use App\Livewire\ListMocs;
+// use App\Livewire\ListPocs;
 // use App\Livewire\ListWitnesses;
 // use App\Livewire\ListUsers;
 // use App\Livewire\ListRoles;
@@ -20,8 +20,10 @@ use App\Livewire\ListPocs;
 use App\Livewire\LwCompany;
 use App\Livewire\LwEndProduct;
 use App\Livewire\LwGate;
+use App\Livewire\LwMoc;
 use App\Livewire\LwPermission;
 use App\Livewire\LwPhase;
+use App\Livewire\LwPoc;
 use App\Livewire\LwProject;
 use App\Livewire\LwRole;
 use App\Livewire\LwUser;
@@ -33,8 +35,8 @@ use App\Livewire\LwWitness;
 use App\Http\Controllers\AttachmentController;
 // use App\Http\Controllers\GateController;
 use App\Http\Controllers\ExportController;
-use App\Http\Controllers\MocController;
-use App\Http\Controllers\PocController;
+// use App\Http\Controllers\MocController;
+// use App\Http\Controllers\PocController;
 // use App\Http\Controllers\ProjectController;
 // use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\RequirementController;
@@ -90,6 +92,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/projects-gates/{action}/{id?}', LwGate::class);
     Route::get('/projects-phases/{action}/{id?}', LwPhase::class);
     Route::get('/projects-witnesses/{action}/{id?}', LwWitness::class);
+    Route::get('/projects-mocs/{action}/{id?}', LwMoc::class);
+    Route::get('/projects-pocs/{action}/{id?}', LwPoc::class);
+
 
 
 
@@ -153,18 +158,18 @@ Route::middleware('auth')->group(function () {
     // Route::get('/dgates/delete/{id}', [GateController::class, 'delete']);
 
     // MOC - Means of Compliances
-    Route::get('/mocs', ListMocs::class);
-    Route::get('/mocs/view/{id}', [MocController::class, 'view']);
-    Route::get('/mocs/form/{id?}', [MocController::class, 'form']);
-    Route::post('/mocs/store/{id?}', [MocController::class, 'store']);
-    Route::get('/mocs/delete/{id}', [MocController::class, 'delete']);
+    // Route::get('/mocs', ListMocs::class);
+    // Route::get('/mocs/view/{id}', [MocController::class, 'view']);
+    // Route::get('/mocs/form/{id?}', [MocController::class, 'form']);
+    // Route::post('/mocs/store/{id?}', [MocController::class, 'store']);
+    // Route::get('/mocs/delete/{id}', [MocController::class, 'delete']);
 
     // POC - Proof of Compliances
-    Route::get('/pocs', ListPocs::class);
-    Route::get('/pocs/view/{id}', [PocController::class, 'view']);
-    Route::get('/pocs/form/{id?}', [PocController::class, 'form']);
-    Route::post('/pocs/store/{id?}', [PocController::class, 'store']);
-    Route::get('/pocs/delete/{id}', [PocController::class, 'delete']);
+    // Route::get('/pocs', ListPocs::class);
+    // Route::get('/pocs/view/{id}', [PocController::class, 'view']);
+    // Route::get('/pocs/form/{id?}', [PocController::class, 'form']);
+    // Route::post('/pocs/store/{id?}', [PocController::class, 'store']);
+    // Route::get('/pocs/delete/{id}', [PocController::class, 'delete']);
 
     // Witness
     // Route::get('/witness', ListWitnesses::class);
