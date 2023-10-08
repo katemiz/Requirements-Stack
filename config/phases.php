@@ -77,7 +77,7 @@ return [
     ],
 
     "update" => [
-        "title" => "Projects",
+        "title" => "Project Phases",
         "subtitle" => "Edit Project PhaseProperties",
         "submitText" => "Update Project Phase",
     ],

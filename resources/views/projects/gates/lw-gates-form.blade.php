@@ -81,14 +81,14 @@
 
     <div class="field">
 
-        <label class="label">Project Phase Code</label>
+        <label class="label">Milestone/Decion Gate Code</label>
         <div class="control">
 
             <input
                 class="input"
                 wire:model="code"
                 type="text"
-                placeholder="Enter project phase code (eg P1, M1) ..." required>
+                placeholder="Enter Milestone/Decion Gate code (eg CPR) ..." required>
         </div>
 
         @error('code')
@@ -99,14 +99,14 @@
 
     <div class="field">
 
-        <label class="label">Project Phase Title</label>
+        <label class="label">Milestone/Decion Gate Title</label>
         <div class="control">
 
             <input
                 class="input"
                 wire:model="name"
                 type="text"
-                placeholder="Enter project phase (eg Feasibility Phase) ..." required>
+                placeholder="Enter Milestone/Decion Gate Title (eg Critical Product Review) ..." required>
         </div>
 
         @error('name')

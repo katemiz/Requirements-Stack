@@ -18,6 +18,8 @@ use App\Livewire\ListWitnesses;
 // use App\Livewire\ListPermissions;
 
 use App\Livewire\LwCompany;
+use App\Livewire\LwEndProduct;
+use App\Livewire\LwGate;
 use App\Livewire\LwPermission;
 use App\Livewire\LwPhase;
 use App\Livewire\LwProject;
@@ -82,8 +84,8 @@ Route::middleware('auth')->group(function () {
     // ADMIN / COMPANY-ADMIN
     // ************************************************************
     Route::get('/projects-projects/{action}/{id?}', LwProject::class);
-    // Route::get('/projects-eproducts/{action}/{id?}', LwEndProduct::class);
-    // Route::get('/projects-gates/{action}/{id?}', LwGate::class);
+    Route::get('/projects-eproducts/{action}/{id?}', LwEndProduct::class);
+    Route::get('/projects-gates/{action}/{id?}', LwGate::class);
     Route::get('/projects-phases/{action}/{id?}', LwPhase::class);
     // Route::get('/projects-witnesses/{action}/{id?}', LwWitness::class);
 

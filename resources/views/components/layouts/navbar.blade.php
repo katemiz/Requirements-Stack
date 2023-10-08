@@ -53,7 +53,7 @@
                     <div class="navbar-dropdown">
                         <a href="/projects-projects/list" class="navbar-item">Projects List</a>
                         <a href="/projects-eproducts/list" class="navbar-item">Project > End Products</a>
-                        <a href="/projects-gates/list" class="navbar-item">Project > Decision Gates</a>
+                        <a href="/projects-gates/list" class="navbar-item">Project > Milestones</a>
                         <a href="/projects-phases/list" class="navbar-item">Project > Project Phases</a>
                         <a href="/projects-witnesses/list" class="navbar-item">Project > Witnesses</a>
                     </div>

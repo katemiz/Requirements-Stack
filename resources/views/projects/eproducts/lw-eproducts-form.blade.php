@@ -48,32 +48,6 @@
 
 
 
-    <div class="field">
-        <label class="label">End Products</label>
-        <div class="control">
-
-            @if ($project_id && count($project_eproducts[$project_id]) > 0)
-
-            <div class="select">
-
-                <select wire:model='endproduct_id'>
-                    <option>Select a End Product...</option>
-                        @foreach ($project_eproducts[$project_id] as $endproduct)
-                            <option value="{{ $endproduct->id }}">{{ $endproduct->title }}</option>
-                        @endforeach
-                </select>
-
-            </div>
-
-            @else
-                <p>No end product found</p>
-            @endif
-        </div>
-    
-        @error('endproduct_id')
-        <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
-        @enderror
-    </div>
 
 
 
@@ -81,14 +55,14 @@
 
     <div class="field">
 
-        <label class="label">Project Phase Code</label>
+        <label class="label">End Product Code</label>
         <div class="control">
 
             <input
                 class="input"
                 wire:model="code"
                 type="text"
-                placeholder="Enter project phase code (eg P1, M1) ..." required>
+                placeholder="Enter project end product code (eg SSA) ..." required>
         </div>
 
         @error('code')
@@ -99,17 +73,17 @@
 
     <div class="field">
 
-        <label class="label">Project Phase Title</label>
+        <label class="label">End Product Title</label>
         <div class="control">
 
             <input
                 class="input"
-                wire:model="name"
+                wire:model="title"
                 type="text"
-                placeholder="Enter project phase (eg Feasibility Phase) ..." required>
+                placeholder="Enter End Product title (eg Side Section Assembly) ..." required>
         </div>
 
-        @error('name')
+        @error('title')
         <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
         @enderror
     </div>

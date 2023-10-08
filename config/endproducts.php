@@ -2,12 +2,6 @@
 
 return [
 
-    "roles" => [
-        "r" => [],
-        "w" => ['requirement_engineer'],
-        "x" => ['requirement_engineer'],
-    ],
-
 
     "list" => [
         "title" => "End Products",
@@ -86,28 +80,4 @@ return [
         "submitText" => "Update Project",
     ],
 
-    "cu_route" => "/endproducts/store/",
-
-    "form" => [
-
-        "project"=> [
-            "label" => "Project",
-            "name" => "project_id",
-            "options" => ""
-        ],
-
-        "code" => [
-            "label" => "End Product Code/Acronym",
-            "name" => "code",
-            "placeholder" => "Enter end product code eg RLS",
-            "value" => ""
-        ],
-
-        "title" => [
-            "label" => "End Product Title",
-            "name" => "title",
-            "placeholder" => "Enter end product title/description",
-            "value" => ""
-        ]
-    ]
 ];

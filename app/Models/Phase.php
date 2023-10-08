@@ -11,5 +11,5 @@ class Phase extends Model
 
     protected $table = 'phases';
 
-    protected $fillable = ['user_id','company_id','project_id','endproduct_id','code', 'name','description'];
+    protected $fillable = ['user_id','updated_uid','company_id','project_id','endproduct_id','code', 'name','description'];
 }

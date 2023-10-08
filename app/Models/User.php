@@ -51,6 +51,13 @@ class User extends Authenticatable
     ];
 
 
+    public function getFullnameAttribute($value) {
+        return $this->name.' '.strtoupper($this->lastname);
+    }
+
+
+
+
     public function getCompanyNameAttribute($value) {
 
         if ($this->company_id == 0) {

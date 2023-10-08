@@ -18,6 +18,7 @@ return new class extends Migration
     {
         Schema::create('phases', function (Blueprint $table) {
             $table->id();
+            $table->integer('updated_uid');
             $table->foreignIdFor(User::class);
             $table->foreignIdFor(Company::class);
             $table->foreignIdFor(Project::class);

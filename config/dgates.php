@@ -2,19 +2,12 @@
 
 return [
 
-    "roles" => [
-        "r" => [],
-        "w" => ['requirement_engineer'],
-        "x" => ['requirement_engineer'],
-    ],
-
-
     "list" => [
-        "title" => "Decision Gates / Meetings",
-        "subtitle" => "List of all Decision Gates",
+        "title" => "Milestones/Decision Gates",
+        "subtitle" => "List of all Milestones/Decision Gates",
         "addButton" => [
-            "text"=>"Add Decision Gates",
-            "route"=>"/dgates/form"
+            "text"=>"Add Milestone/Decision Gates",
+            "route"=>"/projects-gates/form"
         ],
         "filterText" => "Search ...",
         "listCaption" => false,
@@ -57,63 +50,34 @@ return [
 
         ],
         "actions" => [
-            "r" => "/dgates/view/",
-            "w" => "/dgates/form/",
-            "x" => "/dgates/delete/"
+            "r" => "/projects-gates/view/",
+            "w" => "/projects-gates/form/",
+            "x" => "/projects-gates/delete/"
         ],
-        "noitem" => "No Decision Gates found in database yet!",
+        "noitem" => "No Milestones/Decision Gates found in database yet!",
         "delete_confirm" => [
-            "question" => "Do you want to delete this decision gate from database?",
+            "question" => "Do you want to delete this milestones/decision gate from database?",
             "last_warning" => "When done, it is not possible to revert back."
         ]
     ],
 
-    "select_current" => [
-        "title" => "Projects",
-        "subtitle" => "Select current project",
-    ],
 
     "create" => [
-        "title" => "Decision Gates",
-        "subtitle" => "Create a New Decision Gate",
-        "submitText" => "Add Decision Gate",
+        "title" => "Milestones/Decision Gates",
+        "subtitle" => "Create a New Milestone/Decision Gate",
+        "submitText" => "Add Milestone/Decision Gate",
     ],
 
     "read" => [
-        "title" => "Decision Gates",
-        "subtitle" => "View Decision Gate Parameters",
-        "submitText" => "Add Decision Gate",
+        "title" => "Milestones/Decision Gates",
+        "subtitle" => "View Milestone/Decision Gate Parameters",
+        "submitText" => "Add Milestone/Decision Gate",
     ],
 
     "update" => [
-        "title" => "Decision Gates",
-        "subtitle" => "Edit Decision Gate Properties",
-        "submitText" => "Update Decision Gate",
-    ],
-
-    "cu_route" => "/dgates/store/",
-
-    "form" => [
-
-        "project"=> [
-            "label" => "Project",
-            "name" => "project",
-            "options" => ""
-        ],
-
-        "code" => [
-            "label" => "Decision Gate/ Meeting Code",
-            "name" => "code",
-            "placeholder" => "Enter Decision Gate Code",
-            "value" => ""
-        ],
-
-        "title" => [
-            "label" => "Decision Gate Title",
-            "name" => "name",
-            "placeholder" => "Enter decision gate title/description",
-            "value" => ""
-        ]
+        "title" => "Milestones/Decision Gates",
+        "subtitle" => "Edit Milestone/Decision Gate Properties",
+        "submitText" => "Update Milestone/Decision Gate",
     ]
 ];
 

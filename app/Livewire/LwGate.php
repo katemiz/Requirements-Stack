@@ -13,13 +13,14 @@ use Illuminate\Support\Facades\Storage;
 
 use App\Models\Company;
 use App\Models\Endproduct;
+use App\Models\Gate;
 use App\Models\Phase;
 use App\Models\Project;
 use App\Models\User;
 
 
 
-class LwPhase extends Component
+class LwGate extends Component
 {
     use WithPagination;
 
@@ -42,7 +43,6 @@ class LwPhase extends Component
     public $the_endproduct = false; // Viewed Phase EndProduct
 
 
-
     public $project_eproducts = [];
 
 
@@ -53,15 +53,13 @@ class LwPhase extends Component
     public $project_id = false;
 
     // #[Rule('required', message: 'Please select End Product')] 
-    public $endproduct_id = false;
+    public $endproduct_id = 0;
 
     #[Rule('required', message: 'Please enter phase code. (eg P1)')] 
     public $code;
 
     #[Rule('required', message: 'Please enter phase name (eg Feasibility Phase)')] 
     public $name;
-
-    public $description;
 
     public $created_by;
     public $updated_by;
@@ -79,7 +77,7 @@ class LwPhase extends Component
             $this->setProps();
         }
 
-        $this->constants = config('phases');
+        $this->constants = config('dgates');
     }
 
 
@@ -92,8 +90,8 @@ class LwPhase extends Component
 
         $this->setProps();
 
-        return view('projects.phases.lw-phases',[
-            'phases' => $this->getPhasesList()
+        return view('projects.gates.lw-gates',[
+            'gates' => $this->getGatesList()
         ]);
     }
 
@@ -116,18 +114,18 @@ class LwPhase extends Component
 
 
 
-    public function getPhasesList()  {
+    public function getGatesList()  {
 
         if ($this->logged_user->is_admin) {
 
             if (strlen(trim($this->query)) > 0 ) {
 
-                $phases = Phase::orderBy($this->sortField,$this->sortDirection)
+                $phases = Gate::orderBy($this->sortField,$this->sortDirection)
                 ->paginate(env('RESULTS_PER_PAGE'));
 
             } else {
 
-                $phases = Phase::where('code', 'LIKE', "%".$this->query."%")
+                $phases = Gate::where('code', 'LIKE', "%".$this->query."%")
                 ->orWhere('name','LIKE',"%".$this->query."%")
                 ->orWhere('description','LIKE',"%".$this->query."%")
                 ->orderBy($this->sortField,$this->sortDirection)
@@ -139,7 +137,7 @@ class LwPhase extends Component
 
             if (strlen(trim($this->query)) > 0 ) {
 
-                $phases = Phase::where('company_id',$this->logged_user->company_id)
+                $phases = Gate::where('company_id',$this->logged_user->company_id)
                 ->where(function ($sqlquery) {
                     $sqlquery->where('code', 'LIKE', "%".$this->query."%")
                           ->orWhere('name', 'LIKE', "%".$this->query."%")
@@ -150,7 +148,7 @@ class LwPhase extends Component
 
             } else {
 
-                $phases = Phase::where('company_id', $this->logged_user->company_id)
+                $phases = Gate::where('company_id', $this->logged_user->company_id)
                 ->orderBy($this->sortField,$this->sortDirection)
                 ->paginate(env('RESULTS_PER_PAGE'));
             }
@@ -227,17 +225,15 @@ class LwPhase extends Component
     public function addItem() {
         $this->uid = false;
         $this->action = 'FORM';
-
         $this->reset('code','name');
     }
 
 
     public function setProps() {
 
-
         if ($this->uid && in_array($this->action,['VIEW','FORM']) ) {
 
-            $c = Phase::find($this->uid);
+            $c = Gate::find($this->uid);
 
             $this->code = $c->code;
             $this->name = $c->name;
@@ -254,9 +250,7 @@ class LwPhase extends Component
             if ($c->endproduct_id > 0) {
                 $this->the_endproduct = Endproduct::find($c->endproduct_id);
             }
-
         }
-
     }
 
 
@@ -269,8 +263,8 @@ class LwPhase extends Component
     #[On('onDeleteConfirmed')]
     public function deleteItem()
     {
-        Phase::find($this->uid)->delete();
-        session()->flash('message','Project phase has been deleted successfully.');
+        Gate::find($this->uid)->delete();
+        session()->flash('message','Project milestone/decision gate has been deleted successfully.');
         $this->action = 'LIST';
         $this->resetPage();
     }
@@ -289,14 +283,14 @@ class LwPhase extends Component
 
         if ( $this->uid ) {
             // update
-            Phase::find($this->uid)->update($props);
-            session()->flash('message','Project phase has been updated successfully.');
+            Gate::find($this->uid)->update($props);
+            session()->flash('message','Project milestone/decision gate has been updated successfully.');
 
         } else {
             // create
             $props['user_id'] = Auth::id();
-            $this->uid = Phase::create($props)->id;
-            session()->flash('message','Project phase has been created successfully.');
+            $this->uid = Gate::create($props)->id;
+            session()->flash('message','Project milestone/decision gate has been created successfully.');
         }
 
         $this->action = 'VIEW';
