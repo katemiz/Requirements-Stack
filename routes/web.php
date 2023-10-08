@@ -8,11 +8,11 @@ use App\Livewire\Attachment;
 // use App\Livewire\ListProjects;
 use App\Livewire\ListRequirements;
 use App\Livewire\RequirementLivewire;
-use App\Livewire\ListEndproducts;
-use App\Livewire\ListGates;
+// use App\Livewire\ListEndproducts;
+// use App\Livewire\ListGates;
 use App\Livewire\ListMocs;
 use App\Livewire\ListPocs;
-use App\Livewire\ListWitnesses;
+// use App\Livewire\ListWitnesses;
 // use App\Livewire\ListUsers;
 // use App\Livewire\ListRoles;
 // use App\Livewire\ListPermissions;
@@ -25,20 +25,22 @@ use App\Livewire\LwPhase;
 use App\Livewire\LwProject;
 use App\Livewire\LwRole;
 use App\Livewire\LwUser;
+use App\Livewire\LwWitness;
+
 
 
 
 use App\Http\Controllers\AttachmentController;
-use App\Http\Controllers\GateController;
+// use App\Http\Controllers\GateController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\MocController;
 use App\Http\Controllers\PocController;
-use App\Http\Controllers\ProjectController;
-use App\Http\Controllers\CompanyController;
+// use App\Http\Controllers\ProjectController;
+// use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\RequirementController;
-use App\Http\Controllers\EndProductsController;
+// use App\Http\Controllers\EndProductsController;
 use App\Http\Controllers\CurrentProjectController;
-use App\Http\Controllers\WitnessController;
+// use App\Http\Controllers\WitnessController;
 use App\Http\Controllers\RolesPermissionsController;
 
 /*
@@ -87,7 +89,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/projects-eproducts/{action}/{id?}', LwEndProduct::class);
     Route::get('/projects-gates/{action}/{id?}', LwGate::class);
     Route::get('/projects-phases/{action}/{id?}', LwPhase::class);
-    // Route::get('/projects-witnesses/{action}/{id?}', LwWitness::class);
+    Route::get('/projects-witnesses/{action}/{id?}', LwWitness::class);
 
 
 
@@ -144,11 +146,11 @@ Route::middleware('auth')->group(function () {
     // Route::get('/projects/delete/{id}', [ProjectController::class, 'delete']);
 
     // Decision Gates / Meetings
-    Route::get('/dgates', ListGates::class);
-    Route::get('/dgates/view/{id}', [GateController::class, 'view']);
-    Route::get('/dgates/form/{id?}', [GateController::class, 'form']);
-    Route::post('/dgates/store/{id?}', [GateController::class, 'store']);
-    Route::get('/dgates/delete/{id}', [GateController::class, 'delete']);
+    // Route::get('/dgates', ListGates::class);
+    // Route::get('/dgates/view/{id}', [GateController::class, 'view']);
+    // Route::get('/dgates/form/{id?}', [GateController::class, 'form']);
+    // Route::post('/dgates/store/{id?}', [GateController::class, 'store']);
+    // Route::get('/dgates/delete/{id}', [GateController::class, 'delete']);
 
     // MOC - Means of Compliances
     Route::get('/mocs', ListMocs::class);
@@ -165,18 +167,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/pocs/delete/{id}', [PocController::class, 'delete']);
 
     // Witness
-    Route::get('/witness', ListWitnesses::class);
-    Route::get('/witness/view/{id}', [WitnessController::class, 'view']);
-    Route::get('/witness/form/{id?}', [WitnessController::class, 'form']);
-    Route::post('/witness/store/{id?}', [WitnessController::class, 'store']);
-    Route::get('/witness/delete/{id}', [WitnessController::class, 'delete']);
+    // Route::get('/witness', ListWitnesses::class);
+    // Route::get('/witness/view/{id}', [WitnessController::class, 'view']);
+    // Route::get('/witness/form/{id?}', [WitnessController::class, 'form']);
+    // Route::post('/witness/store/{id?}', [WitnessController::class, 'store']);
+    // Route::get('/witness/delete/{id}', [WitnessController::class, 'delete']);
 
     // End Products
-    Route::get('/endproducts', ListEndproducts::class);
-    Route::get('/endproducts/view/{id}', [EndProductsController::class, 'view']);
-    Route::get('/endproducts/form/{id?}', [EndProductsController::class, 'form']);
-    Route::post('/endproducts/store/{id?}', [EndProductsController::class, 'store']);
-    Route::get('/endproducts/delete/{id}', [EndProductsController::class, 'delete']);
+    // Route::get('/endproducts', ListEndproducts::class);
+    // Route::get('/endproducts/view/{id}', [EndProductsController::class, 'view']);
+    // Route::get('/endproducts/form/{id?}', [EndProductsController::class, 'form']);
+    // Route::post('/endproducts/store/{id?}', [EndProductsController::class, 'store']);
+    // Route::get('/endproducts/delete/{id}', [EndProductsController::class, 'delete']);
 
     // Requirements
     Route::get('/requirements', ListRequirements::class);
