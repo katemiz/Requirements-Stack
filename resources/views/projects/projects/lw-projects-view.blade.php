@@ -35,6 +35,17 @@
         
             <!-- Right side -->
             <div class="level-right">
+
+
+                <p class="level-item">
+                    <a wire:click='populate({{ $uid }})'>
+                        <abbr title="Populate with MOCs and POCs">
+                        <span class="icon"><x-carbon-port-input /></span>
+                        </abbr>
+                    </a>
+                </p>
+
+
         
                 <p class="level-item">
                     <a href='/projects-projects/form/{{ $uid }}'>

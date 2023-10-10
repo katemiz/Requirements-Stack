@@ -56,8 +56,8 @@
                 <figure class="image is-48x48"><x-carbon-timer /></figure>
             </div>
             <div class="media-content">
-                <p class="title is-4">PH-{{ $uid }}</p>
-                <p class="subtitle is-6">{{ $code}} - {{ $name}}</p>
+                <p class="title is-4">{{ $code}} </p>
+                <p class="subtitle is-6">{{ $name}}</p>
             </div>
         </div>
 

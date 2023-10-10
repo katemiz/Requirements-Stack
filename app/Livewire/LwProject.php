@@ -15,7 +15,10 @@ use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
 use App\Models\Company;
+use App\Models\Moc;
+use App\Models\Poc;
 use App\Models\Project;
+use App\Models\User;
 
 
 class LwProject extends Component
@@ -148,6 +151,48 @@ class LwProject extends Component
         $this->reset('code','title');
     }
 
+    public function populate($uid) {
+        $this->uid = $uid;
+        $this->action = 'POPULATE';
+    }
+
+
+    public function doPopulate($uid) {
+
+        $predefinedMocs = Moc::where([
+            ['company_id',0],
+            ['project_id',0],
+            ['endproduct_id',0]
+        ])
+        ->orderBy('code','asc')
+        ->get();
+
+        $currentProject = Project::find($uid);
+
+        $props['user_id'] = Auth::id();
+        $props['updated_uid'] = Auth::id();
+        $props['company_id'] = $currentProject->company->id;
+        $props['project_id'] = $uid;
+        $props['endproduct_id'] = 0;
+
+
+
+
+        foreach ($predefinedMocs as $moc) {
+            $props['code'] = $moc->code;
+            $props['name'] = $moc->name;
+            $props['description'] = $moc->description;
+
+            Moc::create($props);
+        }
+
+        $this->uid = $uid;
+
+        session()->flash('message','Predefined MOCs and POCs has been added to project.');
+        $this->action = 'VIEW';
+
+    }
+
 
     public function setProps() {
 
@@ -160,6 +205,8 @@ class LwProject extends Component
         $this->updated_at = $c->updated_at;
         $this->created_by = $c->user_id;
         $this->updated_by = $c->updated_uid;
+        $this->created_by = User::find($c->user_id)->fullname;
+        $this->updated_by = User::find($c->updated_uid)->fullname;
     }
 
 

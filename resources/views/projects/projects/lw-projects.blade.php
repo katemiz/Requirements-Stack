@@ -62,9 +62,14 @@
             @break
 
         @case('LIST')
-        @default
             @include('projects.projects.lw-projects-list')
             @break
+
+        @case('POPULATE')
+            @include('projects.projects.lw-projects-populate')
+            @break
+
+
 
     @endswitch
 
