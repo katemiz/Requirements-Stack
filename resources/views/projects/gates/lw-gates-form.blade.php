@@ -33,7 +33,7 @@
                 <label class="label">Project</label>
                 <div class="control">
                     <div class="select">
-                    <select wire:model='project_id' wire:change='getProjects'>
+                    <select wire:model='project_id' wire:change='getEndProducts'>
                         <option>Select a project...</option>
                             @foreach ($projects as $project)
                                 <option value="{{ $project->id }}">{{ $project->title }}</option>

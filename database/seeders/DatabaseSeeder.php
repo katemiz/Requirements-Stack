@@ -278,6 +278,210 @@ class DatabaseSeeder extends Seeder
 
 
 
+        // GATES
 
+        Gate::create([
+            'updated_uid' => 1,
+            'user_id' => 1,
+            'company_id' => 0,
+            'project_id' => 0,
+            'endproduct_id' => 0,
+            'code' => 'MCR',
+            'name' => 'Mission Concept Review',
+            'description' => '<p><strong>Purpose</strong></p><p>The MCR will affirm the mission need and evaluates the proposed objectives and the concept for meeting those objectives.</p><p><strong>Timing</strong></p><p>The MCR should be completed prior to entering the concept
+            development phase (Phase A)</p>'
+        ]);
+
+
+
+        Gate::create([
+            'updated_uid' => 1,
+            'user_id' => 1,
+            'company_id' => 0,
+            'project_id' => 0,
+            'endproduct_id' => 0,
+            'code' => 'SRR',
+            'name' => 'System Requirements Review',
+            'description' => '<p><strong>Purpose</strong></p><p>The SRR evaluates the functional and performance requirements defined for the system and the preliminary program or project plan and ensures that the requirements and selected concept will satisfy the mission.</p><p><strong>Timing</strong></p><p>The SRR is conducted during the concept development phase (Phase A) and before conducting the SDR or MDR.</p>'
+        ]);
+
+
+        
+
+        Gate::create([
+            'updated_uid' => 1,
+            'user_id' => 1,
+            'company_id' => 0,
+            'project_id' => 0,
+            'endproduct_id' => 0,
+            'code' => 'MDR / SDR',
+            'name' => 'Mission Definition Review / System Definition Review',
+            'description' => '<p><strong>Purpose</strong></p><p>TSometimes called the MDR by robotic projects and SDR for human flight projects, this review evaluates whether the proposed architecture is responsive to the functional and performance requirements and that the requirements have been allocated to all functional elements of the mission/system.</p><p><strong>Timing</strong></p><p>The MDR/SDR is conducted during the concept development phase (Phase A) prior to KDP B and the start of preliminary design.</p>'
+        ]);
+
+
+        Gate::create([
+            'updated_uid' => 1,
+            'user_id' => 1,
+            'company_id' => 0,
+            'project_id' => 0,
+            'endproduct_id' => 0,
+            'code' => 'PDR',
+            'name' => 'Preliminary Design Review',
+            'description' => '<p><strong>Purpose</strong></p><p>The PDR demonstrates that the preliminary design meets all system requirements with
+            acceptable risk and within the cost and schedule constraints and establishes the basis for proceeding with detailed design. It shows that the correct design options have been selected, interfaces have been identified, and verification methods have been described. The PDR should address and resolve critical, system-wide issues and show that work can begin on detailed design.</p><p><strong>Timing</strong></p><p>PDR occurs near the completion of the preliminary design phase (Phase B) as the last review in the Formulation Phase.</p>'
+        ]);
+
+
+
+
+
+        Gate::create([
+            'updated_uid' => 1,
+            'user_id' => 1,
+            'company_id' => 0,
+            'project_id' => 0,
+            'endproduct_id' => 0,
+            'code' => 'CDR',
+            'name' => 'Critical Design Review',
+            'description' => '<p><strong>Purpose</strong></p><p>The CDR demonstrates that the maturity of the design is appropriate to support       proceeding with full scale fabrication, assembly, integration, and test. CDR determines if the technical effort is on track to complete
+            the system development, meeting mission performance requirements within the identified cost and schedule constraints.</p><p><strong>Timing</strong></p><p>CDR occurs during the final design phase (Phase C).</p>'
+        ]);
+
+
+
+        Gate::create([
+            'updated_uid' => 1,
+            'user_id' => 1,
+            'company_id' => 0,
+            'project_id' => 0,
+            'endproduct_id' => 0,
+            'code' => 'PRR',
+            'name' => 'Production Readiness Review',
+            'description' => '<p><strong>Purpose</strong></p><p>A PRR is held for projects developing or acquiring multiple or similar systems greater than three or as determined by the project. The PRR determines the readiness of the system developers to efficiently produce
+            the required number of systems. It ensures that the production plans; fabrication, assembly, and integration-enabling products;
+            and personnel are in place and ready to begin production.</p><p><strong>Timing</strong></p><p>PRR occurs during the final design
+            phase (Phase C).</p>'
+        ]);
+
+
+
+        Gate::create([
+            'updated_uid' => 1,
+            'user_id' => 1,
+            'company_id' => 0,
+            'project_id' => 0,
+            'endproduct_id' => 0,
+            'code' => 'SIR',
+            'name' => 'System Integration Review',
+            'description' => '<p><strong>Purpose</strong></p><p>An SIR ensures segments, components, and subsystems are on schedule to be
+            integrated into the system. Integration facilities, support personnel, and integration plans and procedures are on schedule
+            to support integration.</p><p><strong>Timing</strong></p><p>SIR occurs at the end of the final design phase (Phase C)
+            and before the systems assembly, integration, and test phase (Phase D) begins.</p>'
+        ]);
+
+
+        Gate::create([
+            'updated_uid' => 1,
+            'user_id' => 1,
+            'company_id' => 0,
+            'project_id' => 0,
+            'endproduct_id' => 0,
+            'code' => 'SAR',
+            'name' => 'System Acceptance Review',
+            'description' => '<p><strong>Purpose</strong></p><p>The SAR verifies the completeness of the specific end products in relation to
+            their expected maturity level and assesses compliance to stakeholder expectations. It also ensures that the system has
+            sufficient technical maturity to authorize its shipment to the designated operational facility or launch site</p><p><strong>Timing</strong></p><p>fff</p>'
+        ]);
+
+        Gate::create([
+            'updated_uid' => 1,
+            'user_id' => 1,
+            'company_id' => 0,
+            'project_id' => 0,
+            'endproduct_id' => 0,
+            'code' => 'ORR',
+            'name' => 'Operational Readiness Review',
+            'description' => '<p><strong>Purpose</strong></p><p>The ORR examines the actual system characteristics and procedures used in the system
+            or end product’s operation. It ensures that all system and support (flight and ground) hardware, software, personnel, procedures, and user
+            documentation accurately reflect the deployed state of the system.</p><p><strong>Timing</strong></p><p>fff</p>'
+        ]);
+
+        Gate::create([
+            'updated_uid' => 1,
+            'user_id' => 1,
+            'company_id' => 0,
+            'project_id' => 0,
+            'endproduct_id' => 0,
+            'code' => 'FRR',
+            'name' => 'Flight Readiness Review',
+            'description' => '<p><strong>Purpose</strong></p><p>The FRR examines tests, demonstrations, analyses, and audits that determine the
+            system’s readiness for a safe and successful flight or launch and for subsequent flight operations. It also ensures that all flight and
+            ground hardware, software, personnel, and procedures are operationally ready</p><p><strong>Timing</strong></p><p>fff</p>'
+        ]);
+
+        Gate::create([
+            'updated_uid' => 1,
+            'user_id' => 1,
+            'company_id' => 0,
+            'project_id' => 0,
+            'endproduct_id' => 0,
+            'code' => 'PLAR',
+            'name' => 'Post-Launch Assessment Review ',
+            'description' => '<p><strong>Purpose</strong></p><p>The FRR examines tests, demonstrations, analyses, and audits that determine the
+            system’s readiness for a safe and successful flight or launch and for subsequent flight operations. It also ensures that all flight and
+            ground hardware, software, personnel, and procedures are operationally ready</p><p><strong>Timing</strong></p><p>This review is
+            typically held after the early flight operations and initial checkout.</p>'
+        ]);
+
+        Gate::create([
+            'updated_uid' => 1,
+            'user_id' => 1,
+            'company_id' => 0,
+            'project_id' => 0,
+            'endproduct_id' => 0,
+            'code' => 'CERR',
+            'name' => 'Critical Event Readiness Review ',
+            'description' => '<p><strong>Purpose</strong></p><p>A CERR confirms the project’s readiness to execute the mission’s critical activities during flight operation. These include orbital insertion, rendezvous and docking, re-entry, scientific observations/encounters, etc.</p><p><strong>Timing</strong></p><p>fff</p>'
+        ]);
+
+        
+        Gate::create([
+            'updated_uid' => 1,
+            'user_id' => 1,
+            'company_id' => 0,
+            'project_id' => 0,
+            'endproduct_id' => 0,
+            'code' => 'PFAR',
+            'name' => 'Post-Flight Assessment Review',
+            'description' => '<p><strong>Purpose</strong></p><p>The PFAR evaluates the activities from the flight after recovery. The
+            review identifies all anomalies that occurred during the flight and mission and determines the actions necessary to mitigate or resolve
+            the anomalies for future flights.</p><p><strong>Timing</strong></p><p>fff</p>'
+        ]);
+
+        Gate::create([
+            'updated_uid' => 1,
+            'user_id' => 1,
+            'company_id' => 0,
+            'project_id' => 0,
+            'endproduct_id' => 0,
+            'code' => 'DR',
+            'name' => 'Decommissioning Review',
+            'description' => '<p><strong>Purpose</strong></p><p>The DR confirms the decision to terminate or decommission the system and assesses the
+            readiness of the system for the safe decommissioning and disposal of system assets.</p><p><strong>Timing</strong></p><p>The DR is normally
+            held near the end of routine mission operations upon accomplishment of planned mission objectives. It may be advanced if some unplanned
+            event gives rise to a need to prematurely terminate the mission, or delayed if operational life is extended to permit additional        investigations.</p>'
+        ]);
+
+        Gate::create([
+            'updated_uid' => 1,
+            'user_id' => 1,
+            'company_id' => 0,
+            'project_id' => 0,
+            'endproduct_id' => 0,
+            'code' => 'DRR',
+            'name' => 'Disposal Readiness Review',
+            'description' => '<p><strong>Purpose</strong></p><p>A DRR confirms the readiness for the final disposal of the system assets.</p><p><strong>Timing</strong></p><p>The DRR is held as major assets are ready for final disposal.</p>'
+        ]);
     }
 }
