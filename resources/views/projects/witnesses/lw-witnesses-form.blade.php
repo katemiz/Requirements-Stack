@@ -12,7 +12,7 @@
                 <label class="label">Company</label>
                 <div class="control">
                     <div class="select">
-                    <select wire:model='company_id' wire:change='getProjects'>
+                    <select wire:model='company_id' wire:change='getProjectsList'>
                         <option>Select a company...</option>
                             @foreach ($companies as $company)
                                 <option value="{{ $company->id }}">{{ $company->name }}</option>
@@ -30,7 +30,7 @@
                 <label class="label">Projects</label>
                 <div class="control">
                     <div class="select">
-                    <select wire:model='project_id' wire:change='getProjects'>
+                    <select wire:model='project_id' wire:change='getEndProductsList'>
                         <option>Select a project...</option>
                             @foreach ($projects as $project)
                                 <option value="{{ $project->id }}">{{ $project->title }}</option>
@@ -48,13 +48,13 @@
                 <label class="label">End Products</label>
                 <div class="control">
 
-                    @if ($project_id && count($project_eproducts[$project_id]) > 0)
+                    @if (count($project_eproducts) > 0)
 
                     <div class="select">
 
                         <select wire:model='endproduct_id'>
                             <option>Select a End Product...</option>
-                                @foreach ($project_eproducts[$project_id] as $endproduct)
+                                @foreach ($project_eproducts as $endproduct)
                                     <option value="{{ $endproduct->id }}">{{ $endproduct->title }}</option>
                                 @endforeach
                         </select>

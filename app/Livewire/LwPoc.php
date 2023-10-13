@@ -166,7 +166,7 @@ class LwPoc extends Component
         }
 
         if ($this->logged_user->is_company_admin) {
-            $this->companies = Company::find($this->logged_user->company_id)->get();
+            $this->companies = Company::where('id',$this->logged_user->company_id)->get();
             $this->company_id = $this->logged_user->company_id;
         }
     }

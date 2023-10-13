@@ -152,10 +152,8 @@ class LwEndProduct extends Component
 
         if ($this->logged_user->is_admin) {
             $this->companies = Company::all();
-        }
-
-        if ($this->logged_user->is_company_admin) {
-            $this->companies = Company::find($this->logged_user->company_id)->get();
+        } else if ($this->logged_user->is_company_admin) {
+            $this->companies = Company::where('id',$this->logged_user->company_id)->get();
             $this->company_id = $this->logged_user->company_id;
         }
     }
@@ -163,8 +161,8 @@ class LwEndProduct extends Component
 
     public function getProjectsList()  {
 
-        if ($this->logged_user->is_admin) {
-            $this->projects = Project::all();
+        if ($this->logged_user->is_admin && $this->company_id) {
+            $this->projects = Project::where('company_id',$this->company_id)->get();
         }
 
         if ($this->logged_user->is_company_admin) {

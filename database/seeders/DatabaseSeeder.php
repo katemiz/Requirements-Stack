@@ -6,9 +6,9 @@ use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
 use App\Models\Company;
+use App\Models\Gate;
 use App\Models\Project;
 use App\Models\User;
-
 use App\Models\Moc;
 use App\Models\Poc;
 use App\Models\Phase;
@@ -43,7 +43,7 @@ class DatabaseSeeder extends Seeder
         $user1 = User::create([
             "name" => 'Kılıç Ali',
             "lastname" =>'Temiz',
-            "company_id" => 0,
+            "company_id" => 3,
             "email" => 'katemiz@masttech.com',
             "password" => 'kapkara'
         ]);
@@ -51,7 +51,7 @@ class DatabaseSeeder extends Seeder
         $user2 = User::create([
             "name" => 'Ümit',
             "lastname" =>'Kutluay',
-            "company_id" => 1,
+            "company_id" => 2,
             "email" => 'umit.kutluay@tubitak.gov.tr',
             "password" => 'Sage2023tubitak'
         ]);
@@ -69,6 +69,14 @@ class DatabaseSeeder extends Seeder
         Company::create([
             'user_id' => 1,
             'updated_uid' =>1,
+            'name' => 'AppCompany',
+            'fullname' => 'Generic Company for App'
+        ]);
+
+
+        Company::create([
+            'user_id' => 1,
+            'updated_uid' =>1,
             'name' => 'TÜBİTAK SAGE',
             'fullname' => 'TÜBİTAK Savunma Sanayii Araştırma ve Geliştirme Enstitüsü'
         ]);
@@ -78,6 +86,15 @@ class DatabaseSeeder extends Seeder
             'updated_uid' =>1,
             'name' => 'Masttech',
             'fullname' => 'Elektromekanik Sistemler Sanayii ve Ticaret AŞ'
+        ]);
+
+
+        Project::create([
+            'updated_uid' => 1,
+            'user_id' => 1,
+            'company_id' => 1,
+            'code' => 'AppProject',
+            'title' => 'Generic Project for App'
         ]);
 
         Project::create([
@@ -93,8 +110,8 @@ class DatabaseSeeder extends Seeder
         Moc::create([
             'updated_uid' => 1,
             'user_id' => 1,
-            'company_id' => 0,
-            'project_id' => 0,
+            'company_id' => 1,
+            'project_id' => 1,
             'endproduct_id' => 0,
             'code' => 'MC 9',
             'name' => 'Equipment Qualification',
@@ -105,8 +122,8 @@ class DatabaseSeeder extends Seeder
         Moc::create([
             'updated_uid' => 1,
             'user_id' => 1,
-            'company_id' => 0,
-            'project_id' => 0,
+            'company_id' => 1,
+            'project_id' => 1,
             'endproduct_id' => 0,
             'code' => 'MC 7',
             'name' => 'Design Inspection',
@@ -117,8 +134,8 @@ class DatabaseSeeder extends Seeder
         Moc::create([
             'updated_uid' => 1,
             'user_id' => 1,
-            'company_id' => 0,
-            'project_id' => 0,
+            'company_id' => 1,
+            'project_id' => 1,
             'endproduct_id' => 0,
             'code' => 'MC 6',
             'name' => 'Flight Tests',
@@ -129,8 +146,8 @@ class DatabaseSeeder extends Seeder
         Moc::create([
             'updated_uid' => 1,
             'user_id' => 1,
-            'company_id' => 0,
-            'project_id' => 0,
+            'company_id' => 1,
+            'project_id' => 1,
             'endproduct_id' => 0,
             'code' => 'MC 5',
             'name' => 'Ground Tests on Related Products',
@@ -141,8 +158,8 @@ class DatabaseSeeder extends Seeder
         Moc::create([
             'updated_uid' => 1,
             'user_id' => 1,
-            'company_id' => 0,
-            'project_id' => 0,
+            'company_id' => 1,
+            'project_id' => 1,
             'endproduct_id' => 0,
             'code' => 'MC 4',
             'name' => 'Laboratory Tests',
@@ -153,8 +170,8 @@ class DatabaseSeeder extends Seeder
         Moc::create([
             'updated_uid' => 1,
             'user_id' => 1,
-            'company_id' => 0,
-            'project_id' => 0,
+            'company_id' => 1,
+            'project_id' => 1,
             'endproduct_id' => 0,
             'code' => 'MC 3',
             'name' => 'Safety Assessment',
@@ -165,8 +182,8 @@ class DatabaseSeeder extends Seeder
         Moc::create([
             'updated_uid' => 1,
             'user_id' => 1,
-            'company_id' => 0,
-            'project_id' => 0,
+            'company_id' => 1,
+            'project_id' => 1,
             'endproduct_id' => 0,
             'code' => 'MC 2',
             'name' => 'Calculation / Analysis',
@@ -177,8 +194,8 @@ class DatabaseSeeder extends Seeder
         Moc::create([
             'updated_uid' => 1,
             'user_id' => 1,
-            'company_id' => 0,
-            'project_id' => 0,
+            'company_id' => 1,
+            'project_id' => 1,
             'endproduct_id' => 0,
             'code' => 'MC 1',
             'name' => 'Design Review',
@@ -189,8 +206,8 @@ class DatabaseSeeder extends Seeder
         Moc::create([
             'updated_uid' => 1,
             'user_id' => 1,
-            'company_id' => 0,
-            'project_id' => 0,
+            'company_id' => 1,
+            'project_id' => 1,
             'endproduct_id' => 0,
             'code' => 'MC 0',
             'name' => 'Compliance Statement',
@@ -202,8 +219,8 @@ class DatabaseSeeder extends Seeder
         Phase::create([
             'updated_uid' => 1,
             'user_id' => 1,
-            'company_id' => 0,
-            'project_id' => 0,
+            'company_id' => 1,
+            'project_id' => 1,
             'endproduct_id' => 0,
             'code' => 'Pre-Phase A',
             'name' => 'Concept Studies',
@@ -213,8 +230,8 @@ class DatabaseSeeder extends Seeder
         Phase::create([
             'updated_uid' => 1,
             'user_id' => 1,
-            'company_id' => 0,
-            'project_id' => 0,
+            'company_id' => 1,
+            'project_id' => 1,
             'endproduct_id' => 0,
             'code' => 'Phase A',
             'name' => 'Concept and Technology Development',
@@ -224,8 +241,8 @@ class DatabaseSeeder extends Seeder
         Phase::create([
             'updated_uid' => 1,
             'user_id' => 1,
-            'company_id' => 0,
-            'project_id' => 0,
+            'company_id' => 1,
+            'project_id' => 1,
             'endproduct_id' => 0,
             'code' => 'Phase B',
             'name' => 'Preliminary Design and Technology Completion',
@@ -235,8 +252,8 @@ class DatabaseSeeder extends Seeder
         Phase::create([
             'updated_uid' => 1,
             'user_id' => 1,
-            'company_id' => 0,
-            'project_id' => 0,
+            'company_id' => 1,
+            'project_id' => 1,
             'endproduct_id' => 0,
             'code' => 'Phase C',
             'name' => 'Final Design and Fabrication',
@@ -246,8 +263,8 @@ class DatabaseSeeder extends Seeder
         Phase::create([
             'updated_uid' => 1,
             'user_id' => 1,
-            'company_id' => 0,
-            'project_id' => 0,
+            'company_id' => 1,
+            'project_id' => 1,
             'endproduct_id' => 0,
             'code' => 'Phase D',
             'name' => 'System Assembly, Integration and Test, Launch',
@@ -257,8 +274,8 @@ class DatabaseSeeder extends Seeder
         Phase::create([
             'updated_uid' => 1,
             'user_id' => 1,
-            'company_id' => 0,
-            'project_id' => 0,
+            'company_id' => 1,
+            'project_id' => 1,
             'endproduct_id' => 0,
             'code' => 'Phase E',
             'name' => 'Operations and Sustainment',
@@ -268,8 +285,8 @@ class DatabaseSeeder extends Seeder
         Phase::create([
             'updated_uid' => 1,
             'user_id' => 1,
-            'company_id' => 0,
-            'project_id' => 0,
+            'company_id' => 1,
+            'project_id' => 1,
             'endproduct_id' => 0,
             'code' => 'Phase F',
             'name' => 'Closeout',
@@ -283,8 +300,8 @@ class DatabaseSeeder extends Seeder
         Gate::create([
             'updated_uid' => 1,
             'user_id' => 1,
-            'company_id' => 0,
-            'project_id' => 0,
+            'company_id' => 1,
+            'project_id' => 1,
             'endproduct_id' => 0,
             'code' => 'MCR',
             'name' => 'Mission Concept Review',
@@ -297,8 +314,8 @@ class DatabaseSeeder extends Seeder
         Gate::create([
             'updated_uid' => 1,
             'user_id' => 1,
-            'company_id' => 0,
-            'project_id' => 0,
+            'company_id' => 1,
+            'project_id' => 1,
             'endproduct_id' => 0,
             'code' => 'SRR',
             'name' => 'System Requirements Review',
@@ -311,8 +328,8 @@ class DatabaseSeeder extends Seeder
         Gate::create([
             'updated_uid' => 1,
             'user_id' => 1,
-            'company_id' => 0,
-            'project_id' => 0,
+            'company_id' => 1,
+            'project_id' => 1,
             'endproduct_id' => 0,
             'code' => 'MDR / SDR',
             'name' => 'Mission Definition Review / System Definition Review',
@@ -323,8 +340,8 @@ class DatabaseSeeder extends Seeder
         Gate::create([
             'updated_uid' => 1,
             'user_id' => 1,
-            'company_id' => 0,
-            'project_id' => 0,
+            'company_id' => 1,
+            'project_id' => 1,
             'endproduct_id' => 0,
             'code' => 'PDR',
             'name' => 'Preliminary Design Review',
@@ -339,8 +356,8 @@ class DatabaseSeeder extends Seeder
         Gate::create([
             'updated_uid' => 1,
             'user_id' => 1,
-            'company_id' => 0,
-            'project_id' => 0,
+            'company_id' => 1,
+            'project_id' => 1,
             'endproduct_id' => 0,
             'code' => 'CDR',
             'name' => 'Critical Design Review',
@@ -353,8 +370,8 @@ class DatabaseSeeder extends Seeder
         Gate::create([
             'updated_uid' => 1,
             'user_id' => 1,
-            'company_id' => 0,
-            'project_id' => 0,
+            'company_id' => 1,
+            'project_id' => 1,
             'endproduct_id' => 0,
             'code' => 'PRR',
             'name' => 'Production Readiness Review',
@@ -369,8 +386,8 @@ class DatabaseSeeder extends Seeder
         Gate::create([
             'updated_uid' => 1,
             'user_id' => 1,
-            'company_id' => 0,
-            'project_id' => 0,
+            'company_id' => 1,
+            'project_id' => 1,
             'endproduct_id' => 0,
             'code' => 'SIR',
             'name' => 'System Integration Review',
@@ -384,8 +401,8 @@ class DatabaseSeeder extends Seeder
         Gate::create([
             'updated_uid' => 1,
             'user_id' => 1,
-            'company_id' => 0,
-            'project_id' => 0,
+            'company_id' => 1,
+            'project_id' => 1,
             'endproduct_id' => 0,
             'code' => 'SAR',
             'name' => 'System Acceptance Review',
@@ -397,8 +414,8 @@ class DatabaseSeeder extends Seeder
         Gate::create([
             'updated_uid' => 1,
             'user_id' => 1,
-            'company_id' => 0,
-            'project_id' => 0,
+            'company_id' => 1,
+            'project_id' => 1,
             'endproduct_id' => 0,
             'code' => 'ORR',
             'name' => 'Operational Readiness Review',
@@ -410,8 +427,8 @@ class DatabaseSeeder extends Seeder
         Gate::create([
             'updated_uid' => 1,
             'user_id' => 1,
-            'company_id' => 0,
-            'project_id' => 0,
+            'company_id' => 1,
+            'project_id' => 1,
             'endproduct_id' => 0,
             'code' => 'FRR',
             'name' => 'Flight Readiness Review',
@@ -423,8 +440,8 @@ class DatabaseSeeder extends Seeder
         Gate::create([
             'updated_uid' => 1,
             'user_id' => 1,
-            'company_id' => 0,
-            'project_id' => 0,
+            'company_id' => 1,
+            'project_id' => 1,
             'endproduct_id' => 0,
             'code' => 'PLAR',
             'name' => 'Post-Launch Assessment Review ',
@@ -437,8 +454,8 @@ class DatabaseSeeder extends Seeder
         Gate::create([
             'updated_uid' => 1,
             'user_id' => 1,
-            'company_id' => 0,
-            'project_id' => 0,
+            'company_id' => 1,
+            'project_id' => 1,
             'endproduct_id' => 0,
             'code' => 'CERR',
             'name' => 'Critical Event Readiness Review ',
@@ -449,8 +466,8 @@ class DatabaseSeeder extends Seeder
         Gate::create([
             'updated_uid' => 1,
             'user_id' => 1,
-            'company_id' => 0,
-            'project_id' => 0,
+            'company_id' => 1,
+            'project_id' => 1,
             'endproduct_id' => 0,
             'code' => 'PFAR',
             'name' => 'Post-Flight Assessment Review',
@@ -462,8 +479,8 @@ class DatabaseSeeder extends Seeder
         Gate::create([
             'updated_uid' => 1,
             'user_id' => 1,
-            'company_id' => 0,
-            'project_id' => 0,
+            'company_id' => 1,
+            'project_id' => 1,
             'endproduct_id' => 0,
             'code' => 'DR',
             'name' => 'Decommissioning Review',
@@ -476,8 +493,8 @@ class DatabaseSeeder extends Seeder
         Gate::create([
             'updated_uid' => 1,
             'user_id' => 1,
-            'company_id' => 0,
-            'project_id' => 0,
+            'company_id' => 1,
+            'project_id' => 1,
             'endproduct_id' => 0,
             'code' => 'DRR',
             'name' => 'Disposal Readiness Review',

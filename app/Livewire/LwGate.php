@@ -167,7 +167,7 @@ class LwGate extends Component
         }
 
         if ($this->logged_user->is_company_admin) {
-            $this->companies = Company::find($this->logged_user->company_id)->get();
+            $this->companies = Company::where('id',$this->logged_user->company_id)->get();
             $this->company_id = $this->logged_user->company_id;
         }
     }
@@ -175,8 +175,8 @@ class LwGate extends Component
 
     public function getProjectsList()  {
 
-        if ($this->logged_user->is_admin) {
-            $this->projects = Project::all();
+        if ($this->logged_user->is_admin && $this->company_id) {
+            $this->projects = Project::where('company_id',$this->company_id)->get();
         }
 
         if ($this->logged_user->is_company_admin) {
@@ -187,10 +187,20 @@ class LwGate extends Component
             $this->project_id = $this->projects['0']->id;
         }
 
-        foreach($this->projects as $prj) {
-            $this->project_eproducts[$prj->id] = Endproduct::where('project_id',$prj->id)->get();
+        $this->getEndProductsList();
+
+    }
+
+
+    public function getEndProductsList()  {
+
+        if ($this->project_id) {
+            $this->project_eproducts = Endproduct::where('project_id',$this->project_id)->get();
         }
     }
+
+
+
 
 
     public function changeSortDirection ($key) {
