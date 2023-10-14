@@ -61,7 +61,12 @@
 
                 <a href="/requirements" class="navbar-item icon-text">
                     <span class="icon has-text-warning"><x-carbon-layers/></span>
-                    <span>Requirements</span>
+                    <span>Requirements Old</span>
+                </a>
+
+                <a href="/requirements/list" class="navbar-item icon-text">
+                    <span class="icon has-text-warning"><x-carbon-layers/></span>
+                    <span>Requirements New</span>
                 </a>
 
                 <a href="/projects-mocs/list" class="navbar-item icon-text">

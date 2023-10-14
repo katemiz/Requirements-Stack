@@ -120,7 +120,7 @@ class LwGate extends Component
 
         if ($this->logged_user->is_admin) {
 
-            if (strlen(trim($this->query)) > 0 ) {
+            if (strlen(trim($this->query)) < 2 ) {
 
                 $phases = Gate::orderBy($this->sortField,$this->sortDirection)
                 ->paginate(env('RESULTS_PER_PAGE'));
@@ -137,7 +137,7 @@ class LwGate extends Component
 
         if ($this->logged_user->is_company_admin) {
 
-            if (strlen(trim($this->query)) > 0 ) {
+            if (strlen(trim($this->query)) < 2 ) {
 
                 $phases = Gate::where('company_id',$this->logged_user->company_id)
                 ->where(function ($sqlquery) {

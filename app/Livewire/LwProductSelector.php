@@ -13,73 +13,33 @@ use Illuminate\Support\Facades\Storage;
 
 use App\Models\Company;
 use App\Models\Endproduct;
-use App\Models\Poc;
 use App\Models\Phase;
 use App\Models\Project;
 use App\Models\User;
 
 
 
-class LwPoc extends Component
+class LwProductSelector extends Component
 {
-    use WithPagination;
-
-    public $action = 'LIST'; // LIST,FORM,VIEW
-    public $constants;
-
-    public $uid = false;
-
-    public $query = '';
-    public $sortField = 'created_at';
-    public $sortDirection = 'DESC';
 
     public $logged_user;
-    public $companies = [];
-    public $projects = [];
-    public $endproducts = [];
 
-    public $the_company = false;    // Viewed Phase Company
-    public $the_project = false;    // Viewed Phase Project
-    public $the_endproduct = false; // Viewed Phase EndProduct
+    public $companies;
+    public $endproducts;
+    public $projects;
+    public $redirect_to;
 
-    public $description;
+    public $company_id;
+    public $endproduct_id;
+    public $project_id;
 
-    public $project_eproducts = [];
-
-
-    #[Rule('required', message: 'Please select company')] 
-    public $company_id = false;
-
-    #[Rule('required', message: 'Please select project')] 
-    public $project_id = false;
-
-    // #[Rule('required', message: 'Please select End Product')] 
-    public $endproduct_id = 0;
-
-    #[Rule('required', message: 'Please enter phase code. (eg P1)')] 
-    public $code;
-
-    #[Rule('required', message: 'Please enter phase name (eg Feasibility Phase)')] 
-    public $name;
-
-    public $created_by;
-    public $updated_by;
-    public $created_at;
-    public $updated_at;
 
     public function mount()
     {
-        if (request('action')) {
-            $this->action = strtoupper(request('action'));
-        }
-
-        if (request('id')) {
-            $this->uid = request('id');
-            $this->setProps();
-        }
-
-        $this->constants = config('pocs');
+        $this->getRedirectLink();
     }
+
+
 
 
     public function render()
@@ -87,15 +47,28 @@ class LwPoc extends Component
         $this->logged_user = $this->checkUserRoles(Auth::user());
 
         $this->getCompaniesList();
-        $this->getProjectsList();
 
-        $this->setProps();
-
-        return view('projects.pocs.lw-pocs',[
-            'pocs' => $this->getPocsList()
+        return view('pselector.product-selector', [
+            'companies' => $this->companies,
+            'projects' => $this->projects,
+            'endproducts' => $this->endproducts
         ]);
     }
 
+
+
+    function getRedirectLink() {
+
+        switch (request('pageBackIdentifier')) {
+            case 'rl':
+                $this->redirect_to = '/requirements/list';
+                break;
+            
+            default:
+                $this->redirect_to = '/';
+                break;
+        }
+    }
 
     public function checkUserRoles($usr) {
 
@@ -115,18 +88,18 @@ class LwPoc extends Component
 
 
 
-    public function getPocsList()  {
+    public function SILgetPhasesList()  {
 
         if ($this->logged_user->is_admin) {
 
             if (strlen(trim($this->query)) < 2 ) {
 
-                $w = Poc::orderBy($this->sortField,$this->sortDirection)
+                $phases = Phase::orderBy($this->sortField,$this->sortDirection)
                 ->paginate(env('RESULTS_PER_PAGE'));
 
             } else {
 
-                $w = Poc::where('code', 'LIKE', "%".$this->query."%")
+                $phases = Phase::where('code', 'LIKE', "%".$this->query."%")
                 ->orWhere('name','LIKE',"%".$this->query."%")
                 ->orWhere('description','LIKE',"%".$this->query."%")
                 ->orderBy($this->sortField,$this->sortDirection)
@@ -138,7 +111,7 @@ class LwPoc extends Component
 
             if (strlen(trim($this->query)) < 2 ) {
 
-                $w = Poc::where('company_id',$this->logged_user->company_id)
+                $phases = Phase::where('company_id',$this->logged_user->company_id)
                 ->where(function ($sqlquery) {
                     $sqlquery->where('code', 'LIKE', "%".$this->query."%")
                           ->orWhere('name', 'LIKE', "%".$this->query."%")
@@ -149,13 +122,13 @@ class LwPoc extends Component
 
             } else {
 
-                $w = Poc::where('company_id', $this->logged_user->company_id)
+                $phases = Phase::where('company_id', $this->logged_user->company_id)
                 ->orderBy($this->sortField,$this->sortDirection)
                 ->paginate(env('RESULTS_PER_PAGE'));
             }
         }
 
-        return $w;
+        return $phases;
     }
 
 
@@ -174,8 +147,8 @@ class LwPoc extends Component
 
     public function getProjectsList()  {
 
-        if ($this->logged_user->is_admin) {
-            $this->projects = Project::all();
+        if ($this->logged_user->is_admin && $this->company_id) {
+            $this->projects = Project::where('company_id',$this->company_id)->get();
         }
 
         if ($this->logged_user->is_company_admin) {
@@ -186,8 +159,13 @@ class LwPoc extends Component
             $this->project_id = $this->projects['0']->id;
         }
 
-        foreach($this->projects as $prj) {
-            $this->project_eproducts[$prj->id] = Endproduct::where('project_id',$prj->id)->get();
+        $this->getEndProductsList();
+    }
+
+    public function getEndProductsList()  {
+
+        if ($this->project_id) {
+            $this->project_eproducts = Endproduct::where('project_id',$this->project_id)->get();
         }
     }
 
@@ -226,15 +204,17 @@ class LwPoc extends Component
     public function addItem() {
         $this->uid = false;
         $this->action = 'FORM';
+
         $this->reset('code','name');
     }
 
 
     public function setProps() {
 
+
         if ($this->uid && in_array($this->action,['VIEW','FORM']) ) {
 
-            $c = Poc::find($this->uid);
+            $c = Phase::find($this->uid);
 
             $this->code = $c->code;
             $this->name = $c->name;
@@ -251,7 +231,9 @@ class LwPoc extends Component
             if ($c->endproduct_id > 0) {
                 $this->the_endproduct = Endproduct::find($c->endproduct_id);
             }
+
         }
+
     }
 
 
@@ -264,8 +246,8 @@ class LwPoc extends Component
     #[On('onDeleteConfirmed')]
     public function deleteItem()
     {
-        Poc::find($this->uid)->delete();
-        session()->flash('message','Project POC definition has been deleted successfully.');
+        Phase::find($this->uid)->delete();
+        session()->flash('message','Project phase has been deleted successfully.');
         $this->action = 'LIST';
         $this->resetPage();
     }
@@ -283,17 +265,16 @@ class LwPoc extends Component
         $props['name'] = $this->name;
         $props['description'] = $this->description;
 
-
         if ( $this->uid ) {
             // update
-            Poc::find($this->uid)->update($props);
-            session()->flash('message','Project POC definition has been updated successfully.');
+            Phase::find($this->uid)->update($props);
+            session()->flash('message','Project phase has been updated successfully.');
 
         } else {
             // create
             $props['user_id'] = Auth::id();
-            $this->uid = Poc::create($props)->id;
-            session()->flash('message','Project POC definition has been created successfully.');
+            $this->uid = Phase::create($props)->id;
+            session()->flash('message','Project phase has been created successfully.');
         }
 
         $this->action = 'VIEW';

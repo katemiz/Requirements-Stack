@@ -118,7 +118,7 @@ class LwMoc extends Component
 
         if ($this->logged_user->is_admin) {
 
-            if (strlen(trim($this->query)) > 0 ) {
+            if (strlen(trim($this->query)) < 2 ) {
 
                 $w = Moc::orderBy($this->sortField,$this->sortDirection)
                 ->paginate(env('RESULTS_PER_PAGE'));
@@ -135,7 +135,7 @@ class LwMoc extends Component
 
         if ($this->logged_user->is_company_admin) {
 
-            if (strlen(trim($this->query)) > 0 ) {
+            if (strlen(trim($this->query)) < 2 ) {
 
                 $w = Moc::where('company_id',$this->logged_user->company_id)
                 ->where(function ($sqlquery) {

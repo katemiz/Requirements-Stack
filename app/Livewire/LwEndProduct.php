@@ -110,7 +110,7 @@ class LwEndProduct extends Component
 
         if ($this->logged_user->is_admin) {
 
-            if (strlen(trim($this->query)) > 0 ) {
+            if (strlen(trim($this->query)) < 2 ) {
 
                 $eproducts = Endproduct::orderBy($this->sortField,$this->sortDirection)
                 ->paginate(env('RESULTS_PER_PAGE'));
@@ -126,7 +126,7 @@ class LwEndProduct extends Component
 
         if ($this->logged_user->is_company_admin) {
 
-            if (strlen(trim($this->query)) > 0 ) {
+            if (strlen(trim($this->query)) < 2 ) {
 
                 $eproducts = Endproduct::where('company_id',$this->logged_user->company_id)
                 ->where(function ($sqlquery) {

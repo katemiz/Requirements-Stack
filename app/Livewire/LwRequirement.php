@@ -13,14 +13,13 @@ use Illuminate\Support\Facades\Storage;
 
 use App\Models\Company;
 use App\Models\Endproduct;
-use App\Models\Poc;
-use App\Models\Phase;
+use App\Models\Requirement;
 use App\Models\Project;
 use App\Models\User;
 
 
 
-class LwPoc extends Component
+class LwRequirement extends Component
 {
     use WithPagination;
 
@@ -42,7 +41,7 @@ class LwPoc extends Component
     public $the_project = false;    // Viewed Phase Project
     public $the_endproduct = false; // Viewed Phase EndProduct
 
-    public $description;
+
 
     public $project_eproducts = [];
 
@@ -54,13 +53,15 @@ class LwPoc extends Component
     public $project_id = false;
 
     // #[Rule('required', message: 'Please select End Product')] 
-    public $endproduct_id = 0;
+    public $endproduct_id = false;
 
     #[Rule('required', message: 'Please enter phase code. (eg P1)')] 
     public $code;
 
     #[Rule('required', message: 'Please enter phase name (eg Feasibility Phase)')] 
     public $name;
+
+    public $description;
 
     public $created_by;
     public $updated_by;
@@ -78,7 +79,7 @@ class LwPoc extends Component
             $this->setProps();
         }
 
-        $this->constants = config('pocs');
+        $this->constants = config('requirements');
     }
 
 
@@ -86,13 +87,17 @@ class LwPoc extends Component
     {
         $this->logged_user = $this->checkUserRoles(Auth::user());
 
-        $this->getCompaniesList();
-        $this->getProjectsList();
+        $this->checkCurrentProduct();
 
-        $this->setProps();
 
-        return view('projects.pocs.lw-pocs',[
-            'pocs' => $this->getPocsList()
+
+        // $this->getCompaniesList();
+        // $this->getProjectsList();
+
+        // $this->setProps();
+
+        return view('requirements.requirements-list',[
+            'requirements' => $this->getRequirementsList()
         ]);
     }
 
@@ -115,47 +120,115 @@ class LwPoc extends Component
 
 
 
-    public function getPocsList()  {
+    public function getRequirementsList()  {
 
         if ($this->logged_user->is_admin) {
 
             if (strlen(trim($this->query)) < 2 ) {
 
-                $w = Poc::orderBy($this->sortField,$this->sortDirection)
+                $requirements = Requirement::orderBy($this->sortField,$this->sortDirection)
                 ->paginate(env('RESULTS_PER_PAGE'));
 
             } else {
 
-                $w = Poc::where('code', 'LIKE', "%".$this->query."%")
-                ->orWhere('name','LIKE',"%".$this->query."%")
-                ->orWhere('description','LIKE',"%".$this->query."%")
-                ->orderBy($this->sortField,$this->sortDirection)
-                ->paginate(env('RESULTS_PER_PAGE'));
+                // $phases = Phase::where('code', 'LIKE', "%".$this->query."%")
+                // ->orWhere('name','LIKE',"%".$this->query."%")
+                // ->orWhere('description','LIKE',"%".$this->query."%")
+                // ->orderBy($this->sortField,$this->sortDirection)
+                // ->paginate(env('RESULTS_PER_PAGE'));
             }
         }
 
         if ($this->logged_user->is_company_admin) {
 
-            if (strlen(trim($this->query)) < 2 ) {
+            if (strlen(trim($this->query)) > 0 ) {
 
-                $w = Poc::where('company_id',$this->logged_user->company_id)
-                ->where(function ($sqlquery) {
-                    $sqlquery->where('code', 'LIKE', "%".$this->query."%")
-                          ->orWhere('name', 'LIKE', "%".$this->query."%")
-                          ->orWhere('description', 'LIKE', "%".$this->query."%");
-                })
-                ->orderBy($this->sortField,$this->sortDirection)
-                ->paginate(env('RESULTS_PER_PAGE'));
+                // $phases = Phase::where('company_id',$this->logged_user->company_id)
+                // ->where(function ($sqlquery) {
+                //     $sqlquery->where('code', 'LIKE', "%".$this->query."%")
+                //           ->orWhere('name', 'LIKE', "%".$this->query."%")
+                //           ->orWhere('description', 'LIKE', "%".$this->query."%");
+                // })
+                // ->orderBy($this->sortField,$this->sortDirection)
+                // ->paginate(env('RESULTS_PER_PAGE'));
 
             } else {
 
-                $w = Poc::where('company_id', $this->logged_user->company_id)
-                ->orderBy($this->sortField,$this->sortDirection)
-                ->paginate(env('RESULTS_PER_PAGE'));
+                // $phases = Phase::where('company_id', $this->logged_user->company_id)
+                // ->orderBy($this->sortField,$this->sortDirection)
+                // ->paginate(env('RESULTS_PER_PAGE'));
             }
         }
 
-        return $w;
+        return $requirements;
+    }
+
+
+
+    public function checkCurrentProduct() {
+
+
+        if (!session('current_selected_project') && !session('current_selected_eproduct')) {
+
+            return redirect('/product-selector/rl');
+
+        }
+
+
+        // $value = session('key');
+ 
+        // // Specifying a default value...
+        // $value = session('key', 'default');
+
+
+
+
+    }
+
+
+
+
+    public function getPhasesList()  {
+
+        // if ($this->logged_user->is_admin) {
+
+        //     if (strlen(trim($this->query)) > 0 ) {
+
+        //         $phases = Phase::orderBy($this->sortField,$this->sortDirection)
+        //         ->paginate(env('RESULTS_PER_PAGE'));
+
+        //     } else {
+
+        //         $phases = Phase::where('code', 'LIKE', "%".$this->query."%")
+        //         ->orWhere('name','LIKE',"%".$this->query."%")
+        //         ->orWhere('description','LIKE',"%".$this->query."%")
+        //         ->orderBy($this->sortField,$this->sortDirection)
+        //         ->paginate(env('RESULTS_PER_PAGE'));
+        //     }
+        // }
+
+        // if ($this->logged_user->is_company_admin) {
+
+        //     if (strlen(trim($this->query)) > 0 ) {
+
+        //         $phases = Phase::where('company_id',$this->logged_user->company_id)
+        //         ->where(function ($sqlquery) {
+        //             $sqlquery->where('code', 'LIKE', "%".$this->query."%")
+        //                   ->orWhere('name', 'LIKE', "%".$this->query."%")
+        //                   ->orWhere('description', 'LIKE', "%".$this->query."%");
+        //         })
+        //         ->orderBy($this->sortField,$this->sortDirection)
+        //         ->paginate(env('RESULTS_PER_PAGE'));
+
+        //     } else {
+
+        //         $phases = Phase::where('company_id', $this->logged_user->company_id)
+        //         ->orderBy($this->sortField,$this->sortDirection)
+        //         ->paginate(env('RESULTS_PER_PAGE'));
+        //     }
+        // }
+
+        // return $phases;
     }
 
 
@@ -174,8 +247,8 @@ class LwPoc extends Component
 
     public function getProjectsList()  {
 
-        if ($this->logged_user->is_admin) {
-            $this->projects = Project::all();
+        if ($this->logged_user->is_admin && $this->company_id) {
+            $this->projects = Project::where('company_id',$this->company_id)->get();
         }
 
         if ($this->logged_user->is_company_admin) {
@@ -186,8 +259,13 @@ class LwPoc extends Component
             $this->project_id = $this->projects['0']->id;
         }
 
-        foreach($this->projects as $prj) {
-            $this->project_eproducts[$prj->id] = Endproduct::where('project_id',$prj->id)->get();
+        $this->getEndProductsList();
+    }
+
+    public function getEndProductsList()  {
+
+        if ($this->project_id) {
+            $this->project_eproducts = Endproduct::where('project_id',$this->project_id)->get();
         }
     }
 
@@ -226,15 +304,17 @@ class LwPoc extends Component
     public function addItem() {
         $this->uid = false;
         $this->action = 'FORM';
+
         $this->reset('code','name');
     }
 
 
     public function setProps() {
 
+
         if ($this->uid && in_array($this->action,['VIEW','FORM']) ) {
 
-            $c = Poc::find($this->uid);
+            $c = Phase::find($this->uid);
 
             $this->code = $c->code;
             $this->name = $c->name;
@@ -251,7 +331,9 @@ class LwPoc extends Component
             if ($c->endproduct_id > 0) {
                 $this->the_endproduct = Endproduct::find($c->endproduct_id);
             }
+
         }
+
     }
 
 
@@ -264,8 +346,8 @@ class LwPoc extends Component
     #[On('onDeleteConfirmed')]
     public function deleteItem()
     {
-        Poc::find($this->uid)->delete();
-        session()->flash('message','Project POC definition has been deleted successfully.');
+        Phase::find($this->uid)->delete();
+        session()->flash('message','Project phase has been deleted successfully.');
         $this->action = 'LIST';
         $this->resetPage();
     }
@@ -283,17 +365,16 @@ class LwPoc extends Component
         $props['name'] = $this->name;
         $props['description'] = $this->description;
 
-
         if ( $this->uid ) {
             // update
-            Poc::find($this->uid)->update($props);
-            session()->flash('message','Project POC definition has been updated successfully.');
+            Phase::find($this->uid)->update($props);
+            session()->flash('message','Project phase has been updated successfully.');
 
         } else {
             // create
             $props['user_id'] = Auth::id();
-            $this->uid = Poc::create($props)->id;
-            session()->flash('message','Project POC definition has been created successfully.');
+            $this->uid = Phase::create($props)->id;
+            session()->flash('message','Project phase has been created successfully.');
         }
 
         $this->action = 'VIEW';
