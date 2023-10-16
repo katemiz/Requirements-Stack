@@ -167,8 +167,16 @@ class LwRequirement extends Component
 
     public function checkCurrentProduct() {
 
+        /*
+        session('current_project_id');
+        session('current_project_name');
 
-        if (!session('current_selected_project') && !session('current_selected_eproduct')) {
+        session('current_eproduct_id');
+        session('current_eproduct_name');
+        */
+
+
+        if (!session('current_project_id') && !session('current_product_id')) {
 
             return redirect('/product-selector/rl');
 

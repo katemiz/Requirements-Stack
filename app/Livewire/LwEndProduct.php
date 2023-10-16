@@ -32,9 +32,9 @@ class LwEndProduct extends Component
     public $sortDirection = 'DESC';
 
     public $logged_user;
-    public $companies = [];
-    public $projects = [];
-    public $endproducts = [];
+
+    public $is_user_admin = false;
+    public $is_user_company_admin = false;
 
     public $the_company = false;    // Viewed Phase Company
     public $the_project = false;    // Viewed Phase Project
@@ -75,40 +75,35 @@ class LwEndProduct extends Component
 
     public function render()
     {
-        $this->logged_user = $this->checkUserRoles(Auth::user());
-
-        $this->getCompaniesList();
-        $this->getProjectsList();
-
+        $this->checkUserRoles();
         $this->setProps();
 
         return view('projects.eproducts.lw-eproducts',[
+            'companies' => $this->getCompaniesList(),
+            'projects' => $this->getProjectsList(),
             'eproducts' => $this->getEProductsList()
         ]);
     }
 
 
-    public function checkUserRoles($usr) {
+    public function checkUserRoles() {
 
-        $usr->is_admin = false;
-        $usr->is_company_admin = false;
+        $this->logged_user = Auth::user();
 
-        if ($usr->hasRole('admin')) {
-            $usr->is_admin = true;
+        if ($this->logged_user->hasRole('admin')) {
+            $this->is_user_admin = true;
         }
 
-        if ($usr->hasRole('company_admin')) {
-            $usr->is_company_admin = true;
+        if ($this->logged_user->hasRole('company_admin')) {
+            $this->is_user_company_admin = true;
         }
-
-        return $usr;
     }
 
 
 
     public function getEProductsList()  {
 
-        if ($this->logged_user->is_admin) {
+        if ($this->is_user_admin) {
 
             if (strlen(trim($this->query)) < 2 ) {
 
@@ -124,7 +119,7 @@ class LwEndProduct extends Component
             }
         }
 
-        if ($this->logged_user->is_company_admin) {
+        if ($this->is_user_company_admin) {
 
             if (strlen(trim($this->query)) < 2 ) {
 
@@ -150,28 +145,40 @@ class LwEndProduct extends Component
 
     public function getCompaniesList()  {
 
-        if ($this->logged_user->is_admin) {
-            $this->companies = Company::all();
-        } else if ($this->logged_user->is_company_admin) {
-            $this->companies = Company::where('id',$this->logged_user->company_id)->get();
+        if ($this->is_user_admin) {
+            $companies = Company::all();
+        } else if ($this->is_user_company_admin) {
+            $companies = Company::where('id',$this->logged_user->company_id)->get();
             $this->company_id = $this->logged_user->company_id;
         }
+
+        return $companies;
     }
 
 
     public function getProjectsList()  {
 
-        if ($this->logged_user->is_admin && $this->company_id) {
-            $this->projects = Project::where('company_id',$this->company_id)->get();
+        if (!$this->company_id) {
+            return [];
         }
 
-        if ($this->logged_user->is_company_admin) {
-            $this->projects = Project::where('company_id',$this->logged_user->company_id)->get();
+        if ($this->is_user_admin) {
+            $projects = Project::where('company_id',$this->company_id)->get();
         }
 
-        if (count($this->projects) == 1) {
-            $this->project_id = $this->projects['0']->id;
+        if ($this->is_user_company_admin) {
+            $projects = Project::where('company_id',$this->logged_user->company_id)->get();
         }
+
+        if (count($projects) == 1) {
+            $this->project_id = $projects['0']->id;
+        }
+
+        $this->js("console.log('$this->company_id')");
+
+        $this->js("console.log('$projects')");
+
+        return $projects;
     }
 
 

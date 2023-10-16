@@ -35,9 +35,9 @@
                     <div class="select">
                     <select wire:model='project_id'>
                         <option>Select a project...</option>
-                            @foreach ($projects as $project)
-                                <option value="{{ $project->id }}">{{ $project->title }}</option>
-                            @endforeach
+                        @foreach ($projects as $project)
+                            <option value="{{ $project->id }}">{{ $project->title }}</option>
+                        @endforeach
                     </select>
                     </div>
                 </div>

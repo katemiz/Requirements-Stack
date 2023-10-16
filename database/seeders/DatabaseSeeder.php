@@ -100,7 +100,7 @@ class DatabaseSeeder extends Seeder
         Project::create([
             'updated_uid' => 1,
             'user_id' => 1,
-            'company_id' => 1,
+            'company_id' => 2,
             'code' => 'YHRT',
             'title' => 'Yüksek Hızlı Rüzgar Tüneli Projesi'
         ]);

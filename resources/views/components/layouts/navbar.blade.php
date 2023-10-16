@@ -142,9 +142,26 @@
 </nav>
 
 
+
+
+{{-- 
+session('current_project_id');
+session('current_project_name');
+
+session('current_eproduct_id');
+session('current_eproduct_name');
+--}}
+
+
+
 @if (session('current_project_id') && session('current_project_name'))
     <section class="hero has-background-grey-lighter has-text-right">
-        <p class="is-size-7 p-1">Current Project : {{ session('current_project_name') }}</p>
+        <p class="is-size-7 p-1">
+            {{ session('current_eproduct_id') }}
+            @if (session('current_eproduct_id'))
+                {{ session('current_eproduct_name') }}
+            @endif
+        </p>
     </section>
 @endif
 
