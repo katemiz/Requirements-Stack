@@ -101,7 +101,7 @@ Route::middleware('auth')->group(function () {
 
     // PRODUCT SELECTOR
     // ************************************************************
-    Route::get('/product-selector/{pageBackIdentifier}', LwProductSelector::class);
+    Route::get('/product-selector/{pageBackIdentifier?}', LwProductSelector::class);
 
 
     // REQUIREMENTS

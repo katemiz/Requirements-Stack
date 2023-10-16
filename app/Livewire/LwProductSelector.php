@@ -38,7 +38,11 @@ class LwProductSelector extends Component
 
     public function mount()
     {
-        $this->getRedirectLink();
+        if (request('pageBackIdentifier')) {
+            $this->getRedirectLink();
+        } else {
+            $this->redirect_to = url()->previous();
+        }
     }
 
 
@@ -68,6 +72,11 @@ class LwProductSelector extends Component
                 $this->redirect_to = '/';
                 break;
         }
+
+        // $this->redirect_to = base64_decode(request('pageBackIdentifier'));
+
+        // $this->js("console.log('$this->redirect_to')");
+
     }
 
 
@@ -126,8 +135,10 @@ class LwProductSelector extends Component
         }
     }
 
-    public function setCurrent($idProject,$idEP)  {
 
+
+
+    public function setCurrent($idProject,$idEP)  {
 
         /*
         session('current_project_id');
@@ -137,7 +148,9 @@ class LwProductSelector extends Component
         session('current_eproduct_name');
         */
 
-        $ep = $idEP > 0 ? Endproduct::find($idEP)->code : false;
+        $this->js("console.log('$idProject.'-'.$idEP')");
+
+        $ep = $idEP > 0 ? Endproduct::find($idEP) : false;
 
         session([
             'current_project_id' => $idProject,
@@ -148,12 +161,9 @@ class LwProductSelector extends Component
 
 
 
-
-        // dd($this->redirect_to);
-
-
         return redirect($this->redirect_to);
 
+        // return redirect(url()->previous());
 
     }
 

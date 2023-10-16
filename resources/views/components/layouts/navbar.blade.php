@@ -102,13 +102,14 @@
                     <p class="navbar-link">
                         <span class="mx-3 has-text-right">
                             {{ Auth::user()->name }} {{ Auth::user()->lastname }} / {{ Auth::user()->company_name }}
-                            <span class="block has-text-warning is-size-7">Current Project</span>
+                            <span class="block has-text-warning is-size-7">
+                                {{ session('current_project_name') }}{{ session('current_eproduct_name') ? '/'.session('current_eproduct_name') :'' }}</span>
                         </span>
                     </p>
 
                     <div class="navbar-dropdown">                  
 
-                        <a href="/change-project" class="navbar-item">Change Project</a>
+                        <a href="/product-selector" class="navbar-item">Change Project</a>
                         <a href="/profile" class="navbar-item">Change Password</a>
 
                         <!-- Authentication -->
@@ -154,7 +155,7 @@ session('current_eproduct_name');
 
 
 
-@if (session('current_project_id') && session('current_project_name'))
+{{-- @if (session('current_project_id') && session('current_project_name'))
     <section class="hero has-background-grey-lighter has-text-right">
         <p class="is-size-7 p-1">
             {{ session('current_eproduct_id') }}
@@ -163,5 +164,5 @@ session('current_eproduct_name');
             @endif
         </p>
     </section>
-@endif
+@endif --}}
 
