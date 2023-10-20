@@ -17,14 +17,14 @@
         <!-- Left side -->
         <div class="level-left">
 
-            @role(['admin','company_admin'])
+            {{-- @role(['admin','company_admin']) --}}
             <div class="level-item has-text-centered">
-                    <a href="/projects-phases/form" class="button is-dark">
+                    <a href="/requirements/form" class="button is-dark">
                         <span class="icon is-small"><x-carbon-add /></span>
                         <span>{{ $constants['list']['addButton']['text'] }}</span>
                     </a>
                 </div>
-            @endrole
+            {{-- @endrole --}}
 
         </div>
 

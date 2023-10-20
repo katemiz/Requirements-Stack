@@ -50,7 +50,7 @@ class LwProductSelector extends Component
 
     public function render()
     {
-        $this->logged_user = $this->checkUserRoles();
+        $this->checkUserRoles();
 
         $this->getProducts();
 

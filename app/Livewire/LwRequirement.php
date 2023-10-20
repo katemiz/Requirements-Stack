@@ -33,6 +33,10 @@ class LwRequirement extends Component
     public $sortDirection = 'DESC';
 
     public $logged_user;
+
+    public $is_user_admin = false;
+    public $is_user_company_admin = false;
+
     public $companies = [];
     public $projects = [];
     public $endproducts = [];
@@ -61,12 +65,25 @@ class LwRequirement extends Component
     #[Rule('required', message: 'Please enter phase name (eg Feasibility Phase)')] 
     public $name;
 
-    public $description;
+    public $source;
+    public $cross_ref_no;
+    public $text;
+    public $remarks;
+
 
     public $created_by;
     public $updated_by;
     public $created_at;
     public $updated_at;
+
+
+    public $rtypes = [
+        'GR' => 'General Requirement',
+        'TR' => 'Technical Requirement'
+    ];
+
+    public $rtype = 'GR';
+
 
     public function mount()
     {
@@ -85,7 +102,7 @@ class LwRequirement extends Component
 
     public function render()
     {
-        $this->logged_user = $this->checkUserRoles(Auth::user());
+        $this->checkUserRoles();
 
         $this->checkCurrentProduct();
 
@@ -96,52 +113,138 @@ class LwRequirement extends Component
 
         // $this->setProps();
 
-        return view('requirements.requirements-list',[
+        return view('requirements.requirements',[
             'requirements' => $this->getRequirementsList()
         ]);
     }
 
 
-    public function checkUserRoles($usr) {
+    public function checkUserRoles() {
 
-        $usr->is_admin = false;
-        $usr->is_company_admin = false;
+        $this->logged_user = Auth::user();
 
-        if ($usr->hasRole('admin')) {
-            $usr->is_admin = true;
+        if ($this->logged_user->hasRole('admin')) {
+            $this->is_user_admin = true;
         }
 
-        if ($usr->hasRole('company_admin')) {
-            $usr->is_company_admin = true;
+        if ($this->logged_user->hasRole('company_admin')) {
+            $this->is_user_company_admin = true;
         }
-
-        return $usr;
     }
 
 
 
     public function getRequirementsList()  {
 
-        if ($this->logged_user->is_admin) {
 
-            if (strlen(trim($this->query)) < 2 ) {
+        
 
-                $requirements = Requirement::orderBy($this->sortField,$this->sortDirection)
-                ->paginate(env('RESULTS_PER_PAGE'));
+        if ($this->is_user_admin) {
+
+            if (session('current_project_id')) {
+
+                if (strlen(trim($this->query)) < 2 ) {
+
+                    // ADMIN/PROJECT SET/NO QUERY
+                    $requirements = Requirement::where('project_id', session('current_project_id'))
+                        ->when(session('current_eproduct_id'), function ($query) {
+                            $query->where('endproduct_id', session('current_eproduct_id'));
+                        })
+                        ->orderBy($this->sortField,$this->sortDirection)
+                        ->paginate(env('RESULTS_PER_PAGE'));
+
+                } else {
+
+                    // ADMIN/PROJECT SET/QUERY EXISTS
+                    $requirements = Requirement::where('project_id', session('current_project_id'))
+                        ->when(session('current_eproduct_id'), function ($query) {
+                            $query->where('endproduct_id', session('current_project_id'));
+                        })
+                        ->where(function ($sqlquery) {
+                            $sqlquery->where('text', 'LIKE', "%".$this->query."%")
+                                  ->orWhere('remarks', 'LIKE', "%".$this->query."%");
+                        })
+                        ->orderBy($this->sortField,$this->sortDirection)
+                        ->paginate(env('RESULTS_PER_PAGE'));
+                }
+
+
 
             } else {
 
-                // $phases = Phase::where('code', 'LIKE', "%".$this->query."%")
-                // ->orWhere('name','LIKE',"%".$this->query."%")
-                // ->orWhere('description','LIKE',"%".$this->query."%")
-                // ->orderBy($this->sortField,$this->sortDirection)
-                // ->paginate(env('RESULTS_PER_PAGE'));
+                if (strlen(trim($this->query)) < 2 ) {
+
+                    // ADMIN/NO PROJECT/NO QUERY
+                    $requirements = Requirement::orderBy($this->sortField,$this->sortDirection)
+                        ->paginate(env('RESULTS_PER_PAGE'));
+
+                } else {
+
+                    // ADMIN/NO PROJECT/QUERY EXISTS
+                    $requirements = Requirement::where('project_id', session('current_project_id'))
+                        ->when(session('current_eproduct_id'), function ($query) {
+                            $query->where('endproduct_id', session('current_project_id'));
+                        })
+                        ->where(function ($sqlquery) {
+                            $sqlquery->where('text', 'LIKE', "%".$this->query."%")
+                                  ->orWhere('remarks', 'LIKE', "%".$this->query."%");
+                        })
+                        ->orderBy($this->sortField,$this->sortDirection)
+                        ->paginate(env('RESULTS_PER_PAGE'));
+                }
             }
+        } else {
+
+
+
+
+            if (strlen(trim($this->query)) < 2 ) {
+
+                $requirements = Requirement::where('company_id', $this->logged_user->company_id)
+                    ->when(session('current_project_id'), function ($query) {
+                        $query->where('project_id', session('current_project_id'));
+                    })
+                    ->when(session('current_eproduct_id'), function ($query) {
+                        $query->where('endproduct_id', session('current_project_id'));
+                    })
+                    ->orderBy($this->sortField,$this->sortDirection)
+                    ->paginate(env('RESULTS_PER_PAGE'));
+
+
+            } else {
+
+
+                $requirements = Requirement::where('company_id', $this->logged_user->company_id)
+                ->when(session('current_project_id'), function ($query) {
+                    $query->where('project_id', session('current_project_id'));
+                })
+                ->when(session('current_eproduct_id'), function ($query) {
+                    $query->where('endproduct_id', session('current_project_id'));
+                })
+                ->where(function ($sqlquery) {
+                    $sqlquery->where('text', 'LIKE', "%".$this->query."%")
+                            ->orWhere('remarks', 'LIKE', "%".$this->query."%");
+                })
+                ->orderBy($this->sortField,$this->sortDirection)
+                ->paginate(env('RESULTS_PER_PAGE'));
+
+            }
+
+
+
+
+
+
+
         }
 
-        if ($this->logged_user->is_company_admin) {
 
-            if (strlen(trim($this->query)) > 0 ) {
+
+
+
+        // if ($this->is_company_admin) {
+
+        //     if (strlen(trim($this->query)) > 0 ) {
 
                 // $phases = Phase::where('company_id',$this->logged_user->company_id)
                 // ->where(function ($sqlquery) {
@@ -152,13 +255,13 @@ class LwRequirement extends Component
                 // ->orderBy($this->sortField,$this->sortDirection)
                 // ->paginate(env('RESULTS_PER_PAGE'));
 
-            } else {
+            // } else {
 
                 // $phases = Phase::where('company_id', $this->logged_user->company_id)
                 // ->orderBy($this->sortField,$this->sortDirection)
                 // ->paginate(env('RESULTS_PER_PAGE'));
-            }
-        }
+        //     }
+        // }
 
         return $requirements;
     }
