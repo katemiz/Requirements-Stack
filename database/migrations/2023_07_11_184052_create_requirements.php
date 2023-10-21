@@ -22,7 +22,7 @@ return new class extends Migration
             $table->foreignIdFor(User::class);
             $table->foreignIdFor(Company::class);
             $table->foreignIdFor(Project::class);
-            $table->foreignIdFor(Endproduct::class);
+            $table->foreignIdFor(Endproduct::class)->nullable();
             $table->string('cross_ref_no')->nullable();
             $table->string('rtype');
             $table->text('text');

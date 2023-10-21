@@ -20,7 +20,18 @@ class Requirement extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id','updated_uid','project_id','text','rtype','remarks','cross_ref_no'];
+    protected $fillable = [
+        'user_id',
+        'updated_uid',
+        'company_id',
+        'project_id',
+        'endproduct_id',
+        'cross_ref_no',
+        'text',
+        'rtype',
+        'remarks',
+        'status',
+    ];
 
     public function project(): BelongsTo
     {

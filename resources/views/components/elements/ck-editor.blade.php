@@ -1,26 +1,18 @@
 <div class="field">
-
-    <div class="field">
-      <label class="label">{{ $label }}</label>
-      <div wire:ignore class="control">
+    <label class="label">{{ $label }}</label>
+    <div wire:ignore class="control">
         <textarea wire:model="content" class="textarea ckeditor"
-            id="content"
-            name="content"
+            id="{{$edId}}"
+            name="{{$edId}}"
             placeholder="{{ $placeholder }}">
         </textarea>
-      </div>
     </div>
-
-    <input type="hidden" id="{{$edId}}" value="{{ $content }}">
 
     <script>
 
         ClassicEditor
-            .create(document.querySelector('#content'))
+            .create(document.querySelector('#{{$edId}}'))
             .then(editor => {
-
-                editor.setData( document.getElementById('{{$edId}}').value );
-
                 editor.model.document.on('change:data', () => {
                     @this.set('content', editor.getData());
                 })
@@ -30,9 +22,5 @@
             });
 
     </script>
-
-    {{-- @error('content')
-    <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
-    @enderror --}}
 
 </div>

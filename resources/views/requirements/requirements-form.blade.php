@@ -28,6 +28,8 @@
         <div class="field ">
             <div class="field-body">
     
+
+                @if ($is_user_admin)
                 <div class="field">
                     <label class="label">Company</label>
                     <div class="control">
@@ -45,6 +47,8 @@
                     <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
                     @enderror
                 </div>
+                @endif
+
     
                 <div class="field">
                     <label class="label">Project</label>
@@ -100,38 +104,69 @@
 
 
 
+        <div class="field ">
+            <div class="field-body">
 
-{{-- 
-        <x-select :params="config('requirements.form.rtype')" value="{{ $requirement ? $requirement->rtype : '' }}"/>
-        <x-form-input :params="config('requirements.form.cross_ref_no')" value="{{ $requirement ? $requirement->cross_ref_no : '' }}"/>
-        <x-form-editor :params="config('requirements.form.text')" value="{{ $requirement ? $requirement->text : '' }}" />
-        <x-form-editor :params="config('requirements.form.remarks')" value="{{ $requirement ? $requirement->remarks : '' }}"/> --}}
+                <div class="field">
+                    <label class="label">Source</label>
+                    <div class="control">
+                        <input class="input" type="text" wire:model='source' placeholder="Requirement Source ...">
+                    </div>
+                
+                    @error('source')
+                        <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
+                    @enderror
+                
+                </div>
 
 
-        {{-- <div class="buttons is-right">
-            <button class="button is-dark">{{ config('requirements')[$action]['submitText'] }}</button>
-        </div> --}}
+
+                <div class="field">
+                    <label class="label">Cross Reference Number</label>
+                    <div class="control">
+                        <input class="input" type="text" wire:model='xrefno'  placeholder="Requirement Cross Reference Number ...">
+                    </div>
+                
+                    @error('xrefno')
+                        <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
+                    @enderror
+                
+                </div>
+
+
+
+
+            </div>
+        </div>
+
+
+
+
+
+
 
 
         <livewire:ck-editor
             edId="ed10"
             wire:model="text"
             label='Requirement Text / Description'
-            placeholder='Detailed description ....'
-            :content="$text"/>
+            placeholder='Requirement text/description ....'
+            :content="$text" instance="0"/>
 
-        @error('description')
+        @error('text')
             <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
         @enderror
+
+
 
         <livewire:ck-editor
             edId="ed20"
             wire:model="remarks"
             label='Remarks'
-            placeholder='Detailed description ....'
-            :content="$remarks"/>
+            placeholder='Remarks about requirement and its text ....'
+            :content="$remarks" instance="1"/>
 
-        @error('description')
+        @error('remarks')
             <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
         @enderror
 

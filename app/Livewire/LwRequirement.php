@@ -45,10 +45,7 @@ class LwRequirement extends Component
     public $the_project = false;    // Viewed Phase Project
     public $the_endproduct = false; // Viewed Phase EndProduct
 
-
-
     public $project_eproducts = [];
-
 
     #[Rule('required', message: 'Please select company')] 
     public $company_id = false;
@@ -56,18 +53,14 @@ class LwRequirement extends Component
     #[Rule('required', message: 'Please select project')] 
     public $project_id = false;
 
-    // #[Rule('required', message: 'Please select End Product')] 
     public $endproduct_id = false;
 
-    #[Rule('required', message: 'Please enter phase code. (eg P1)')] 
-    public $code;
-
-    #[Rule('required', message: 'Please enter phase name (eg Feasibility Phase)')] 
-    public $name;
-
     public $source;
-    public $cross_ref_no;
+    public $xrefno;
+
+    #[Rule('required', message: 'Requirement text is missing')] 
     public $text;
+
     public $remarks;
 
 
@@ -82,6 +75,7 @@ class LwRequirement extends Component
         'TR' => 'Technical Requirement'
     ];
 
+    #[Rule('required', message: 'Please select requirement type')] 
     public $rtype = 'GR';
 
 
@@ -97,6 +91,8 @@ class LwRequirement extends Component
         }
 
         $this->constants = config('requirements');
+
+        $this->checkSessionVariables();
     }
 
 
@@ -106,12 +102,8 @@ class LwRequirement extends Component
 
         $this->checkCurrentProduct();
 
-
-
-        // $this->getCompaniesList();
-        // $this->getProjectsList();
-
-        // $this->setProps();
+        $this->getCompaniesList();
+        $this->getProjectsList();
 
         return view('requirements.requirements',[
             'requirements' => $this->getRequirementsList()
@@ -125,6 +117,8 @@ class LwRequirement extends Component
 
         if ($this->logged_user->hasRole('admin')) {
             $this->is_user_admin = true;
+        } else {
+            $this->company_id = $this->logged_user->company_id;
         }
 
         if ($this->logged_user->hasRole('company_admin')) {
@@ -134,10 +128,22 @@ class LwRequirement extends Component
 
 
 
+    public function checkSessionVariables() {
+
+        if (session('current_project_id')) {
+            $this->company_id = session('current_project_id');
+        }
+
+        if (session('current_eproduct_id')) {
+            $this->endproduct_id = session('current_eproduct_id');
+        }
+    }
+
+
+
+
+
     public function getRequirementsList()  {
-
-
-        
 
         if ($this->is_user_admin) {
 
@@ -158,7 +164,7 @@ class LwRequirement extends Component
                     // ADMIN/PROJECT SET/QUERY EXISTS
                     $requirements = Requirement::where('project_id', session('current_project_id'))
                         ->when(session('current_eproduct_id'), function ($query) {
-                            $query->where('endproduct_id', session('current_project_id'));
+                            $query->where('endproduct_id', session('current_eproduct_id'));
                         })
                         ->where(function ($sqlquery) {
                             $sqlquery->where('text', 'LIKE', "%".$this->query."%")
@@ -167,8 +173,6 @@ class LwRequirement extends Component
                         ->orderBy($this->sortField,$this->sortDirection)
                         ->paginate(env('RESULTS_PER_PAGE'));
                 }
-
-
 
             } else {
 
@@ -183,7 +187,7 @@ class LwRequirement extends Component
                     // ADMIN/NO PROJECT/QUERY EXISTS
                     $requirements = Requirement::where('project_id', session('current_project_id'))
                         ->when(session('current_eproduct_id'), function ($query) {
-                            $query->where('endproduct_id', session('current_project_id'));
+                            $query->where('endproduct_id', session('current_eproduct_id'));
                         })
                         ->where(function ($sqlquery) {
                             $sqlquery->where('text', 'LIKE', "%".$this->query."%")
@@ -193,10 +197,8 @@ class LwRequirement extends Component
                         ->paginate(env('RESULTS_PER_PAGE'));
                 }
             }
+
         } else {
-
-
-
 
             if (strlen(trim($this->query)) < 2 ) {
 
@@ -205,7 +207,7 @@ class LwRequirement extends Component
                         $query->where('project_id', session('current_project_id'));
                     })
                     ->when(session('current_eproduct_id'), function ($query) {
-                        $query->where('endproduct_id', session('current_project_id'));
+                        $query->where('endproduct_id', session('current_eproduct_id'));
                     })
                     ->orderBy($this->sortField,$this->sortDirection)
                     ->paginate(env('RESULTS_PER_PAGE'));
@@ -229,39 +231,7 @@ class LwRequirement extends Component
                 ->paginate(env('RESULTS_PER_PAGE'));
 
             }
-
-
-
-
-
-
-
         }
-
-
-
-
-
-        // if ($this->is_company_admin) {
-
-        //     if (strlen(trim($this->query)) > 0 ) {
-
-                // $phases = Phase::where('company_id',$this->logged_user->company_id)
-                // ->where(function ($sqlquery) {
-                //     $sqlquery->where('code', 'LIKE', "%".$this->query."%")
-                //           ->orWhere('name', 'LIKE', "%".$this->query."%")
-                //           ->orWhere('description', 'LIKE', "%".$this->query."%");
-                // })
-                // ->orderBy($this->sortField,$this->sortDirection)
-                // ->paginate(env('RESULTS_PER_PAGE'));
-
-            // } else {
-
-                // $phases = Phase::where('company_id', $this->logged_user->company_id)
-                // ->orderBy($this->sortField,$this->sortDirection)
-                // ->paginate(env('RESULTS_PER_PAGE'));
-        //     }
-        // }
 
         return $requirements;
     }
@@ -278,78 +248,18 @@ class LwRequirement extends Component
         session('current_eproduct_name');
         */
 
-
         if (!session('current_project_id') && !session('current_product_id')) {
 
             return redirect('/product-selector/rl');
 
         }
-
-
-        // $value = session('key');
- 
-        // // Specifying a default value...
-        // $value = session('key', 'default');
-
-
-
-
     }
-
-
-
-
-    public function getPhasesList()  {
-
-        // if ($this->logged_user->is_admin) {
-
-        //     if (strlen(trim($this->query)) > 0 ) {
-
-        //         $phases = Phase::orderBy($this->sortField,$this->sortDirection)
-        //         ->paginate(env('RESULTS_PER_PAGE'));
-
-        //     } else {
-
-        //         $phases = Phase::where('code', 'LIKE', "%".$this->query."%")
-        //         ->orWhere('name','LIKE',"%".$this->query."%")
-        //         ->orWhere('description','LIKE',"%".$this->query."%")
-        //         ->orderBy($this->sortField,$this->sortDirection)
-        //         ->paginate(env('RESULTS_PER_PAGE'));
-        //     }
-        // }
-
-        // if ($this->logged_user->is_company_admin) {
-
-        //     if (strlen(trim($this->query)) > 0 ) {
-
-        //         $phases = Phase::where('company_id',$this->logged_user->company_id)
-        //         ->where(function ($sqlquery) {
-        //             $sqlquery->where('code', 'LIKE', "%".$this->query."%")
-        //                   ->orWhere('name', 'LIKE', "%".$this->query."%")
-        //                   ->orWhere('description', 'LIKE', "%".$this->query."%");
-        //         })
-        //         ->orderBy($this->sortField,$this->sortDirection)
-        //         ->paginate(env('RESULTS_PER_PAGE'));
-
-        //     } else {
-
-        //         $phases = Phase::where('company_id', $this->logged_user->company_id)
-        //         ->orderBy($this->sortField,$this->sortDirection)
-        //         ->paginate(env('RESULTS_PER_PAGE'));
-        //     }
-        // }
-
-        // return $phases;
-    }
-
 
     public function getCompaniesList()  {
 
         if ($this->logged_user->is_admin) {
             $this->companies = Company::all();
-        }
-
-        if ($this->logged_user->is_company_admin) {
+        } else {
             $this->companies = Company::where('id',$this->logged_user->company_id)->get();
             $this->company_id = $this->logged_user->company_id;
         }
@@ -360,9 +270,7 @@ class LwRequirement extends Component
 
         if ($this->logged_user->is_admin && $this->company_id) {
             $this->projects = Project::where('company_id',$this->company_id)->get();
-        }
-
-        if ($this->logged_user->is_company_admin) {
+        } else {
             $this->projects = Project::where('company_id',$this->logged_user->company_id)->get();
         }
 
@@ -401,14 +309,17 @@ class LwRequirement extends Component
 
 
     public function viewItem($uid) {
-        $this->uid = $uid;
         $this->action = 'VIEW';
+        $this->uid = $uid;
+        $this->setProps();
+
     }
 
 
     public function editItem($uid) {
-        $this->uid = $uid;
         $this->action = 'FORM';
+        $this->uid = $uid;
+        $this->setProps();
     }
 
 
@@ -425,12 +336,15 @@ class LwRequirement extends Component
 
         if ($this->uid && in_array($this->action,['VIEW','FORM']) ) {
 
-            $c = Phase::find($this->uid);
-
-            $this->code = $c->code;
-            $this->name = $c->name;
-            $this->description = $c->description;
+            $c = Requirement::find($this->uid);
+            
+            $this->rtype = $c->rtype;
+            $this->text = $c->text;
+            $this->company_id = $c->company_id;
+            $this->project_id = $c->project_id;
             $this->endproduct_id = $c->endproduct_id;
+            $this->xrefno = $c->cross_ref_no;
+            $this->source = $c->source;
             $this->created_at = $c->created_at;
             $this->updated_at = $c->updated_at;
             $this->created_by = User::find($c->user_id)->fullname;
@@ -472,20 +386,22 @@ class LwRequirement extends Component
         $props['company_id'] = $this->company_id;
         $props['project_id'] = $this->project_id;
         $props['endproduct_id'] = $this->endproduct_id ? $this->endproduct_id : 0;
-        $props['code'] = $this->code;
-        $props['name'] = $this->name;
-        $props['description'] = $this->description;
+        $props['rtype'] = $this->rtype;
+        $props['text'] = $this->text;
+        $props['remarks'] = $this->remarks;
+
+        // dd($props);
 
         if ( $this->uid ) {
             // update
-            Phase::find($this->uid)->update($props);
-            session()->flash('message','Project phase has been updated successfully.');
+            Requirement::find($this->uid)->update($props);
+            session()->flash('message','Requirement has been updated successfully.');
 
         } else {
             // create
             $props['user_id'] = Auth::id();
-            $this->uid = Phase::create($props)->id;
-            session()->flash('message','Project phase has been created successfully.');
+            $this->uid = Requirement::create($props)->id;
+            session()->flash('message','Requirement has been created successfully.');
         }
 
         $this->action = 'VIEW';
