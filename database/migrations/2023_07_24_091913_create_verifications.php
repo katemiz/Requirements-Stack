@@ -4,6 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+use App\Models\Company;
+use App\Models\Endproduct;
 use App\Models\User;
 use App\Models\Gate;
 use App\Models\Moc;
@@ -23,7 +25,9 @@ return new class extends Migration
         Schema::create('verifications', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class);
+            $table->foreignIdFor(Company::class);
             $table->foreignIdFor(Project::class);
+            $table->foreignIdFor(Endproduct::class)->nullable();
             $table->foreignIdFor(Requirement::class);
             $table->foreignIdFor(Gate::class);
             $table->foreignIdFor(Moc::class);

@@ -105,37 +105,81 @@ class LwEndProduct extends Component
 
         if ($this->is_user_admin) {
 
-            if (strlen(trim($this->query)) < 2 ) {
+            if (session('current_project_id')) {
 
-                $eproducts = Endproduct::orderBy($this->sortField,$this->sortDirection)
-                ->paginate(env('RESULTS_PER_PAGE'));
+                if (strlen(trim($this->query)) < 2 ) {
+
+                    $eproducts = Endproduct::where('project_id', session('current_project_id'))
+                    ->orderBy($this->sortField,$this->sortDirection)
+                    ->paginate(env('RESULTS_PER_PAGE'));
+    
+                } else {
+    
+                    $eproducts = Endproduct::where('project_id', session('current_project_id'))
+                    ->where('code', 'LIKE', "%".$this->query."%")
+                    ->orWhere('title','LIKE',"%".$this->query."%")
+                    ->orderBy($this->sortField,$this->sortDirection)
+                    ->paginate(env('RESULTS_PER_PAGE'));
+                }
 
             } else {
 
-                $eproducts = Endproduct::where('code', 'LIKE', "%".$this->query."%")
-                ->orWhere('title','LIKE',"%".$this->query."%")
-                ->orderBy($this->sortField,$this->sortDirection)
-                ->paginate(env('RESULTS_PER_PAGE'));
+                if (strlen(trim($this->query)) < 2 ) {
+
+                    $eproducts = Endproduct::orderBy($this->sortField,$this->sortDirection)
+                    ->paginate(env('RESULTS_PER_PAGE'));
+    
+                } else {
+    
+                    $eproducts = Endproduct::where('code', 'LIKE', "%".$this->query."%")
+                    ->orWhere('title','LIKE',"%".$this->query."%")
+                    ->orderBy($this->sortField,$this->sortDirection)
+                    ->paginate(env('RESULTS_PER_PAGE'));
+                }                
             }
         }
 
         if ($this->is_user_company_admin) {
 
-            if (strlen(trim($this->query)) < 2 ) {
+            if (session('current_project_id')) {
 
-                $eproducts = Endproduct::where('company_id',$this->logged_user->company_id)
-                ->where(function ($sqlquery) {
-                    $sqlquery->where('code', 'LIKE', "%".$this->query."%")
-                          ->orWhere('title', 'LIKE', "%".$this->query."%");
-                })
-                ->orderBy($this->sortField,$this->sortDirection)
-                ->paginate(env('RESULTS_PER_PAGE'));
+                if (strlen(trim($this->query)) < 2 ) {
+
+                    $eproducts = Endproduct::where('project_id', session('current_project_id'))
+                    ->where('company_id',$this->logged_user->company_id)
+                    ->where(function ($sqlquery) {
+                        $sqlquery->where('code', 'LIKE', "%".$this->query."%")
+                              ->orWhere('title', 'LIKE', "%".$this->query."%");
+                    })
+                    ->orderBy($this->sortField,$this->sortDirection)
+                    ->paginate(env('RESULTS_PER_PAGE'));
+    
+                } else {
+    
+                    $eproducts = Endproduct::where('project_id', session('current_project_id'))
+                    ->where('company_id', $this->logged_user->company_id)
+                    ->orderBy($this->sortField,$this->sortDirection)
+                    ->paginate(env('RESULTS_PER_PAGE'));
+                }
 
             } else {
 
-                $eproducts = Endproduct::where('company_id', $this->logged_user->company_id)
-                ->orderBy($this->sortField,$this->sortDirection)
-                ->paginate(env('RESULTS_PER_PAGE'));
+                if (strlen(trim($this->query)) < 2 ) {
+
+                    $eproducts = Endproduct::where('company_id',$this->logged_user->company_id)
+                    ->where(function ($sqlquery) {
+                        $sqlquery->where('code', 'LIKE', "%".$this->query."%")
+                              ->orWhere('title', 'LIKE', "%".$this->query."%");
+                    })
+                    ->orderBy($this->sortField,$this->sortDirection)
+                    ->paginate(env('RESULTS_PER_PAGE'));
+    
+                } else {
+    
+                    $eproducts = Endproduct::where('company_id', $this->logged_user->company_id)
+                    ->orderBy($this->sortField,$this->sortDirection)
+                    ->paginate(env('RESULTS_PER_PAGE'));
+                }
             }
         }
 

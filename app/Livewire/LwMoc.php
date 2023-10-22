@@ -34,6 +34,10 @@ class LwMoc extends Component
     public $sortDirection = 'DESC';
 
     public $logged_user;
+
+    public $is_user_admin = false;
+    public $is_user_company_admin = false;
+
     public $companies = [];
     public $projects = [];
     public $endproducts = [];
@@ -83,7 +87,7 @@ class LwMoc extends Component
 
     public function render()
     {
-        $this->logged_user = $this->checkUserRoles(Auth::user());
+        $this->checkUserRoles();
 
         $this->getCompaniesList();
         $this->getProjectsList();
@@ -96,62 +100,106 @@ class LwMoc extends Component
     }
 
 
-    public function checkUserRoles($usr) {
+    public function checkUserRoles() {
 
-        $usr->is_admin = false;
-        $usr->is_company_admin = false;
+        $this->logged_user = Auth::user();
 
-        if ($usr->hasRole('admin')) {
-            $usr->is_admin = true;
+        if ($this->logged_user->hasRole('admin')) {
+            $this->is_user_admin = true;
         }
 
-        if ($usr->hasRole('company_admin')) {
-            $usr->is_company_admin = true;
+        if ($this->logged_user->hasRole('company_admin')) {
+            $this->is_user_company_admin = true;
         }
-
-        return $usr;
     }
 
 
 
     public function getMocsList()  {
 
-        if ($this->logged_user->is_admin) {
+        if ($this->is_user_admin) {
 
-            if (strlen(trim($this->query)) < 2 ) {
+            if (session('current_project_id')) {
 
-                $w = Moc::orderBy($this->sortField,$this->sortDirection)
-                ->paginate(env('RESULTS_PER_PAGE'));
+                if (strlen(trim($this->query)) < 2 ) {
+
+                    $w = Moc::where('project_id', session('current_project_id'))
+                    ->orderBy($this->sortField,$this->sortDirection)
+                    ->paginate(env('RESULTS_PER_PAGE'));
+    
+                } else {
+    
+                    $w = Moc::where('project_id', session('current_project_id'))
+                    ->where('code', 'LIKE', "%".$this->query."%")
+                    ->orWhere('name','LIKE',"%".$this->query."%")
+                    ->orWhere('description','LIKE',"%".$this->query."%")
+                    ->orderBy($this->sortField,$this->sortDirection)
+                    ->paginate(env('RESULTS_PER_PAGE'));
+                }
 
             } else {
 
-                $w = Moc::where('code', 'LIKE', "%".$this->query."%")
-                ->orWhere('name','LIKE',"%".$this->query."%")
-                ->orWhere('description','LIKE',"%".$this->query."%")
-                ->orderBy($this->sortField,$this->sortDirection)
-                ->paginate(env('RESULTS_PER_PAGE'));
+                if (strlen(trim($this->query)) < 2 ) {
+
+                    $w = Moc::orderBy($this->sortField,$this->sortDirection)
+                    ->paginate(env('RESULTS_PER_PAGE'));
+    
+                } else {
+    
+                    $w = Moc::where('code', 'LIKE', "%".$this->query."%")
+                    ->orWhere('name','LIKE',"%".$this->query."%")
+                    ->orWhere('description','LIKE',"%".$this->query."%")
+                    ->orderBy($this->sortField,$this->sortDirection)
+                    ->paginate(env('RESULTS_PER_PAGE'));
+                }
             }
+
         }
 
-        if ($this->logged_user->is_company_admin) {
+        if ($this->is_user_company_admin) {
 
-            if (strlen(trim($this->query)) < 2 ) {
+            if (session('current_project_id')) {
 
-                $w = Moc::where('company_id',$this->logged_user->company_id)
-                ->where(function ($sqlquery) {
-                    $sqlquery->where('code', 'LIKE', "%".$this->query."%")
-                          ->orWhere('name', 'LIKE', "%".$this->query."%")
-                          ->orWhere('description', 'LIKE', "%".$this->query."%");
-                })
-                ->orderBy($this->sortField,$this->sortDirection)
-                ->paginate(env('RESULTS_PER_PAGE'));
+                if (strlen(trim($this->query)) < 2 ) {
+
+                    $w = Moc::where('project_id', session('current_project_id'))
+                    ->where('company_id',$this->logged_user->company_id)
+                    ->where(function ($sqlquery) {
+                        $sqlquery->where('code', 'LIKE', "%".$this->query."%")
+                              ->orWhere('name', 'LIKE', "%".$this->query."%")
+                              ->orWhere('description', 'LIKE', "%".$this->query."%");
+                    })
+                    ->orderBy($this->sortField,$this->sortDirection)
+                    ->paginate(env('RESULTS_PER_PAGE'));
+    
+                } else {
+    
+                    $w = Moc::where('company_id', $this->logged_user->company_id)
+                    ->orderBy($this->sortField,$this->sortDirection)
+                    ->paginate(env('RESULTS_PER_PAGE'));
+                }
 
             } else {
 
-                $w = Moc::where('company_id', $this->logged_user->company_id)
-                ->orderBy($this->sortField,$this->sortDirection)
-                ->paginate(env('RESULTS_PER_PAGE'));
+                if (strlen(trim($this->query)) < 2 ) {
+
+                    $w = Moc::where('company_id',$this->logged_user->company_id)
+                    ->where(function ($sqlquery) {
+                        $sqlquery->where('code', 'LIKE', "%".$this->query."%")
+                              ->orWhere('name', 'LIKE', "%".$this->query."%")
+                              ->orWhere('description', 'LIKE', "%".$this->query."%");
+                    })
+                    ->orderBy($this->sortField,$this->sortDirection)
+                    ->paginate(env('RESULTS_PER_PAGE'));
+    
+                } else {
+    
+                    $w = Moc::where('company_id', $this->logged_user->company_id)
+                    ->orderBy($this->sortField,$this->sortDirection)
+                    ->paginate(env('RESULTS_PER_PAGE'));
+                }
             }
+
         }
 
         return $w;
@@ -160,11 +208,11 @@ class LwMoc extends Component
 
     public function getCompaniesList()  {
 
-        if ($this->logged_user->is_admin) {
+        if ($this->is_user_admin) {
             $this->companies = Company::all();
         }
 
-        if ($this->logged_user->is_company_admin) {
+        if ($this->is_user_company_admin) {
             $this->companies = Company::where('id',$this->logged_user->company_id)->get();
             $this->company_id = $this->logged_user->company_id;
         }
@@ -177,7 +225,7 @@ class LwMoc extends Component
             $this->projects = Project::all();
         }
 
-        if ($this->logged_user->is_company_admin) {
+        if ($this->is_user_company_admin) {
             $this->projects = Project::where('company_id',$this->logged_user->company_id)->get();
         }
 

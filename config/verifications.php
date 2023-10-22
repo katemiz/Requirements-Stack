@@ -84,75 +84,7 @@ return [
         "submitText" => "Update Verification",
     ],
 
-    "cu_route" => "/verifications/store/",
-
-    "form" => [
-
-        "dgate"=> [
-            "label" => "Select Decision Gate / Meeting",
-            "name" => "dgate",
-            "options" => []
-        ],
-
-        "moc"=> [
-            "label" => "Select MOC / Verification Method",
-            "name" => "moc",
-            "options" => []
-        ],
-
-        "poc"=> [
-            "label" => "Select POC / Evidence",
-            "name" => "poc",
-            "options" => []
-        ],
-
-        "witness"=> [
-            "label" => "Select Witness",
-            "name" => "witness",
-            "options" => []
-        ],
 
 
-        "rtype" => [
-            "label" => "Requirement Type",
-            "name" => "rtype",
-            "placeholder" => "Enter project title/description",
-            "value" => "",
-            "options" => [
-
-                "GR" => 'General Requirement',
-                "TR" => 'Technical Requirement'
-            ]
-        ],
-
-        "cross_ref_no" => [
-            "label" => "Cross Reference Number",
-            "name" => "cross_ref_no",
-            "placeholder" => "Requirement number for referencing (optional)",
-            "value" => ""
-        ],
-
-
-        "endproduct"=> [
-            "label" => "End Products (Select all that apply)",
-            "name" => "endproduct",
-            "options" => "",
-            "nooptions" => 'No End Products exist. All requirements will be linked to current project. If you want to link to End Products, create End Product first'
-        ],
-
-        "text" => [
-            "label" => "Requirement Description",
-            "name" => "text",
-            "placeholder" => "Enter requirement text/description",
-            "value" => ""
-        ],
-
-        "remarks" => [
-            "label" => "Remarks/Notes",
-            "name" => "remarks",
-            "placeholder" => "Enter remarks/notes",
-            "value" => ""
-        ]
-    ]
 
 ];

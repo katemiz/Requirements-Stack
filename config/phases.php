@@ -21,6 +21,14 @@ return [
                 "direction" => "asc"
             ],
 
+            "project_name"=> [
+                "title" => "Project",
+                "sortable" => true,
+                "align" => "left",
+                "direction" => "asc"
+            ],
+
+
             "code"=> [
                 "title" => "Phase Code",
                 "sortable" => true,
@@ -35,14 +43,6 @@ return [
                 "direction" => "asc"
             ],
     
-            "project_name"=> [
-                "title" => "Project",
-                "sortable" => true,
-                "align" => "left",
-                "direction" => "asc"
-            ],
-
-
             "created_at"=> [
                 "title" => "Created On",
                 "sortable" => true,

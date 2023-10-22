@@ -15,7 +15,9 @@ use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
 use App\Models\Company;
+use App\Models\Gate;
 use App\Models\Moc;
+use App\Models\Phase;
 use App\Models\Poc;
 use App\Models\Project;
 use App\Models\User;
@@ -73,7 +75,8 @@ class LwProject extends Component
         $this->getCompaniesList();
 
         return view('projects.projects.lw-projects',[
-            'projects' => $this->getProjectsList()
+            'projects' => $this->getProjectsList(),
+            'populate_defaults' => $this->getPopulateDefaults()
         ]);
     }
 
@@ -157,15 +160,58 @@ class LwProject extends Component
     }
 
 
-    public function doPopulate($uid) {
+    public function getPopulateDefaults() {
 
-        $predefinedMocs = Moc::where([
-            ['company_id',0],
-            ['project_id',0],
-            ['endproduct_id',0]
+        if ($this->action != 'POPULATE') {
+            return false;
+        }
+
+        // PHASES
+        $predefinedPhases = Phase::where([
+            ['company_id',1],
+            ['project_id',1],
         ])
         ->orderBy('code','asc')
         ->get();
+
+        // MILESTONES
+        $predefinedMilestones = Gate::where([
+            ['company_id',1],
+            ['project_id',1],
+        ])
+        ->orderBy('code','asc')
+        ->get();
+
+        // MOCS
+        $predefinedMocs = Moc::where([
+            ['company_id',1],
+            ['project_id',1],
+        ])
+        ->orderBy('code','asc')
+        ->get();
+
+        // POCS
+
+        $predefinedPocs = Poc::where([
+            ['company_id',1],
+            ['project_id',1],
+        ])
+        ->orderBy('code','asc')
+        ->get();
+
+        return [
+            'phases' => $predefinedPhases,
+            'milestones' => $predefinedMilestones,
+            'mocs' => $predefinedMocs,
+            'pocs' => $predefinedPocs
+        ];
+    }
+
+
+
+
+
+    public function doPopulate($uid) {
 
         $currentProject = Project::find($uid);
 
@@ -175,22 +221,46 @@ class LwProject extends Component
         $props['project_id'] = $uid;
         $props['endproduct_id'] = 0;
 
+        $definitions = $this->getPopulateDefaults();
+
+        // PHASES
+        foreach ($definitions['phases'] as $phase) {
+            $props['code'] = $phase->code;
+            $props['name'] = $phase->name;
+            $props['description'] = $phase->description;
+            Phase::create($props);
+        }
+
+        // MILESTONES
+        foreach ($definitions['milestones'] as $milestone) {
+            $props['code'] = $milestone->code;
+            $props['name'] = $milestone->name;
+            $props['description'] = $milestone->description;
+            Gate::create($props);
+        }
 
 
 
-        foreach ($predefinedMocs as $moc) {
+        // MOC
+        foreach ($definitions['mocs'] as $moc) {
             $props['code'] = $moc->code;
             $props['name'] = $moc->name;
             $props['description'] = $moc->description;
-
             Moc::create($props);
+        }
+
+        // POC
+        foreach ($definitions['mocs'] as $poc) {
+            $props['code'] = $poc->code;
+            $props['name'] = $poc->name;
+            $props['description'] = $poc->description;
+            Poc::create($props);
         }
 
         $this->uid = $uid;
 
-        session()->flash('message','Predefined MOCs and POCs has been added to project.');
+        session()->flash('message','Predfined definitions have been added to project.');
         $this->action = 'VIEW';
-
     }
 
 

@@ -16,6 +16,13 @@ use App\Models\Endproduct;
 use App\Models\Requirement;
 use App\Models\Project;
 use App\Models\User;
+use App\Models\Verification;
+use App\Models\Gate;
+use App\Models\Moc;
+use App\Models\Poc;
+use App\Models\Witness;
+
+
 
 
 
@@ -23,10 +30,12 @@ class LwRequirement extends Component
 {
     use WithPagination;
 
-    public $action = 'LIST'; // LIST,FORM,VIEW
+    public $action = 'LIST'; // LIST,FORM,VIEW,VERIFICATION
     public $constants;
 
     public $uid = false;
+    public $vid = false;    // Verification ID
+
 
     public $query = '';
     public $sortField = 'created_at';
@@ -37,6 +46,7 @@ class LwRequirement extends Component
     public $is_user_admin = false;
     public $is_user_company_admin = false;
 
+    // Verification
     public $companies = [];
     public $projects = [];
     public $endproducts = [];
@@ -47,7 +57,7 @@ class LwRequirement extends Component
 
     public $project_eproducts = [];
 
-    #[Rule('required', message: 'Please select company')] 
+    #[Rule('required|numeric', message: 'Please select company')] 
     public $company_id = false;
 
     #[Rule('required', message: 'Please select project')] 
@@ -61,14 +71,13 @@ class LwRequirement extends Component
     #[Rule('required', message: 'Requirement text is missing')] 
     public $text;
 
-    public $remarks;
-
+    public $remarks;    // Requirement remarks
+    public $vremarks;   // Verification remarks
 
     public $created_by;
     public $updated_by;
     public $created_at;
     public $updated_at;
-
 
     public $rtypes = [
         'GR' => 'General Requirement',
@@ -105,8 +114,12 @@ class LwRequirement extends Component
         $this->getCompaniesList();
         $this->getProjectsList();
 
+        $existing_verifications = $this->setProps();
+
         return view('requirements.requirements',[
-            'requirements' => $this->getRequirementsList()
+            'requirements' => $this->getRequirementsList(),
+            'verifications' => $existing_verifications,
+            'verification_data' => $this->getVerificationProps()
         ]);
     }
 
@@ -131,7 +144,7 @@ class LwRequirement extends Component
     public function checkSessionVariables() {
 
         if (session('current_project_id')) {
-            $this->company_id = session('current_project_id');
+            $this->project_id = session('current_project_id');
         }
 
         if (session('current_eproduct_id')) {
@@ -215,7 +228,6 @@ class LwRequirement extends Component
 
             } else {
 
-
                 $requirements = Requirement::where('company_id', $this->logged_user->company_id)
                 ->when(session('current_project_id'), function ($query) {
                     $query->where('project_id', session('current_project_id'));
@@ -237,7 +249,6 @@ class LwRequirement extends Component
     }
 
 
-
     public function checkCurrentProduct() {
 
         /*
@@ -255,9 +266,10 @@ class LwRequirement extends Component
         }
     }
 
+
     public function getCompaniesList()  {
 
-        if ($this->logged_user->is_admin) {
+        if ($this->is_user_admin) {
             $this->companies = Company::all();
         } else {
             $this->companies = Company::where('id',$this->logged_user->company_id)->get();
@@ -268,7 +280,7 @@ class LwRequirement extends Component
 
     public function getProjectsList()  {
 
-        if ($this->logged_user->is_admin && $this->company_id) {
+        if ($this->is_user_admin && $this->company_id) {
             $this->projects = Project::where('company_id',$this->company_id)->get();
         } else {
             $this->projects = Project::where('company_id',$this->logged_user->company_id)->get();
@@ -280,6 +292,7 @@ class LwRequirement extends Component
 
         $this->getEndProductsList();
     }
+
 
     public function getEndProductsList()  {
 
@@ -311,15 +324,12 @@ class LwRequirement extends Component
     public function viewItem($uid) {
         $this->action = 'VIEW';
         $this->uid = $uid;
-        $this->setProps();
-
     }
 
 
     public function editItem($uid) {
         $this->action = 'FORM';
         $this->uid = $uid;
-        $this->setProps();
     }
 
 
@@ -333,8 +343,7 @@ class LwRequirement extends Component
 
     public function setProps() {
 
-
-        if ($this->uid && in_array($this->action,['VIEW','FORM']) ) {
+        if ($this->uid && in_array($this->action,['VIEW','FORM','VERIFICATION']) ) {
 
             $c = Requirement::find($this->uid);
             
@@ -357,7 +366,10 @@ class LwRequirement extends Component
                 $this->the_endproduct = Endproduct::find($c->endproduct_id);
             }
 
+            return $c->verifications;
         }
+
+        return false;
 
     }
 
@@ -390,8 +402,6 @@ class LwRequirement extends Component
         $props['text'] = $this->text;
         $props['remarks'] = $this->remarks;
 
-        // dd($props);
-
         if ( $this->uid ) {
             // update
             Requirement::find($this->uid)->update($props);
@@ -406,4 +416,70 @@ class LwRequirement extends Component
 
         $this->action = 'VIEW';
     }
+
+
+
+
+    public function formVerification ($rid,$vid) {
+
+        $this->uid = $rid;
+        if ($vid) {
+            $this->vid = $vid;
+        }
+        $this->action = 'VERIFICATION';
+    }
+
+
+
+    public function getVerificationProps () {
+
+        $verification = false;
+
+
+        $ver_milestones = Gate::where('company_id', $this->logged_user->company_id)
+            ->where('project_id', session('current_project_id'))
+            ->when(session('current_eproduct_id'), function ($query) {
+                $query->where('endproduct_id', session('current_eproduct_id'));
+            })->get();
+
+        $ver_mocs = Moc::where('company_id', $this->logged_user->company_id)
+            ->where('project_id', session('current_project_id'))
+            ->when(session('current_eproduct_id'), function ($query) {
+                $query->where('endproduct_id', session('current_eproduct_id'));
+            })->get();
+
+        $ver_pocs = Poc::where('company_id', $this->logged_user->company_id)
+            ->where('project_id', session('current_project_id'))
+            ->when(session('current_eproduct_id'), function ($query) {
+                $query->where('endproduct_id', session('current_eproduct_id'));
+            })->get();
+
+
+        $ver_witnesses = Witness::where('company_id', $this->logged_user->company_id)
+            ->where('project_id', session('current_project_id'))
+            ->when(session('current_eproduct_id'), function ($query) {
+                $query->where('endproduct_id', session('current_eproduct_id'));
+            })->get();
+
+
+        if ($this->vid) {
+            $verification = Verification::find($this->vid);
+        } 
+
+        return [
+            'verification' => $verification,
+            'ver_milestones' => $ver_milestones,
+            'ver_mocs' => $ver_mocs,
+            'ver_pocs' => $ver_pocs,
+            'ver_witnesses' => $ver_witnesses
+        ];
+
+    }
+
+
+
+
+
+
+
 }

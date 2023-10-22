@@ -32,39 +32,6 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        $admin = User::create([
-            "name" => 'Kılıç Ali',
-            "lastname" =>'Temiz',
-            "company_id" => 0,
-            "email" => 'katemiz@gmail.com',
-            "password" => 'kapkara'
-        ]);
-
-        $user1 = User::create([
-            "name" => 'Kılıç Ali',
-            "lastname" =>'Temiz',
-            "company_id" => 3,
-            "email" => 'katemiz@masttech.com',
-            "password" => 'kapkara'
-        ]);
-
-        $user2 = User::create([
-            "name" => 'Ümit',
-            "lastname" =>'Kutluay',
-            "company_id" => 2,
-            "email" => 'umit.kutluay@tubitak.gov.tr',
-            "password" => 'Sage2023tubitak'
-        ]);
-
-        $role = Role::create(['name' => 'admin']);
-        $cadmin = Role::create(['name' => 'company_admin']);
-        $reqeng = Role::create(['name' => 'requirement_engineer']);
-
-        $admin->assignRole('admin');
-        $user1->assignRole('requirement_engineer');
-        $user2->assignRole('company_admin');
-        $user2->assignRole('requirement_engineer');
-
 
         Company::create([
             'user_id' => 1,
@@ -89,6 +56,44 @@ class DatabaseSeeder extends Seeder
         ]);
 
 
+        // USERS
+        $admin = User::create([
+            "name" => 'Kılıç Ali',
+            "lastname" =>'Temiz',
+            "company_id" => 1,
+            "email" => 'katemiz@gmail.com',
+            "password" => '.?Nlife669'
+        ]);
+
+        $company_admin1 = User::create([
+            "name" => 'Kılıç Ali',
+            "lastname" =>'Temiz',
+            "company_id" => 3,
+            "email" => 'katemiz@masttech.com',
+            "password" => '.?Nlife669'
+        ]);
+
+        $company_admin2 = User::create([
+            "name" => 'Ümit',
+            "lastname" =>'Kutluay',
+            "company_id" => 2,
+            "email" => 'umit.kutluay@tubitak.gov.tr',
+            "password" => 'Sage2023tubitak'
+        ]);
+
+        $role = Role::create(['name' => 'admin']);
+        $cadmin = Role::create(['name' => 'company_admin']);
+        $reqeng = Role::create(['name' => 'requirement_engineer']);
+
+        $admin->assignRole('admin');
+
+        $company_admin1->assignRole('company_admin');
+        $company_admin1->assignRole('requirement_engineer');
+
+        $company_admin2->assignRole('company_admin');
+        $company_admin2->assignRole('requirement_engineer');
+
+        // PROJECTS
         Project::create([
             'updated_uid' => 1,
             'user_id' => 1,
@@ -105,8 +110,18 @@ class DatabaseSeeder extends Seeder
             'title' => 'Yüksek Hızlı Rüzgar Tüneli Projesi'
         ]);
 
-        // MOCs
 
+        Project::create([
+            'updated_uid' => 1,
+            'user_id' => 1,
+            'company_id' => 3,
+            'code' => 'MTDP',
+            'title' => 'Mastech Deneme Projesi'
+        ]);
+
+
+
+        // MOCs
         Moc::create([
             'updated_uid' => 1,
             'user_id' => 1,
@@ -215,7 +230,6 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // PHASES
-
         Phase::create([
             'updated_uid' => 1,
             'user_id' => 1,
@@ -296,7 +310,6 @@ class DatabaseSeeder extends Seeder
 
 
         // GATES
-
         Gate::create([
             'updated_uid' => 1,
             'user_id' => 1,
@@ -309,8 +322,6 @@ class DatabaseSeeder extends Seeder
             development phase (Phase A)</p>'
         ]);
 
-
-
         Gate::create([
             'updated_uid' => 1,
             'user_id' => 1,
@@ -322,9 +333,6 @@ class DatabaseSeeder extends Seeder
             'description' => '<p><strong>Purpose</strong></p><p>The SRR evaluates the functional and performance requirements defined for the system and the preliminary program or project plan and ensures that the requirements and selected concept will satisfy the mission.</p><p><strong>Timing</strong></p><p>The SRR is conducted during the concept development phase (Phase A) and before conducting the SDR or MDR.</p>'
         ]);
 
-
-        
-
         Gate::create([
             'updated_uid' => 1,
             'user_id' => 1,
@@ -335,7 +343,6 @@ class DatabaseSeeder extends Seeder
             'name' => 'Mission Definition Review / System Definition Review',
             'description' => '<p><strong>Purpose</strong></p><p>TSometimes called the MDR by robotic projects and SDR for human flight projects, this review evaluates whether the proposed architecture is responsive to the functional and performance requirements and that the requirements have been allocated to all functional elements of the mission/system.</p><p><strong>Timing</strong></p><p>The MDR/SDR is conducted during the concept development phase (Phase A) prior to KDP B and the start of preliminary design.</p>'
         ]);
-
 
         Gate::create([
             'updated_uid' => 1,
@@ -349,10 +356,6 @@ class DatabaseSeeder extends Seeder
             acceptable risk and within the cost and schedule constraints and establishes the basis for proceeding with detailed design. It shows that the correct design options have been selected, interfaces have been identified, and verification methods have been described. The PDR should address and resolve critical, system-wide issues and show that work can begin on detailed design.</p><p><strong>Timing</strong></p><p>PDR occurs near the completion of the preliminary design phase (Phase B) as the last review in the Formulation Phase.</p>'
         ]);
 
-
-
-
-
         Gate::create([
             'updated_uid' => 1,
             'user_id' => 1,
@@ -364,8 +367,6 @@ class DatabaseSeeder extends Seeder
             'description' => '<p><strong>Purpose</strong></p><p>The CDR demonstrates that the maturity of the design is appropriate to support       proceeding with full scale fabrication, assembly, integration, and test. CDR determines if the technical effort is on track to complete
             the system development, meeting mission performance requirements within the identified cost and schedule constraints.</p><p><strong>Timing</strong></p><p>CDR occurs during the final design phase (Phase C).</p>'
         ]);
-
-
 
         Gate::create([
             'updated_uid' => 1,
@@ -381,8 +382,6 @@ class DatabaseSeeder extends Seeder
             phase (Phase C).</p>'
         ]);
 
-
-
         Gate::create([
             'updated_uid' => 1,
             'user_id' => 1,
@@ -396,7 +395,6 @@ class DatabaseSeeder extends Seeder
             to support integration.</p><p><strong>Timing</strong></p><p>SIR occurs at the end of the final design phase (Phase C)
             and before the systems assembly, integration, and test phase (Phase D) begins.</p>'
         ]);
-
 
         Gate::create([
             'updated_uid' => 1,
@@ -462,7 +460,6 @@ class DatabaseSeeder extends Seeder
             'description' => '<p><strong>Purpose</strong></p><p>A CERR confirms the project’s readiness to execute the mission’s critical activities during flight operation. These include orbital insertion, rendezvous and docking, re-entry, scientific observations/encounters, etc.</p><p><strong>Timing</strong></p><p>fff</p>'
         ]);
 
-        
         Gate::create([
             'updated_uid' => 1,
             'user_id' => 1,
@@ -500,5 +497,99 @@ class DatabaseSeeder extends Seeder
             'name' => 'Disposal Readiness Review',
             'description' => '<p><strong>Purpose</strong></p><p>A DRR confirms the readiness for the final disposal of the system assets.</p><p><strong>Timing</strong></p><p>The DRR is held as major assets are ready for final disposal.</p>'
         ]);
+
+
+        // POCS
+        Poc::create([
+            'updated_uid' => 1,
+            'user_id' => 1,
+            'company_id' => 1,
+            'project_id' => 1,
+            'endproduct_id' => 0,
+            'code' => 'SEMP',
+            'name' => 'Systems Engineering Management Plan',
+            'description' => ''
+        ]);
+
+
+        Poc::create([
+            'updated_uid' => 1,
+            'user_id' => 1,
+            'company_id' => 1,
+            'project_id' => 1,
+            'endproduct_id' => 0,
+            'code' => 'RM',
+            'name' => 'Requirement Management',
+            'description' => ''
+        ]);
+
+        Poc::create([
+            'updated_uid' => 1,
+            'user_id' => 1,
+            'company_id' => 1,
+            'project_id' => 1,
+            'endproduct_id' => 0,
+            'code' => 'QMP',
+            'name' => 'Quality Management Plan',
+            'description' => ''
+        ]);
+
+        Poc::create([
+            'updated_uid' => 1,
+            'user_id' => 1,
+            'company_id' => 1,
+            'project_id' => 1,
+            'endproduct_id' => 0,
+            'code' => 'RMP',
+            'name' => 'Risk Management Plan',
+            'description' => ''
+        ]);
+
+        Poc::create([
+            'updated_uid' => 1,
+            'user_id' => 1,
+            'company_id' => 1,
+            'project_id' => 1,
+            'endproduct_id' => 0,
+            'code' => 'IMP',
+            'name' => 'Interface Management Plan',
+            'description' => ''
+        ]);
+
+        Poc::create([
+            'updated_uid' => 1,
+            'user_id' => 1,
+            'company_id' => 1,
+            'project_id' => 1,
+            'endproduct_id' => 0,
+            'code' => 'CMP',
+            'name' => 'Configuration Management Plan',
+            'description' => ''
+        ]);
+
+        Poc::create([
+            'updated_uid' => 1,
+            'user_id' => 1,
+            'company_id' => 1,
+            'project_id' => 1,
+            'endproduct_id' => 0,
+            'code' => 'TPM',
+            'name' => 'Technical Performance Measurement',
+            'description' => ''
+        ]);
+
+        Poc::create([
+            'updated_uid' => 1,
+            'user_id' => 1,
+            'company_id' => 1,
+            'project_id' => 1,
+            'endproduct_id' => 0,
+            'code' => 'TMP',
+            'name' => 'Test Management Plan',
+            'description' => ''
+        ]);
+
+
+
     }
 }

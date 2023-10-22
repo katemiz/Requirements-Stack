@@ -138,18 +138,35 @@
 
 
 
+
+
+
+
+
+        {{-- VERIFICATIONS --}}
+
+
         <div class="column">
             <div class="columns is-vcentered">
-    
-                <div class="column">
-                    <strong>Verifications</strong>
-                    {{ $source }}
-                </div>
-    
-                <div class="column is-narrow">
 
-                </div>
-    
+            <div class="column is-10">
+                <strong>Verifications</strong>
+            </div>
+
+            <div class="column has-text-right is-2">
+                @role(['admin','company_admin','requirement_engineer'])
+                <a href="/verifications/{{$uid}}/form" class="button is-link is-small">
+
+                {{-- <a wire:click='formVerification({{ $uid }},false)' class="button is-link is-small"> --}}
+
+                    <span class="icon is-small">
+                        <x-carbon-add />
+                    </span>
+                    <span>Add</span>
+                </a>
+                @endrole
+            </div>
+
             </div>
         </div>
 
@@ -157,9 +174,10 @@
 
 
 
-        {{-- VERIFICATIONS --}}
+
+
         <div class="column">
-            @if ( count($requirement->verifications) > 0 )
+            @if ( count($verifications) > 0 )
     
               <table class="table is-fullwidth">
     
@@ -169,24 +187,24 @@
                       <th>MOC/Verification Method</th>
                       <th>Proof of Compliance</th>
                       <th>Witness</th>
-                      @role(config('requirements.roles.w'))
+                      @role(['admin','company_admin','requirement_engineer'])
                       <th>Actions</th>
                       @endrole
                   </tr>
     
-                  @foreach ($requirement->verifications as $verification)
+                  @foreach ($verifications as $verification)
     
                     <tr>
                       <td>{{ $verification->dgate->code }}</td>
                       <td>{{ $verification->moc->code }}</td>
                       <td>{{ $verification->poc->code }}</td>
                       <td>{{ $verification->witness->code }}</td>
-                      @role(config('requirements.roles.w'))
+                      @role(['admin','company_admin','requirement_engineer'])
                       <td>
-                        <a href="/requirements/verform/{{ $requirement->id}}/{{ $verification->id}}">
+                        <a href="/requirements-verifications/form/{{ $uid}}/{{ $verification->id}}">
                           <span class="icon has-text-link"><x-carbon-pen /></span>
                         </a>
-                        <a href="javascript:deleteConfirm('{{$requirement->id}}','{{$verification->id}}')">
+                        <a href="javascript:deleteConfirm('{{$uid}}','{{$verification->id}}')">
                           <span class="icon has-text-danger"><x-carbon-trash-can /></span>
                         </a>
                       </td>

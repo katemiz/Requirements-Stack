@@ -1,12 +1,14 @@
 <section class="section container">
 
     <script src="{{ asset('/js/ckeditor5/ckeditor.js') }}"></script>
-    <x-title :params="$uid ? $constants['update'] : $constants['create']" />
 
+    <header class="mb-6">
+        <h1 class="title has-text-weight-light is-size-1">{{ $constants['create']['title'] }}</h1>
+        <h2 class="subtitle has-text-weight-light">{{ $uid ? $constants['update']['subtitle'] : $constants['create']['subtitle'] }}</h2>
+    </header>
 
     <form method="POST" enctype="multipart/form-data">
         @csrf
-
 
         <div class="field">
             <label class="label">Select Requirement Type</label>
@@ -151,7 +153,7 @@
             wire:model="text"
             label='Requirement Text / Description'
             placeholder='Requirement text/description ....'
-            :content="$text" instance="0"/>
+            :content="$text"/>
 
         @error('text')
             <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
@@ -164,7 +166,7 @@
             wire:model="remarks"
             label='Remarks'
             placeholder='Remarks about requirement and its text ....'
-            :content="$remarks" instance="1"/>
+            :content="$remarks"/>
 
         @error('remarks')
             <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
@@ -188,7 +190,7 @@
 
     </form>
 
-    @if ($errors->any())
+    {{-- @if ($errors->any())
     <div class="alert alert-danger">
         <ul>
             @foreach ($errors->all() as $error)
@@ -196,7 +198,7 @@
             @endforeach
         </ul>
     </div>
-    @endif
+    @endif --}}
 
 
 </section>

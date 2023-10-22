@@ -30,6 +30,8 @@ use App\Livewire\LwRole;
 use App\Livewire\LwRequirement;
 use App\Livewire\LwUser;
 use App\Livewire\LwWitness;
+use App\Livewire\LwVerification;
+
 
 
 
@@ -120,6 +122,8 @@ Route::middleware('auth')->group(function () {
 
 
     Route::get('/requirements/{action}/{id?}', LwRequirement::class);
+    Route::get('/verifications/{rid}/{action}/{id?}', LwVerification::class);
+
 
 
 

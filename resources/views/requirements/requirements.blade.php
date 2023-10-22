@@ -49,6 +49,10 @@
 
     @switch($action)
 
+        @case('VERIFICATION')
+            @include('requirements.verifications-form')
+            @break
+
         @case('FORM')
             @include('requirements.requirements-form')
             @break

@@ -5,25 +5,72 @@
 
 
 <div class="notification is-link is-light">
-    
-    This app defines <u>predefined</u> definitions for projects and/or End Products. These definitions are based on generic Systems Engineering flow and are limited<br><br>
-
-    These definitions can be used as starting point with <strong>tailoring/customisation</strong><br><br>
-
-    It is recommended to use these predefined definitions and modify them to your needs.<br>
-
+    This app defines <u>predefined</u> definitions for projects and/or End Products. These definitions are based on generic Systems Engineering flow and are limited<br>
+    These definitions can be used as starting point with <strong>tailoring/customisation</strong>It is recommended to use these predefined definitions and modify them to your needs.
 </div>
 
 
 <div class="content">
 
-    <h2 class="subtitle has-text-weight-light">Predefined Project Phases</h2>
+    <h2 class="subtitle has-text-weight-light">Predefined Definitions</h2>
 
-    <h2 class="subtitle has-text-weight-light">Predefined Project Milestones/Decision Gates</h2>
+    <table class="table is-fullwidth">
 
-    <h2 class="subtitle has-text-weight-light">Predefined Project Means of Compliances (MOC)</h2>
+        <caption class="mb-4">Project Phases</caption>
 
-    <h2 class="subtitle has-text-weight-light">Predefined Project Proof of Compliances (POC)</h2>
+        @foreach ($populate_defaults['phases'] as $phase)
+        <tr>
+            <th>{{$phase->code}}</th>
+            <td>{{$phase->name}}</td>
+        </tr>
+        @endforeach
+
+    </table>
+
+
+
+    <table class="table is-fullwidth">
+
+        <caption class="mb-4">Milestones/Decision Gates</caption>
+
+        @foreach ($populate_defaults['milestones'] as $milestone)
+        <tr>
+            <th>{{$milestone->code}}</th>
+            <td>{{$milestone->name}}</td>
+        </tr>
+        @endforeach
+        
+    </table>
+
+
+    <table class="table is-fullwidth">
+
+        <caption class="mb-4">Means of Compliances (MOC)</caption>
+
+        @foreach ($populate_defaults['mocs'] as $moc)
+        <tr>
+            <th>{{$moc->code}}</th>
+            <td>{{$moc->name}}</td>
+        </tr>
+        @endforeach
+        
+    </table>
+
+
+
+    <table class="table is-fullwidth">
+
+        <caption class="mb-4">Proof of Compliances (MOC)</caption>
+
+        @foreach ($populate_defaults['pocs'] as $poc)
+        <tr>
+            <th>{{$poc->code}}</th>
+            <td>{{$poc->name}}</td>
+        </tr>
+        @endforeach
+        
+    </table>
+
 
 
 

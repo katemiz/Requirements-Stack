@@ -33,6 +33,10 @@ class LwPhase extends Component
     public $sortDirection = 'DESC';
 
     public $logged_user;
+
+    public $is_user_admin = false;
+    public $is_user_company_admin = false;
+
     public $companies = [];
     public $projects = [];
     public $endproducts = [];
@@ -40,8 +44,6 @@ class LwPhase extends Component
     public $the_company = false;    // Viewed Phase Company
     public $the_project = false;    // Viewed Phase Project
     public $the_endproduct = false; // Viewed Phase EndProduct
-
-
 
     public $project_eproducts = [];
 
@@ -85,7 +87,7 @@ class LwPhase extends Component
 
     public function render()
     {
-        $this->logged_user = $this->checkUserRoles(Auth::user());
+        $this->checkUserRoles();
 
         $this->getCompaniesList();
         $this->getProjectsList();
@@ -98,61 +100,104 @@ class LwPhase extends Component
     }
 
 
-    public function checkUserRoles($usr) {
+    public function checkUserRoles() {
 
-        $usr->is_admin = false;
-        $usr->is_company_admin = false;
+        $this->logged_user = Auth::user();
 
-        if ($usr->hasRole('admin')) {
-            $usr->is_admin = true;
+        if ($this->logged_user->hasRole('admin')) {
+            $this->is_user_admin = true;
         }
 
-        if ($usr->hasRole('company_admin')) {
-            $usr->is_company_admin = true;
+        if ($this->logged_user->hasRole('company_admin')) {
+            $this->is_user_company_admin = true;
         }
-
-        return $usr;
     }
 
 
 
     public function getPhasesList()  {
 
-        if ($this->logged_user->is_admin) {
+        if ($this->is_user_admin) {
 
-            if (strlen(trim($this->query)) < 2 ) {
+            if (session('current_project_id')) {
 
-                $phases = Phase::orderBy($this->sortField,$this->sortDirection)
-                ->paginate(env('RESULTS_PER_PAGE'));
+                if (strlen(trim($this->query)) < 2 ) {
+
+                    $phases = Phase::where('project_id', session('current_project_id'))
+                    ->orderBy($this->sortField,$this->sortDirection)
+                    ->paginate(env('RESULTS_PER_PAGE'));
+    
+                } else {
+    
+                    $phases = Phase::where('project_id', session('current_project_id'))
+                    ->where('code', 'LIKE', "%".$this->query."%")
+                    ->orWhere('name','LIKE',"%".$this->query."%")
+                    ->orWhere('description','LIKE',"%".$this->query."%")
+                    ->orderBy($this->sortField,$this->sortDirection)
+                    ->paginate(env('RESULTS_PER_PAGE'));
+                }
 
             } else {
 
-                $phases = Phase::where('code', 'LIKE', "%".$this->query."%")
-                ->orWhere('name','LIKE',"%".$this->query."%")
-                ->orWhere('description','LIKE',"%".$this->query."%")
-                ->orderBy($this->sortField,$this->sortDirection)
-                ->paginate(env('RESULTS_PER_PAGE'));
+                if (strlen(trim($this->query)) < 2 ) {
+
+                    $phases = Phase::orderBy($this->sortField,$this->sortDirection)
+                    ->paginate(env('RESULTS_PER_PAGE'));
+    
+                } else {
+    
+                    $phases = Phase::where('code', 'LIKE', "%".$this->query."%")
+                    ->orWhere('name','LIKE',"%".$this->query."%")
+                    ->orWhere('description','LIKE',"%".$this->query."%")
+                    ->orderBy($this->sortField,$this->sortDirection)
+                    ->paginate(env('RESULTS_PER_PAGE'));
+                }
             }
         }
 
-        if ($this->logged_user->is_company_admin) {
+        if ($this->is_user_company_admin) {
 
-            if (strlen(trim($this->query)) < 2 ) {
+            if (session('current_project_id')) {
 
-                $phases = Phase::where('company_id',$this->logged_user->company_id)
-                ->where(function ($sqlquery) {
-                    $sqlquery->where('code', 'LIKE', "%".$this->query."%")
-                          ->orWhere('name', 'LIKE', "%".$this->query."%")
-                          ->orWhere('description', 'LIKE', "%".$this->query."%");
-                })
-                ->orderBy($this->sortField,$this->sortDirection)
-                ->paginate(env('RESULTS_PER_PAGE'));
+                if (strlen(trim($this->query)) < 2 ) {
+
+                    $phases = Phase::where('project_id', session('current_project_id'))
+                    ->where('company_id',$this->logged_user->company_id)
+                    ->where(function ($sqlquery) {
+                        $sqlquery->where('code', 'LIKE', "%".$this->query."%")
+                              ->orWhere('name', 'LIKE', "%".$this->query."%")
+                              ->orWhere('description', 'LIKE', "%".$this->query."%");
+                    })
+                    ->orderBy($this->sortField,$this->sortDirection)
+                    ->paginate(env('RESULTS_PER_PAGE'));
+    
+                } else {
+    
+                    $phases = Phase::where('project_id', session('current_project_id'))
+                    ->where('company_id', $this->logged_user->company_id)
+                    ->orderBy($this->sortField,$this->sortDirection)
+                    ->paginate(env('RESULTS_PER_PAGE'));
+                }
 
             } else {
 
-                $phases = Phase::where('company_id', $this->logged_user->company_id)
-                ->orderBy($this->sortField,$this->sortDirection)
-                ->paginate(env('RESULTS_PER_PAGE'));
+                if (strlen(trim($this->query)) < 2 ) {
+
+                    $phases = Phase::where('company_id',$this->logged_user->company_id)
+                    ->where(function ($sqlquery) {
+                        $sqlquery->where('code', 'LIKE', "%".$this->query."%")
+                              ->orWhere('name', 'LIKE', "%".$this->query."%")
+                              ->orWhere('description', 'LIKE', "%".$this->query."%");
+                    })
+                    ->orderBy($this->sortField,$this->sortDirection)
+                    ->paginate(env('RESULTS_PER_PAGE'));
+    
+                } else {
+    
+                    $phases = Phase::where('company_id', $this->logged_user->company_id)
+                    ->orderBy($this->sortField,$this->sortDirection)
+                    ->paginate(env('RESULTS_PER_PAGE'));
+                }
             }
         }
 
@@ -162,11 +207,11 @@ class LwPhase extends Component
 
     public function getCompaniesList()  {
 
-        if ($this->logged_user->is_admin) {
+        if ($this->is_user_admin) {
             $this->companies = Company::all();
         }
 
-        if ($this->logged_user->is_company_admin) {
+        if ($this->is_user_company_admin) {
             $this->companies = Company::where('id',$this->logged_user->company_id)->get();
             $this->company_id = $this->logged_user->company_id;
         }
@@ -175,11 +220,11 @@ class LwPhase extends Component
 
     public function getProjectsList()  {
 
-        if ($this->logged_user->is_admin && $this->company_id) {
+        if ($this->is_user_admin && $this->company_id) {
             $this->projects = Project::where('company_id',$this->company_id)->get();
         }
 
-        if ($this->logged_user->is_company_admin) {
+        if ($this->is_user_company_admin) {
             $this->projects = Project::where('company_id',$this->logged_user->company_id)->get();
         }
 
