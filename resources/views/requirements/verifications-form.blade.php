@@ -26,7 +26,9 @@
 
             <div class="media-content">
                 <h4 class="subtitle has-text-weight-normal my-0">End Product</h4>
+                @if ($endproduct_id > 0)
                 <span class="tag is-info">{{ $requirement->getEndProductNameAttribute()}}</span>
+                @endif
             </div>
 
             </div>
@@ -50,7 +52,7 @@
 
     <div class="column card mt-3">
 
-        
+
     <form method="POST" enctype="multipart/form-data">
     @csrf
 
@@ -63,15 +65,15 @@
                 <label class="label">Milestone/Decision Gate</label>
                 <div class="control">
                     <div class="select">
-                    <select wire:model='gate_id' wire:change='getProjectsList'>
+                    <select wire:model='gate_id'>
                         <option>Select a milestone/gate...</option>
                             @foreach ($verification_data['ver_milestones'] as $milestone)
-                                <option value="{{ $milestone->id }}">{{ $milestone->name }}</option>
+                                <option value="{{ $milestone->id }}">{{ $milestone->code }} {{ $milestone->name }}</option>
                             @endforeach
                     </select>
                     </div>
                 </div>
-            
+
                 @error('gate_id')
                 <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
                 @enderror
@@ -82,15 +84,15 @@
                 <label class="label">MOC</label>
                 <div class="control">
                     <div class="select">
-                    <select wire:model='moc_id' wire:change='getProjectsList'>
+                    <select wire:model='moc_id'>
                         <option>Select a means of compliance...</option>
                             @foreach ($verification_data['ver_mocs'] as $moc)
-                                <option value="{{ $moc->id }}">{{ $milestone->code }}</option>
+                                <option value="{{ $moc->id }}">{{ $moc->code }} {{ $moc->name }}</option>
                             @endforeach
                     </select>
                     </div>
                 </div>
-            
+
                 @error('moc_id')
                 <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
                 @enderror
@@ -110,15 +112,15 @@
                 <label class="label">POC</label>
                 <div class="control">
                     <div class="select">
-                    <select wire:model='poc_id' wire:change='getProjectsList'>
+                    <select wire:model='poc_id'>
                         <option>Select a proof of compliance...</option>
                             @foreach ($verification_data['ver_pocs'] as $poc)
-                                <option value="{{ $poc->id }}">{{ $poc->code }}</option>
+                                <option value="{{ $poc->id }}">{{ $poc->code }} {{ $poc->name }}</option>
                             @endforeach
                     </select>
                     </div>
                 </div>
-            
+
                 @error('poc_id')
                 <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
                 @enderror
@@ -129,15 +131,15 @@
                 <label class="label">Witness</label>
                 <div class="control">
                     <div class="select">
-                    <select wire:model='witness_id' wire:change='getProjectsList'>
+                    <select wire:model='witness_id'>
                         <option>Select a witness ...</option>
                             @foreach ($verification_data['ver_witnesses'] as $witness)
-                                <option value="{{ $witness->id }}">{{ $witness->code }}</option>
+                                <option value="{{ $witness->id }}">{{ $witness->code }} {{ $witness->name }}</option>
                             @endforeach
                     </select>
                     </div>
                 </div>
-            
+
                 @error('witness_id')
                 <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
                 @enderror
@@ -210,4 +212,3 @@
 
 
 </section>
-    

@@ -59,14 +59,9 @@
                     </div>
                 </div>
 
-                <a href="/requirements" class="navbar-item icon-text">
-                    <span class="icon has-text-warning"><x-carbon-layers/></span>
-                    <span>Requirements Old</span>
-                </a>
-
                 <a href="/requirements/list" class="navbar-item icon-text">
                     <span class="icon has-text-warning"><x-carbon-layers/></span>
-                    <span>Requirements New</span>
+                    <span>Requirements</span>
                 </a>
 
                 <a href="/projects-mocs/list" class="navbar-item icon-text">
@@ -107,7 +102,7 @@
                         </span>
                     </p>
 
-                    <div class="navbar-dropdown">                  
+                    <div class="navbar-dropdown">
 
                         <a href="/product-selector" class="navbar-item">Change Project</a>
                         <a href="/profile" class="navbar-item">Change Password</a>
@@ -145,7 +140,7 @@
 
 
 
-{{-- 
+{{--
 session('current_project_id');
 session('current_project_name');
 

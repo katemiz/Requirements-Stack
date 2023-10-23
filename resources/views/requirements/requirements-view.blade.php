@@ -16,38 +16,38 @@
         <nav class="level mb-6">
             <!-- Left side -->
             <div class="level-left">
-        
+
                 <p class="level-item">
-                    <a href="/requirements/list">                    
+                    <a href="/requirements/list">
                         <span class="icon is-small"><x-carbon-table /></span>
                         <span>List All</span>
                     </a>
                 </p>
-        
+
                 <p class="level-item">
                     <a href="/requirements/form/">
                         <span class="icon is-small"><x-carbon-add-large /></span>
                         <span>Add</span>
                     </a>
                 </p>
-        
+
             </div>
-        
+
             <!-- Right side -->
             <div class="level-right">
-        
+
                 <p class="level-item">
                     <a href='/requirements/form/{{ $uid }}'>
                         <span class="icon"><x-carbon-edit /></span>
                     </a>
                 </p>
-        
+
                 <p class="level-item">
                     <a wire:click='triggerDelete({{ $uid }})'>
                         <span class="icon has-text-danger"><x-carbon-trash-can /></span>
                     </a>
                 </p>
-        
+
             </div>
         </nav>
 
@@ -87,19 +87,21 @@
 
         <div class="column">
             <div class="columns is-vcentered">
-    
+
               <div class="column is-half">
                 <p class="has-text-weight-light is-size-6">Project</p>
                 <span class="tag is-black">{{ $the_project->code }}</span>
               </div>
-    
+
               <div class="column is-half has-text-right">
                 <p class="has-text-weight-light is-size-6">End Product</p>
-    
-                <span class="tag is-success">{{ $the_endproduct->code }}</span>
-                
+
+                @if ($endproduct_id > 0)
+                    <span class="tag is-success">{{ $the_endproduct->code }}</span>
+                @endif
+
               </div>
-    
+
             </div>
         </div>
 
@@ -121,14 +123,14 @@
         </div>
 
 
-        @if (strlen(trim($remarks)) > 0) 
+        @if (strlen(trim($remarks)) > 0)
         <div class="column">
             <strong>Attachments</strong>
             {!! $remarks !!}
         </div>
         @endif
 
-        @if (strlen(trim($remarks)) > 0) 
+        @if (strlen(trim($remarks)) > 0)
         <div class="column">
             {!! $remarks !!}
         </div>
@@ -178,9 +180,9 @@
 
         <div class="column">
             @if ( count($verifications) > 0 )
-    
+
               <table class="table is-fullwidth">
-    
+
               <tbody>
                   <tr>
                       <th>Decision Gate</th>
@@ -191,9 +193,9 @@
                       <th>Actions</th>
                       @endrole
                   </tr>
-    
+
                   @foreach ($verifications as $verification)
-    
+
                     <tr>
                       <td>{{ $verification->dgate->code }}</td>
                       <td>{{ $verification->moc->code }}</td>
@@ -210,12 +212,12 @@
                       </td>
                       @endrole
                     </tr>
-    
+
                   @endforeach
-    
+
               </tbody>
               </table>
-    
+
             @else
               No verifications exist
             @endif
@@ -235,14 +237,14 @@
                 <p>{{ $created_by }}</p>
                 <p>{{ $created_at }}</p>
             </div>
-        
+
             <div class="column has-text-right">
                 <p>{{ $updated_by }}</p>
                 <p>{{ $updated_at }}</p>
             </div>
-        
+
         </div>
-        
+
     </div>
 
 </div>

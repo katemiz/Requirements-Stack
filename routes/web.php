@@ -88,15 +88,15 @@ Route::middleware('auth')->group(function () {
     // ************************************************************
 
     // old
-    Route::get('/requirements', ListRequirements::class);
-    Route::get('/requirements/view/{id}', [RequirementController::class, 'view']);
+    // Route::get('/requirements', ListRequirements::class);
+    // Route::get('/requirements/view/{id}', [RequirementController::class, 'view']);
     //Route::get('/requirements/form/{id?}', RequirementLivewire::class);
-    Route::get('/requirements/verform/{rid}/{id?}', [RequirementController::class, 'verform']);
-    Route::post('/requirements/store/{id?}', [RequirementController::class, 'store']);
+    // Route::get('/requirements/verform/{rid}/{id?}', [RequirementController::class, 'verform']);
+    // Route::post('/requirements/store/{id?}', [RequirementController::class, 'store']);
     Route::get('/requirements/export', [RequirementController::class, 'excelExport']);
-    Route::post('/verifications/store/{rid}/{id?}', [RequirementController::class, 'verstore']);
-    Route::get('/verifications/delete/{rid}/{id}', [RequirementController::class, 'delver']);
-    Route::get('/requirements/delete/{id}', [RequirementController::class, 'delete']);
+    // Route::post('/verifications/store/{rid}/{id?}', [RequirementController::class, 'verstore']);
+    // Route::get('/verifications/delete/{rid}/{id}', [RequirementController::class, 'delver']);
+    // Route::get('/requirements/delete/{id}', [RequirementController::class, 'delete']);
 
     Route::get('/requirements/{action}/{id?}', LwRequirement::class);
     Route::get('/verifications/{rid}/{action}/{id?}', LwVerification::class);

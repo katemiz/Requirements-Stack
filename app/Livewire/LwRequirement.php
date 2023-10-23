@@ -36,7 +36,6 @@ class LwRequirement extends Component
     public $uid = false;
     public $vid = false;    // Verification ID
 
-
     public $query = '';
     public $sortField = 'created_at';
     public $sortDirection = 'DESC';

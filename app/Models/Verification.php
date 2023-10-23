@@ -14,7 +14,7 @@ class Verification extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id','project_id','requirement_id','meeting_id','moc_id','poc_id','witness_id','remarks'];
+    protected $fillable = ['user_id','company_id','project_id','endproduct_id','requirement_id','gate_id','moc_id','poc_id','witness_id','remarks'];
 
     public function requirement(): BelongsTo
     {
@@ -24,7 +24,7 @@ class Verification extends Model
     // Accessor to get the dgate object of the verififcation
     public function getDgateAttribute()
     {
-        return Meeting::find($this->meeting_id);
+        return Gate::find($this->gate_id);
     }
 
     // Accessor to get the moc object of the verififcation
@@ -55,7 +55,7 @@ class Verification extends Model
 
     public function getDecisionGateAttribute()
     {
-        return Meeting::find($this->meeting_id)->name;
+        return Gate::find($this->gate_id)->name;
     }
 
     public function getMocNameAttribute()

@@ -21,6 +21,8 @@ use App\Models\Phase;
 use App\Models\Poc;
 use App\Models\Project;
 use App\Models\User;
+use App\Models\Witness;
+
 
 
 class LwProject extends Component
@@ -40,13 +42,13 @@ class LwProject extends Component
 
     public $logged_user;
 
-    #[Rule('required', message: 'Please select company')] 
+    #[Rule('required', message: 'Please select company')]
     public $company_id;
 
-    #[Rule('required', message: 'Please enter project short code')] 
+    #[Rule('required', message: 'Please enter project short code')]
     public $code;
 
-    #[Rule('required', message: 'Please enter project full title')] 
+    #[Rule('required', message: 'Please enter project full title')]
     public $title;
 
     public $created_by;
@@ -250,16 +252,25 @@ class LwProject extends Component
         }
 
         // POC
-        foreach ($definitions['mocs'] as $poc) {
+        foreach ($definitions['pocs'] as $poc) {
             $props['code'] = $poc->code;
             $props['name'] = $poc->name;
             $props['description'] = $poc->description;
             Poc::create($props);
         }
 
+        // WITNESS . ADD OWN COMPANY TO WITNESS LIST
+        $cmp = Company::find($currentProject->company->id);
+
+        $props['code'] = $cmp->name;
+        $props['name'] = $cmp->fullname;
+        $props['description'] = '';
+
+        Witness::create($props);
+
         $this->uid = $uid;
 
-        session()->flash('message','Predfined definitions have been added to project.');
+        session()->flash('message','Predefined definitions have been added to project.');
         $this->action = 'VIEW';
     }
 
@@ -295,7 +306,7 @@ class LwProject extends Component
         $this->resetPage();
     }
 
-    
+
     public function storeUpdateItem () {
 
         $this->validate();

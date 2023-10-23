@@ -34,8 +34,8 @@ class LwVerification extends Component
     public $constants;
 
     public $vid = false;    // Verification ID
-    public $requirement = false;    
-    public $verification = false;    
+    public $requirement = false;
+    public $verification = false;
 
 
     public $logged_user;
@@ -44,7 +44,7 @@ class LwVerification extends Component
     public $projects = [];
     public $endproducts = [];
 
-    public $company_id;    
+    public $company_id;
     public $project_id;
     public $endproduct_id;
 
@@ -56,16 +56,16 @@ class LwVerification extends Component
 
     // Verification
 
-    #[Rule('required', message: 'Please select milestone/gate')] 
+    #[Rule('required', message: 'Please select milestone/gate')]
     public $gate_id;
 
-    #[Rule('required', message: 'Please select MOC')] 
+    #[Rule('required', message: 'Please select MOC')]
     public $moc_id;
 
-    #[Rule('required', message: 'Please select POC')] 
+    #[Rule('required', message: 'Please select POC')]
     public $poc_id;
 
-    #[Rule('required', message: 'Please select witness for this verification')] 
+    #[Rule('required', message: 'Please select witness for this verification')]
     public $witness_id;
 
     public $vremarks;   // Verification remarks
@@ -97,8 +97,8 @@ class LwVerification extends Component
         }
 
         $this->constants = config('verifications');
-
         $this->checkSessionVariables();
+
 
         $this->verification_data = $this->getVerificationData();
     }
@@ -120,11 +120,11 @@ class LwVerification extends Component
     public function checkUserRoles() {
 
         $this->logged_user = Auth::user();
+        $this->company_id = $this->logged_user->company_id;
+
 
         if ($this->logged_user->hasRole('admin')) {
             $this->is_user_admin = true;
-        } else {
-            $this->company_id = $this->logged_user->company_id;
         }
 
         if ($this->logged_user->hasRole('company_admin')) {
@@ -138,6 +138,7 @@ class LwVerification extends Component
 
         if (session('current_project_id')) {
             $this->project_id = session('current_project_id');
+            $this->company_id = Project::find($this->project_id)->company_id;
         }
 
         if (session('current_eproduct_id')) {
@@ -188,32 +189,36 @@ class LwVerification extends Component
         $this->resetPage();
     }
 
-    
+
     public function storeUpdateItem () {
 
         $this->validate();
 
-        $props['updated_uid'] = Auth::id();
+        $props['user_id'] = Auth::id();
         $props['company_id'] = $this->company_id;
         $props['project_id'] = $this->project_id;
         $props['endproduct_id'] = $this->endproduct_id ? $this->endproduct_id : 0;
-        $props['rtype'] = $this->rtype;
-        $props['text'] = $this->text;
-        $props['remarks'] = $this->remarks;
+        $props['requirement_id'] = $this->requirement->id;
+        $props['gate_id'] = $this->gate_id;
+        $props['moc_id'] = $this->moc_id;
+        $props['poc_id'] = $this->poc_id;
+        $props['witness_id'] = $this->witness_id;
+        $props['remarks'] = $this->vremarks;
 
-        if ( $this->uid ) {
+        if ( $this->vid ) {
             // update
-            Requirement::find($this->uid)->update($props);
-            session()->flash('message','Requirement has been updated successfully.');
+            Verification::find($this->uid)->update($props);
+            session()->flash('message','Requirement verification has been updated successfully.');
 
         } else {
             // create
             $props['user_id'] = Auth::id();
-            $this->uid = Requirement::create($props)->id;
-            session()->flash('message','Requirement has been created successfully.');
+            Verification::create($props);
+            session()->flash('message','Requirement verification has been created successfully.');
         }
 
-        $this->action = 'VIEW';
+        return redirect("requirements/view/".$this->requirement->id);
+
     }
 
 
@@ -224,29 +229,34 @@ class LwVerification extends Component
 
     public function getVerificationData () {
 
-        $ver_milestones = Gate::where('company_id', $this->logged_user->company_id)
+        $ver_milestones = Gate::where('company_id', $this->company_id)
             ->where('project_id', session('current_project_id'))
             ->when(session('current_eproduct_id'), function ($query) {
                 $query->where('endproduct_id', session('current_eproduct_id'));
             })->get();
 
-        $ver_mocs = Moc::where('company_id', $this->logged_user->company_id)
+        $ver_mocs = Moc::where('company_id', $this->company_id)
             ->where('project_id', session('current_project_id'))
             ->when(session('current_eproduct_id'), function ($query) {
                 $query->where('endproduct_id', session('current_eproduct_id'));
             })->get();
 
-        $ver_pocs = Poc::where('company_id', $this->logged_user->company_id)
+
+        $ver_pocs = Poc::where('company_id', $this->company_id)
             ->where('project_id', session('current_project_id'))
             ->when(session('current_eproduct_id'), function ($query) {
                 $query->where('endproduct_id', session('current_eproduct_id'));
             })->get();
 
-        $ver_witnesses = Witness::where('company_id', $this->logged_user->company_id)
+        $ver_witnesses = Witness::where('company_id', $this->company_id)
             ->where('project_id', session('current_project_id'))
             ->when(session('current_eproduct_id'), function ($query) {
                 $query->where('endproduct_id', session('current_eproduct_id'));
             })->get();
+
+
+
+
 
 
         return [
