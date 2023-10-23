@@ -46,8 +46,6 @@ class LwProductSelector extends Component
     }
 
 
-
-
     public function render()
     {
         $this->checkUserRoles();
@@ -58,7 +56,6 @@ class LwProductSelector extends Component
             'companies' => $this->getCompaniesList()
         ]);
     }
-
 
 
     public function getRedirectLink() {
@@ -72,11 +69,6 @@ class LwProductSelector extends Component
                 $this->redirect_to = '/';
                 break;
         }
-
-        // $this->redirect_to = base64_decode(request('pageBackIdentifier'));
-
-        // $this->js("console.log('$this->redirect_to')");
-
     }
 
 
@@ -109,7 +101,6 @@ class LwProductSelector extends Component
     }
 
 
-
     public function getProducts()  {
 
         if (!$this->company_id) {
@@ -128,14 +119,13 @@ class LwProductSelector extends Component
             $this->project_id = $projects['0']->id;
         }
 
+        $this->reset('products');
+        
         foreach ($projects as $prj) {
             $this->products[$prj->id]['project'] = $prj->toArray();
             $this->products[$prj->id]['ep'] = Endproduct::where('project_id',$prj->id)->get();
-
         }
     }
-
-
 
 
     public function setCurrent($idProject,$idEP)  {
@@ -148,8 +138,6 @@ class LwProductSelector extends Component
         session('current_eproduct_name');
         */
 
-        $this->js("console.log('$idProject.'-'.$idEP')");
-
         $ep = $idEP > 0 ? Endproduct::find($idEP) : false;
 
         session([
@@ -159,19 +147,6 @@ class LwProductSelector extends Component
             'current_eproduct_name' => $ep ? $ep->code : false,
         ]);
 
-
-
         return redirect($this->redirect_to);
-
-        // return redirect(url()->previous());
-
     }
-
-
-
-
-
-
-
-
 }

@@ -5,7 +5,7 @@
         <h1 class="title has-text-weight-light is-size-1 has-text-left">Project/Product Selector</h1>
         <h1 class="subtitle has-text-weight-light">Select project/end product you want to use</h1>
 
-        <input type="text" wire:model='redirect_to'>
+        {{-- <input type="text" wire:model='redirect_to'> --}}
 
         @if ($companies->count() > 1)
         <div class="field">
@@ -42,7 +42,10 @@
                 @foreach ($products as $prjId => $product)
 
                     <tr>
-                        <td>{{$product['project']['code']}}<br>{{$product['project']['title']}}</td>
+                        <td>
+                            <span class="subtitle has-text-danger-dark">
+                            
+                            {{$product['project']['code']}}</span><br>{{$product['project']['title']}}</td>
                         <td>&nbsp;</td>
                         <td><a wire:click='setCurrent({{ $prjId }},0)'>Set As Current</a></td>
                     </tr>
@@ -50,8 +53,6 @@
                     @if ($product['ep'] !== null)
     
                         @foreach ($product['ep'] as $ep)
-                            <p>{{$ep->code}} / {{$ep->title}}</p>      
-
                             <tr>
                                 <td>&nbsp;</td>
                                 <td>{{$ep->code}} / {{$ep->title}}</td>

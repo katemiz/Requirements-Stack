@@ -136,7 +136,6 @@ class LwRequirement extends Component
     }
 
 
-
     public function checkSessionVariables() {
 
         if (session('current_project_id')) {
@@ -148,9 +147,6 @@ class LwRequirement extends Component
             $this->endproduct_id = session('current_eproduct_id');
         }
     }
-
-
-
 
 
     public function getRequirementsList()  {
@@ -400,6 +396,7 @@ class LwRequirement extends Component
         $props['project_id'] = $this->project_id;
         $props['endproduct_id'] = $this->endproduct_id ? $this->endproduct_id : 0;
         $props['rtype'] = $this->rtype;
+        $props['cross_ref_no'] = $this->xrefno;
         $props['text'] = $this->text;
         $props['remarks'] = $this->remarks;
 

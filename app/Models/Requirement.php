@@ -29,6 +29,7 @@ class Requirement extends Model
         'cross_ref_no',
         'text',
         'rtype',
+        'source',
         'remarks',
         'status',
     ];

@@ -25,6 +25,7 @@ return new class extends Migration
             $table->foreignIdFor(Endproduct::class)->nullable();
             $table->string('cross_ref_no')->nullable();
             $table->string('rtype');
+            $table->string('source')->nullable();
             $table->text('text');
             $table->text('remarks')->nullable();
             $table->string('status')->default('Verbatim');
