@@ -57,10 +57,10 @@ class LwRequirement extends Component
 
     public $project_eproducts = [];
 
-    #[Rule('required|numeric', message: 'Please select company')] 
+    #[Rule('required|numeric', message: 'Please select company')]
     public $company_id = false;
 
-    #[Rule('required', message: 'Please select project')] 
+    #[Rule('required', message: 'Please select project')]
     public $project_id = false;
 
     public $endproduct_id = false;
@@ -68,7 +68,7 @@ class LwRequirement extends Component
     public $source;
     public $xrefno;
 
-    #[Rule('required', message: 'Requirement text is missing')] 
+    #[Rule('required', message: 'Requirement text is missing')]
     public $text;
 
     public $remarks;    // Requirement remarks
@@ -84,7 +84,7 @@ class LwRequirement extends Component
         'TR' => 'Technical Requirement'
     ];
 
-    #[Rule('required', message: 'Please select requirement type')] 
+    #[Rule('required', message: 'Please select requirement type')]
     public $rtype = 'GR';
 
 
@@ -100,19 +100,17 @@ class LwRequirement extends Component
         }
 
         $this->constants = config('requirements');
-
-        $this->checkSessionVariables();
     }
 
 
     public function render()
     {
         $this->checkUserRoles();
-
         $this->checkCurrentProduct();
-
         $this->getCompaniesList();
         $this->getProjectsList();
+
+        $this->checkSessionVariables();
 
         $existing_verifications = $this->setProps();
 
@@ -127,11 +125,10 @@ class LwRequirement extends Component
     public function checkUserRoles() {
 
         $this->logged_user = Auth::user();
+        $this->company_id = $this->logged_user->company_id;
 
         if ($this->logged_user->hasRole('admin')) {
             $this->is_user_admin = true;
-        } else {
-            $this->company_id = $this->logged_user->company_id;
         }
 
         if ($this->logged_user->hasRole('company_admin')) {
@@ -145,6 +142,7 @@ class LwRequirement extends Component
 
         if (session('current_project_id')) {
             $this->project_id = session('current_project_id');
+            $this->company_id = Project::find($this->project_id)->company_id;
         }
 
         if (session('current_eproduct_id')) {
@@ -260,9 +258,7 @@ class LwRequirement extends Component
         */
 
         if (!session('current_project_id') && !session('current_product_id')) {
-
             return redirect('/product-selector/rl');
-
         }
     }
 
@@ -281,7 +277,13 @@ class LwRequirement extends Component
     public function getProjectsList()  {
 
         if ($this->is_user_admin && $this->company_id) {
-            $this->projects = Project::where('company_id',$this->company_id)->get();
+            if (session('current_project_id')) {
+                $this->project_id = session('current_project_id');
+                $this->projects = Project::find($this->project_id)->get();
+
+            } else {
+                $this->projects = Project::where('company_id',$this->company_id)->get();
+            }
         } else {
             $this->projects = Project::where('company_id',$this->logged_user->company_id)->get();
         }
@@ -346,7 +348,7 @@ class LwRequirement extends Component
         if ($this->uid && in_array($this->action,['VIEW','FORM','VERIFICATION']) ) {
 
             $c = Requirement::find($this->uid);
-            
+
             $this->rtype = $c->rtype;
             $this->text = $c->text;
             $this->company_id = $c->company_id;
@@ -389,7 +391,7 @@ class LwRequirement extends Component
         $this->resetPage();
     }
 
-    
+
     public function storeUpdateItem () {
 
         $this->validate();
@@ -464,7 +466,7 @@ class LwRequirement extends Component
 
         if ($this->vid) {
             $verification = Verification::find($this->vid);
-        } 
+        }
 
         return [
             'verification' => $verification,
