@@ -4,8 +4,10 @@
 
         window.addEventListener('ConfirmDelete',function(e) {
 
-            let sa_title = 'Do you really want to delete this Project Phase?'
+            let sa_title = 'Do you really want to delete this '+e.detail.type+'?'
             let sa_text = 'Once deleted, there is no reverting back!'
+
+            console.log("AAAAAAAA",e.detail.type)
 
             Swal.fire({
                 title: sa_title,
@@ -18,8 +20,12 @@
                 cancelButtonText: 'Ooops ...',
 
             }).then((result) => {
+
                 if (result.isConfirmed) {
-                    Livewire.dispatch('onDeleteConfirmed')
+
+                    console.log("BBBBB",e.detail.type)
+
+                    Livewire.dispatch('onDeleteConfirmed', {type:e.detail.type})
                 } else {
                     return false
                 }

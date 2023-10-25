@@ -134,7 +134,7 @@
                     <select wire:model='witness_id'>
                         <option>Select a witness ...</option>
                             @foreach ($verification_data['ver_witnesses'] as $witness)
-                                <option value="{{ $witness->id }}">{{ $witness->code }} {{ $witness->name }}</option>
+                                <option value="{{ $witness->id }}">{{ $witness->code }}</option>
                             @endforeach
                     </select>
                     </div>

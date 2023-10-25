@@ -20,7 +20,7 @@
                     </label>
                 @endforeach
             </div>
-        
+
             @error('rtype')
             <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
             @enderror
@@ -29,7 +29,7 @@
 
         <div class="field ">
             <div class="field-body">
-    
+
 
                 @if ($is_user_admin)
                 <div class="field">
@@ -44,14 +44,14 @@
                         </select>
                         </div>
                     </div>
-                
+
                     @error('company_id')
                     <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
                     @enderror
                 </div>
                 @endif
 
-    
+
                 <div class="field">
                     <label class="label">Project</label>
                     <div class="control">
@@ -64,46 +64,41 @@
                         </select>
                         </div>
                     </div>
-                
+
                     @error('company_id')
                     <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
                     @enderror
                 </div>
-    
+
                 <div class="field">
                     <label class="label">End Product</label>
                     <div class="control">
-    
+
                         @if (count($project_eproducts) > 0)
-    
+
                         <div class="select">
-    
+
                             <select wire:model='endproduct_id'>
                                 <option>Select a End Product...</option>
                                     @foreach ($project_eproducts as $endproduct)
                                         <option value="{{ $endproduct->id }}">{{ $endproduct->title }}</option>
                                     @endforeach
                             </select>
-    
+
                         </div>
-    
+
                         @else
                             <p>No end product found</p>
                         @endif
                     </div>
-                
+
                     @error('endproduct_id')
                     <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
                     @enderror
                 </div>
-    
+
             </div>
         </div>
-    
-
-
-
-
 
 
         <div class="field ">
@@ -114,25 +109,23 @@
                     <div class="control">
                         <input class="input" type="text" wire:model='source' placeholder="Requirement Source ...">
                     </div>
-                
+
                     @error('source')
                         <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
                     @enderror
-                
+
                 </div>
-
-
 
                 <div class="field">
                     <label class="label">Cross Reference Number</label>
                     <div class="control">
                         <input class="input" type="text" wire:model='xrefno'  placeholder="Requirement Cross Reference Number ...">
                     </div>
-                
+
                     @error('xrefno')
                         <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
                     @enderror
-                
+
                 </div>
 
 
@@ -140,7 +133,6 @@
 
             </div>
         </div>
-
 
 
 
@@ -158,7 +150,6 @@
         @error('text')
             <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
         @enderror
-
 
 
         <livewire:ck-editor

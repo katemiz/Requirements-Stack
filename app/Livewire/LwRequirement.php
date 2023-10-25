@@ -346,6 +346,7 @@ class LwRequirement extends Component
 
             $this->rtype = $c->rtype;
             $this->text = $c->text;
+            $this->remarks = $c->remarks;
             $this->company_id = $c->company_id;
             $this->project_id = $c->project_id;
             $this->endproduct_id = $c->endproduct_id;
@@ -371,19 +372,30 @@ class LwRequirement extends Component
     }
 
 
-    public function triggerDelete($uid) {
+    public function triggerDelete($type, $uid) {
         $this->uid = $uid;
-        $this->dispatch('ConfirmDelete');
+        $this->dispatch('ConfirmDelete', type:$type);
     }
 
 
     #[On('onDeleteConfirmed')]
-    public function deleteItem()
+    public function deleteItem($type)
     {
-        Phase::find($this->uid)->delete();
-        session()->flash('message','Project phase has been deleted successfully.');
-        $this->action = 'LIST';
-        $this->resetPage();
+        if ($type === 'requirement') {
+            Requirement::find($this->uid)->delete();
+            session()->flash('message','Requirement has been deleted successfully.');
+
+            $this->action = 'LIST';
+            $this->resetPage();
+        }
+
+        if ($type === 'verification') {
+
+            dd('here');
+            Verification::find($this->uid)->delete();
+            session()->flash('message','Verification has been deleted successfully.');
+        }
+
     }
 
 
@@ -396,6 +408,7 @@ class LwRequirement extends Component
         $props['project_id'] = $this->project_id;
         $props['endproduct_id'] = $this->endproduct_id ? $this->endproduct_id : 0;
         $props['rtype'] = $this->rtype;
+        $props['source'] = $this->source;
         $props['cross_ref_no'] = $this->xrefno;
         $props['text'] = $this->text;
         $props['remarks'] = $this->remarks;
@@ -433,7 +446,6 @@ class LwRequirement extends Component
 
         $verification = false;
 
-
         $ver_milestones = Gate::where('company_id', $this->logged_user->company_id)
             ->where('project_id', session('current_project_id'))
             ->when(session('current_eproduct_id'), function ($query) {
@@ -459,7 +471,6 @@ class LwRequirement extends Component
                 $query->where('endproduct_id', session('current_eproduct_id'));
             })->get();
 
-
         if ($this->vid) {
             $verification = Verification::find($this->vid);
         }
@@ -471,7 +482,6 @@ class LwRequirement extends Component
             'ver_pocs' => $ver_pocs,
             'ver_witnesses' => $ver_witnesses
         ];
-
     }
 
 

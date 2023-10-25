@@ -22,10 +22,6 @@ use App\Models\Moc;
 use App\Models\Poc;
 use App\Models\Witness;
 
-
-
-
-
 class LwVerification extends Component
 {
     use WithPagination;
@@ -36,7 +32,6 @@ class LwVerification extends Component
     public $vid = false;    // Verification ID
     public $requirement = false;
     public $verification = false;
-
 
     public $logged_user;
 
@@ -55,7 +50,6 @@ class LwVerification extends Component
     public $project_eproducts = [];
 
     // Verification
-
     #[Rule('required', message: 'Please select milestone/gate')]
     public $gate_id;
 
@@ -81,8 +75,6 @@ class LwVerification extends Component
     ];
 
 
-
-
     public function mount()
     {
         $this->checkUserRoles();
@@ -93,12 +85,18 @@ class LwVerification extends Component
         }
 
         if (request('id')) {
-            $this->verification = Verification::find(request('id'));
+
+            $this->vid = request('id');
+            $this->verification = Verification::find($this->vid);
+            $this->gate_id = $this->verification->gate_id;
+            $this->moc_id = $this->verification->moc_id;
+            $this->poc_id = $this->verification->poc_id;
+            $this->witness_id = $this->verification->witness_id;
+            $this->vremarks = $this->verification->remarks;
         }
 
         $this->constants = config('verifications');
         $this->checkSessionVariables();
-
 
         $this->verification_data = $this->getVerificationData();
     }
@@ -106,8 +104,6 @@ class LwVerification extends Component
 
     public function render()
     {
-
-
         return view('requirements.verifications-form',[
             'requirement' => $this->requirement ,
             'verifications' => $this->verifications,
@@ -122,7 +118,6 @@ class LwVerification extends Component
         $this->logged_user = Auth::user();
         $this->company_id = $this->logged_user->company_id;
 
-
         if ($this->logged_user->hasRole('admin')) {
             $this->is_user_admin = true;
         }
@@ -131,7 +126,6 @@ class LwVerification extends Component
             $this->is_user_company_admin = true;
         }
     }
-
 
 
     public function checkSessionVariables() {
@@ -145,10 +139,6 @@ class LwVerification extends Component
             $this->endproduct_id = session('current_eproduct_id');
         }
     }
-
-
-
-
 
 
     public function viewItem($uid) {
@@ -169,9 +159,6 @@ class LwVerification extends Component
 
         $this->reset('code','name');
     }
-
-
-
 
 
     public function triggerDelete($uid) {
@@ -207,7 +194,7 @@ class LwVerification extends Component
 
         if ( $this->vid ) {
             // update
-            Verification::find($this->uid)->update($props);
+            Verification::find($this->vid)->update($props);
             session()->flash('message','Requirement verification has been updated successfully.');
 
         } else {
