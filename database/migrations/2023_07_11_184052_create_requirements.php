@@ -23,6 +23,8 @@ return new class extends Migration
             $table->foreignIdFor(Company::class);
             $table->foreignIdFor(Project::class);
             $table->foreignIdFor(Endproduct::class)->nullable();
+            $table->integer('requirement_no');
+            $table->integer('revision')->default(1);
             $table->string('cross_ref_no')->nullable();
             $table->string('rtype');
             $table->string('source')->nullable();

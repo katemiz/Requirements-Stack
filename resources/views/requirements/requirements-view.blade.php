@@ -36,36 +36,80 @@
             <!-- Right side -->
             <div class="level-right">
 
-                <p class="level-item">
-                    <a href='/requirements/form/{{ $uid }}'>
-                        <span class="icon"><x-carbon-edit /></span>
-                    </a>
-                </p>
+                @role(['admin','company_admin','requirement_engineer'])
 
-                <p class="level-item">
-                    <a wire:click="triggerDelete('requirement',{{ $uid }})">
-                        <span class="icon has-text-danger"><x-carbon-trash-can /></span>
-                    </a>
-                </p>
+                @if ($status == 'Frozen')
+
+                    <p class="level-item">
+                        <a wire:click='reviseConfirm({{ $uid }})'>
+                            <span class="icon"><x-carbon-version /></span>
+                            <span>Revise</span>
+                        </a>
+                    </p>
+
+                @else
+                    
+                    <p class="level-item">
+                        <a href='/requirements/form/{{ $uid }}'>
+                            <span class="icon"><x-carbon-edit /></span>
+                        </a>
+                    </p>
+
+                    <p class="level-item">
+                        <a wire:click='freezeConfirm({{ $uid }})'>
+                            <span class="icon"><x-carbon-stamp /></span>
+                        </a>
+                    </p>
+
+                    <p class="level-item">
+                        <a wire:click="triggerDelete('requirement',{{ $uid }})">
+                            <span class="icon has-text-danger"><x-carbon-trash-can /></span>
+                        </a>
+                    </p>
+                @endif
+
+
+                @endrole
 
             </div>
         </nav>
 
         <div class="column">
-            <div class="columns is-vcentered">
+            <div class="columns">
 
                 <div class="column is-8">
-                    <p class="title has-text-weight-light is-size-2">{{$rtype}}-{{$uid}} </p>
-                    <p class="subtitle has-text-weight-light is-size-6">Cross Requirement No {{$xrefno}}</p>
+                    <p class="title has-text-weight-light is-size-2">{{$rtype}}-{{$requirement_no}} R{{$revision}}</p>
+                    <p class="subtitle has-text-weight-light is-size-6"><strong>Status</strong> {{$status}}</p>
                 </div>
 
                 <div class="column has-text-right is-4">
-                    <p class="subtitle has-text-weight-light is-size-6">{{ $rtypes[$rtype] }}</p>
-                    <p class="subtitle has-text-weight-light is-size-6">{{ $source }}</p>
+
+
+                    <table class="table is-fullwidth">
+                        <tr>
+                            <th>Requirement Type</th>
+                            <td>{{$rtypes[$rtype]}}</td>
+                        </tr>
+                        <tr>
+                            <th>Requirement Source</th>
+                            <td>{{$source}}</td>
+                        </tr>
+                        <tr>
+                            <th>Cross Ref No</th>
+                            <td>{{$xrefno}}</td>
+                        </tr>
+                    </table>
                 </div>
 
             </div>
         </div>
+
+
+
+
+
+
+
 
         <div class="column">
             <div class="columns is-vcentered">
@@ -78,9 +122,7 @@
               <div class="column is-half has-text-right">
                 <p class="has-text-weight-light is-size-6">End Product</p>
 
-                @if ($endproduct_id > 0)
-                    <span class="tag is-success">{{ $the_endproduct->code }}</span>
-                @endif
+                <span class="tag is-success">{{ $endproduct_id > 0 ? $the_endproduct->code : '----' }}</span>
 
               </div>
 

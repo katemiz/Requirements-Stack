@@ -26,6 +26,8 @@ class Requirement extends Model
         'company_id',
         'project_id',
         'endproduct_id',
+        'requirement_no',
+        'revision',
         'cross_ref_no',
         'text',
         'rtype',

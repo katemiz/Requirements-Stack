@@ -5,12 +5,23 @@
         window.addEventListener('ConfirmDelete',function(e) {
 
             let sa_title = 'Do you really want to delete this '+e.detail.type+'?'
+            let sa_text = 'Once deleted, there is no reverting back!'
+
+            let confirmText = 'Delete'
+            let cancelText ='Oops ...'
 
             if (e.detail.type === 'requirement') {
                 sa_title = 'Do you really want to delete this requirement and its linked verifications?'
             }
 
-            let sa_text = 'Once deleted, there is no reverting back!'
+            if (e.detail.type === 'freeze') {
+                sa_title = 'Requirement will be frozen!'
+                sa_text = 'Once frozen, no editing is possible.'
+
+                confirmText = 'Freeze'
+                cancelText ='Cancel'
+            }
+
 
             Swal.fire({
                 title: sa_title,
@@ -19,12 +30,18 @@
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Delete',
-                cancelButtonText: 'Ooops ...',
+                confirmButtonText: confirmText,
+                cancelButtonText: cancelText,
 
             }).then((result) => {
                 if (result.isConfirmed) {
-                    Livewire.dispatch('onDeleteConfirmed', {type:e.detail.type})
+
+                    if (e.detail.type === 'freeze') {
+                        Livewire.dispatch('onFreezeConfirmed')
+                    } else {
+                        Livewire.dispatch('onDeleteConfirmed', {type:e.detail.type})
+                    }
+
                 } else {
                     return false
                 }

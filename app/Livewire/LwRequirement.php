@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 use App\Models\Company;
+use App\Models\Counter;
 use App\Models\Endproduct;
 use App\Models\Requirement;
 use App\Models\Project;
@@ -56,6 +57,9 @@ class LwRequirement extends Component
 
     public $project_eproducts = [];
 
+    public $requirement_no;
+    public $revision;
+
     #[Rule('required|numeric', message: 'Please select company')]
     public $company_id = false;
 
@@ -77,6 +81,8 @@ class LwRequirement extends Component
     public $updated_by;
     public $created_at;
     public $updated_at;
+
+    public $status;
 
     public $rtypes = [
         'GR' => 'General Requirement',
@@ -344,6 +350,8 @@ class LwRequirement extends Component
 
             $c = Requirement::find($this->uid);
 
+            $this->requirement_no = $c->requirement_no;
+            $this->revision = $c->revision;
             $this->rtype = $c->rtype;
             $this->text = $c->text;
             $this->remarks = $c->remarks;
@@ -352,6 +360,7 @@ class LwRequirement extends Component
             $this->endproduct_id = $c->endproduct_id;
             $this->xrefno = $c->cross_ref_no;
             $this->source = $c->source;
+            $this->status = $c->status;
             $this->created_at = $c->created_at;
             $this->updated_at = $c->updated_at;
             $this->created_by = User::find($c->user_id)->fullname;
@@ -386,6 +395,8 @@ class LwRequirement extends Component
     }
 
 
+    
+
 
 
     #[On('onDeleteConfirmed')]
@@ -415,6 +426,7 @@ class LwRequirement extends Component
 
         $this->validate();
 
+        $props['requirement_no'] = $this->getRequirementNo();
         $props['updated_uid'] = Auth::id();
         $props['company_id'] = $this->company_id;
         $props['project_id'] = $this->project_id;
@@ -498,6 +510,38 @@ class LwRequirement extends Component
 
 
 
+    public function getRequirementNo() {
+
+        $initial_no = 1000;
+        $counter = Counter::find(1);
+
+        if ($counter == null) {
+
+            Counter::create([
+                'id' => 1,
+                'requirement_no' => $initial_no]
+            );
+
+            return $initial_no;
+        }
+
+        $new_no = $counter->requirement_no+1;
+        $counter->update(['requirement_no' => $new_no]);         // Update Counter
+        return $new_no;
+    }
+
+
+    public function freezeConfirm($uid) {
+        $this->uid = $uid;
+        $this->dispatch('ConfirmDelete', type:'freeze');
+    }
+
+    #[On('onFreezeConfirmed')]
+    public function doFreeze() {
+
+        $this->action = 'VIEW';
+        Requirement::find($this->uid)->update(['status' =>'Frozen']);
+    }
 
 
 
