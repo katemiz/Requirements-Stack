@@ -373,9 +373,19 @@ class LwRequirement extends Component
 
 
     public function triggerDelete($type, $uid) {
-        $this->uid = $uid;
+
+        if ($type === 'requirement') {
+            $this->uid = $uid;
+        }
+
+        if ($type === 'verification') {
+            $this->vid = $uid;
+        }
+
         $this->dispatch('ConfirmDelete', type:$type);
     }
+
+
 
 
     #[On('onDeleteConfirmed')]
@@ -383,20 +393,22 @@ class LwRequirement extends Component
     {
         if ($type === 'requirement') {
             Requirement::find($this->uid)->delete();
-            session()->flash('message','Requirement has been deleted successfully.');
+            Verification::where('requirement_id',$this->uid)->delete();
+            session()->flash('message','Requirement and linked verifications have been deleted successfully.');
 
             $this->action = 'LIST';
             $this->resetPage();
         }
 
         if ($type === 'verification') {
-
-            dd('here');
-            Verification::find($this->uid)->delete();
+            Verification::find($this->vid)->delete();
             session()->flash('message','Verification has been deleted successfully.');
         }
-
     }
+
+
+
+
 
 
     public function storeUpdateItem () {

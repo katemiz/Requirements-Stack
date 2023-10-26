@@ -117,9 +117,9 @@
                             <span class="icon"><x-carbon-edit /></span>
                         </a>
 
-                        <a wire:click.prevent="triggerDelete({{$record->id}})">
+                        {{-- <a wire:click.prevent="triggerDelete({{$record->id}})">
                             <span class="icon has-text-danger-dark"><x-carbon-trash-can /></span>
-                        </a>
+                        </a> --}}
                     @endrole
 
                 </td>

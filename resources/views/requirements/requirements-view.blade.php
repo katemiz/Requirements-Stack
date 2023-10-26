@@ -161,6 +161,8 @@
                           <span class="icon has-text-link"><x-carbon-pen /></span>
                         </a>
                         <a wire:click="triggerDelete('verification',{{ $verification->id }})">
+
+                        {{-- <a wire:click="triggerDelete('verification',{{ $verification->id }})"> --}}
                           <span class="icon has-text-danger"><x-carbon-trash-can /></span>
                         </a>
                       </td>
