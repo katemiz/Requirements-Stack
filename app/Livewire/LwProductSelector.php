@@ -43,12 +43,14 @@ class LwProductSelector extends Component
         } else {
             $this->redirect_to = url()->previous();
         }
+
+        $this->checkUserRoles();
+
     }
 
 
     public function render()
     {
-        $this->checkUserRoles();
 
         $this->getProducts();
 
@@ -64,7 +66,7 @@ class LwProductSelector extends Component
             case 'rl':
                 $this->redirect_to = '/requirements/list';
                 break;
-            
+
             default:
                 $this->redirect_to = '/';
                 break;
@@ -75,6 +77,7 @@ class LwProductSelector extends Component
     public function checkUserRoles() {
 
         $this->logged_user = Auth::user();
+        $this->company_id = $this->logged_user->company_id;
 
         if ($this->logged_user->hasRole('admin')) {
             $this->is_user_admin = true;
@@ -120,7 +123,7 @@ class LwProductSelector extends Component
         }
 
         $this->reset('products');
-        
+
         foreach ($projects as $prj) {
             $this->products[$prj->id]['project'] = $prj->toArray();
             $this->products[$prj->id]['ep'] = Endproduct::where('project_id',$prj->id)->get();

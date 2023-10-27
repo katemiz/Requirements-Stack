@@ -48,7 +48,7 @@
                     </p>
 
                 @else
-                    
+
                     <p class="level-item">
                         <a href='/requirements/form/{{ $uid }}'>
                             <span class="icon"><x-carbon-edit /></span>
@@ -143,8 +143,10 @@
         </div>
         @endif --}}
 
+
         @if (strlen(trim($remarks)) > 0)
-        <div class="column">
+        <div class="column has-text-grey">
+            <strong>Remarks/Notes</strong>
             {!! $remarks !!}
         </div>
         @endif

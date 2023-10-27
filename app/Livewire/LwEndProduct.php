@@ -39,16 +39,16 @@ class LwEndProduct extends Component
     public $the_company = false;    // Viewed Phase Company
     public $the_project = false;    // Viewed Phase Project
 
-    #[Rule('required', message: 'Please select company')] 
+    #[Rule('required', message: 'Please select company')]
     public $company_id = false;
 
-    #[Rule('required', message: 'Please select project')] 
+    #[Rule('required', message: 'Please select project')]
     public $project_id = false;
 
-    #[Rule('required', message: 'Please enter End Product code. (eg PVR)')] 
+    #[Rule('required', message: 'Please enter End Product code. (eg PVR)')]
     public $code;
 
-    #[Rule('required', message: 'Please enter End Product title (eg Forward Section)')] 
+    #[Rule('required', message: 'Please enter End Product title (eg Forward Section)')]
     public $title;
 
     public $description;
@@ -76,6 +76,8 @@ class LwEndProduct extends Component
     public function render()
     {
         $this->checkUserRoles();
+        $this->checkSessionVariables();
+
         $this->setProps();
 
         return view('projects.eproducts.lw-eproducts',[
@@ -89,6 +91,8 @@ class LwEndProduct extends Component
     public function checkUserRoles() {
 
         $this->logged_user = Auth::user();
+        $this->company_id = $this->logged_user->company_id;
+
 
         if ($this->logged_user->hasRole('admin')) {
             $this->is_user_admin = true;
@@ -99,6 +103,18 @@ class LwEndProduct extends Component
         }
     }
 
+
+    public function checkSessionVariables() {
+
+        if (session('current_project_id')) {
+            $this->project_id = session('current_project_id');
+            $this->company_id = Project::find($this->project_id)->company_id;
+        }
+
+        if (session('current_eproduct_id')) {
+            $this->endproduct_id = session('current_eproduct_id');
+        }
+    }
 
 
     public function getEProductsList()  {
@@ -112,9 +128,9 @@ class LwEndProduct extends Component
                     $eproducts = Endproduct::where('project_id', session('current_project_id'))
                     ->orderBy($this->sortField,$this->sortDirection)
                     ->paginate(env('RESULTS_PER_PAGE'));
-    
+
                 } else {
-    
+
                     $eproducts = Endproduct::where('project_id', session('current_project_id'))
                     ->where('code', 'LIKE', "%".$this->query."%")
                     ->orWhere('title','LIKE',"%".$this->query."%")
@@ -128,14 +144,14 @@ class LwEndProduct extends Component
 
                     $eproducts = Endproduct::orderBy($this->sortField,$this->sortDirection)
                     ->paginate(env('RESULTS_PER_PAGE'));
-    
+
                 } else {
-    
+
                     $eproducts = Endproduct::where('code', 'LIKE', "%".$this->query."%")
                     ->orWhere('title','LIKE',"%".$this->query."%")
                     ->orderBy($this->sortField,$this->sortDirection)
                     ->paginate(env('RESULTS_PER_PAGE'));
-                }                
+                }
             }
         }
 
@@ -153,9 +169,9 @@ class LwEndProduct extends Component
                     })
                     ->orderBy($this->sortField,$this->sortDirection)
                     ->paginate(env('RESULTS_PER_PAGE'));
-    
+
                 } else {
-    
+
                     $eproducts = Endproduct::where('project_id', session('current_project_id'))
                     ->where('company_id', $this->logged_user->company_id)
                     ->orderBy($this->sortField,$this->sortDirection)
@@ -173,9 +189,9 @@ class LwEndProduct extends Component
                     })
                     ->orderBy($this->sortField,$this->sortDirection)
                     ->paginate(env('RESULTS_PER_PAGE'));
-    
+
                 } else {
-    
+
                     $eproducts = Endproduct::where('company_id', $this->logged_user->company_id)
                     ->orderBy($this->sortField,$this->sortDirection)
                     ->paginate(env('RESULTS_PER_PAGE'));
@@ -300,7 +316,7 @@ class LwEndProduct extends Component
         $this->resetPage();
     }
 
-    
+
     public function storeUpdateItem () {
 
         $this->validate();

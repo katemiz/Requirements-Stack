@@ -69,12 +69,6 @@ class LwVerification extends Component
     public $created_at;
     public $updated_at;
 
-    public $rtypes = [
-        'GR' => 'General Requirement',
-        'TR' => 'Technical Requirement'
-    ];
-
-
     public function mount()
     {
         $this->checkUserRoles();

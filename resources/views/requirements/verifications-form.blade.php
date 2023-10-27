@@ -13,13 +13,12 @@
             <div class="media">
             <div class="media-content">
                 <p class="title is-4">
-                <span>{{ $requirement->rtype }}-{{ $requirement->id }}</span>
+                <span>{{ $requirement->rtype }}-{{ $requirement->requirement_no }} R{{ $requirement->revision }}</span>
                 </p>
                 <p class="subtitle is-6">@ {{ $requirement->created_at }}</p>
             </div>
 
             <div class="media-content">
-
                 <h4 class="subtitle has-text-weight-normal my-0">Project</h4>
                 <span class="tag is-black">{{ $requirement->getProjectNameAttribute() }}</span>
             </div>
