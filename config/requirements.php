@@ -2,13 +2,6 @@
 
 return [
 
-    "roles" => [
-        "r" => [],
-        "w" => ['requirement_engineer'],
-        "x" => ['requirement_engineer'],
-    ],
-
-
     "list" => [
 
         "title" => "Requirements",
@@ -22,8 +15,22 @@ return [
 
         "headers" => [
 
-            "id"=> [
-                "title" => "#",
+            "rtype"=> [
+                "title" => "Type",
+                "sortable" => true,
+                "align" => "left",
+                "direction" => "asc"
+            ],
+
+            "requirement_no"=> [
+                "title" => "No",
+                "sortable" => true,
+                "align" => "left",
+                "direction" => "asc"
+            ],
+
+            "revision"=> [
+                "title" => "Rev",
                 "sortable" => true,
                 "align" => "left",
                 "direction" => "asc"
@@ -36,12 +43,7 @@ return [
                 "direction" => "asc"
             ],
 
-            "rtype"=> [
-                "title" => "Type",
-                "sortable" => true,
-                "align" => "left",
-                "direction" => "asc"
-            ],
+
             "text"=> [
                 "title" => "Requirement Text",
                 "sortable" => true,

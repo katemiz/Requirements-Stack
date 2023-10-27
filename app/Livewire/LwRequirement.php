@@ -545,5 +545,32 @@ class LwRequirement extends Component
 
 
 
+    public function reviseConfirm($uid) {
+        $this->uid = $uid;
+        $this->dispatch('ConfirmDelete', type:'revise');
+    }
+
+    #[On('onReviseConfirmed')]
+    public function doRevise() {
+
+        $original_requirement = Requirement::find($this->uid);
+
+        $revised_requirement = $original_requirement->replicate();
+        $revised_requirement->status = 'Verbatim';
+        $revised_requirement->revision = $original_requirement->revision+1;
+        $revised_requirement->save();
+
+        foreach ($original_requirement->verificaions as $verification) {
+            $rev_verification = $verification->replicate();
+            $rev_verification->requirement_id = $revised_requirement->id;
+            $rev_verification->save();
+        }
+
+        $this->uid = $revised_requirement->id;
+        $this->action = 'VIEW';
+    }
+
+
+
 
 }

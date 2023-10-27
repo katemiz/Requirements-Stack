@@ -4,24 +4,57 @@
 
         window.addEventListener('ConfirmDelete',function(e) {
 
-            let sa_title = 'Do you really want to delete this '+e.detail.type+'?'
-            let sa_text = 'Once deleted, there is no reverting back!'
+            let sa_title, sa_text, confirmText, cancelText
+            let dispatchRoute, dispatchData
 
-            let confirmText = 'Delete'
-            let cancelText ='Oops ...'
+            switch (e.detail.type) {
 
-            if (e.detail.type === 'requirement') {
-                sa_title = 'Do you really want to delete this requirement and its linked verifications?'
+                case 'requirement':
+
+                    sa_title = 'Do you really want to delete this requirement and its linked verifications?'
+                    sa_text = 'Once deleted, there is no reverting back!'
+                    confirmText = 'Delete'
+                    cancelText ='Oops ...'
+
+                    dispatchRoute = 'onDeleteConfirmed'
+                    dispatchData = {type:e.detail.type}
+                    break;
+
+                case 'verification':
+
+                    sa_title = 'Do you really want to delete this verification?'
+                    sa_text = 'Once deleted, there is no reverting back!'
+                    confirmText = 'Delete'
+                    cancelText ='Oops ...'
+
+                    dispatchRoute = 'onDeleteConfirmed'
+                    dispatchData = {type:e.detail.type}
+                    break;
+
+                case 'freeze':
+
+                    sa_title = 'Requirement will be frozen!'
+                    sa_text = 'Once frozen, no editing is possible.'
+                    confirmText = 'Freeze'
+                    cancelText ='Cancel'
+
+                    dispatchRoute = 'onFreezeConfirmed'
+                    dispatchData = {}
+
+                    break;
+
+
+                case 'revise':
+
+                    sa_title = 'Do you want revise this requirement?'
+                    sa_text = 'New revision will be editable.'
+                    confirmText = 'Revise'
+                    cancelText ='Cancel'
+
+                    dispatchRoute = 'onReviseConfirmed'
+                    dispatchData = {}
+                    break;
             }
-
-            if (e.detail.type === 'freeze') {
-                sa_title = 'Requirement will be frozen!'
-                sa_text = 'Once frozen, no editing is possible.'
-
-                confirmText = 'Freeze'
-                cancelText ='Cancel'
-            }
-
 
             Swal.fire({
                 title: sa_title,
@@ -35,13 +68,7 @@
 
             }).then((result) => {
                 if (result.isConfirmed) {
-
-                    if (e.detail.type === 'freeze') {
-                        Livewire.dispatch('onFreezeConfirmed')
-                    } else {
-                        Livewire.dispatch('onDeleteConfirmed', {type:e.detail.type})
-                    }
-
+                    Livewire.dispatch(dispatchRoute, dispatchData)
                 } else {
                     return false
                 }

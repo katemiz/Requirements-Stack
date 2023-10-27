@@ -62,7 +62,7 @@ class DatabaseSeeder extends Seeder
             "lastname" =>'Temiz',
             "company_id" => 1,
             "email" => 'katemiz@gmail.com',
-            "password" => '.?Nlife669'
+            "password" => 'password'
         ]);
 
         $company_admin1 = User::create([
@@ -70,7 +70,7 @@ class DatabaseSeeder extends Seeder
             "lastname" =>'Temiz',
             "company_id" => 3,
             "email" => 'katemiz@masttech.com',
-            "password" => '.?Nlife669'
+            "password" => 'password'
         ]);
 
         $company_admin2 = User::create([

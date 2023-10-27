@@ -75,7 +75,6 @@ class LwVerification extends Component
 
         if (request('rid')) {
             $this->requirement = Requirement::find(request('rid'));
-            $this->verifications = $this->requirement->verifications;
         }
 
         if (request('id')) {
@@ -100,7 +99,6 @@ class LwVerification extends Component
     {
         return view('requirements.verifications-form',[
             'requirement' => $this->requirement ,
-            'verifications' => $this->verifications,
             'verification' => $this->verification,
             'verification_data' => $this->verification_data
         ]);
