@@ -61,7 +61,6 @@ class LwGate extends Component
     #[Rule('required', message: 'Please enter phase name (eg Feasibility Phase)')] 
     public $name;
 
-    public $description;
     public $purpose;
     public $timing;
 
@@ -131,7 +130,6 @@ class LwGate extends Component
                     $phases = Gate::where('project_id', session('current_project_id'))
                     ->where('code', 'LIKE', "%".$this->query."%")
                     ->orWhere('name','LIKE',"%".$this->query."%")
-                    ->orWhere('description','LIKE',"%".$this->query."%")
                     ->orWhere('purpose','LIKE',"%".$this->query."%")
                     ->orWhere('timing','LIKE',"%".$this->query."%")
                     ->orderBy($this->sortField,$this->sortDirection)
@@ -149,7 +147,6 @@ class LwGate extends Component
     
                     $phases = Gate::where('code', 'LIKE', "%".$this->query."%")
                     ->orWhere('name','LIKE',"%".$this->query."%")
-                    ->orWhere('description','LIKE',"%".$this->query."%")
                     ->orWhere('purpose','LIKE',"%".$this->query."%")
                     ->orWhere('timing','LIKE',"%".$this->query."%")
                     ->orderBy($this->sortField,$this->sortDirection)
@@ -169,7 +166,6 @@ class LwGate extends Component
                     ->where(function ($sqlquery) {
                         $sqlquery->where('code', 'LIKE', "%".$this->query."%")
                               ->orWhere('name', 'LIKE', "%".$this->query."%")
-                              ->orWhere('description', 'LIKE', "%".$this->query."%")
                               ->orWhere('purpose', 'LIKE', "%".$this->query."%")
                               ->orWhere('timing', 'LIKE', "%".$this->query."%");
                     })
@@ -192,7 +188,6 @@ class LwGate extends Component
                     ->where(function ($sqlquery) {
                         $sqlquery->where('code', 'LIKE', "%".$this->query."%")
                               ->orWhere('name', 'LIKE', "%".$this->query."%")
-                              ->orWhere('description', 'LIKE', "%".$this->query."%")
                               ->orWhere('purpose', 'LIKE', "%".$this->query."%")
                               ->orWhere('timing', 'LIKE', "%".$this->query."%");
                     })
@@ -300,7 +295,6 @@ class LwGate extends Component
 
             $this->code = $c->code;
             $this->name = $c->name;
-            $this->description = $c->description;
             $this->purpose = $c->purpose;
             $this->timing = $c->timing;
             $this->company_id = $c->company_id;
@@ -347,7 +341,6 @@ class LwGate extends Component
         $props['endproduct_id'] = $this->endproduct_id ? $this->endproduct_id : 0;
         $props['code'] = $this->code;
         $props['name'] = $this->name;
-        $props['description'] = $this->description;
         $props['purpose'] = $this->purpose;
         $props['timing'] = $this->timing;
 

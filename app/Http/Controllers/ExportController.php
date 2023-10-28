@@ -57,7 +57,7 @@ class ExportController extends Controller
 
         $allvers = Verification::all();
         $pocs = Poc::all();
-        $dgates = Gate::all();
+        $dgates = Gate::orderBy('code')->get();
 
         $pocsDizin = [];
 

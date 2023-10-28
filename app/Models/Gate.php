@@ -10,7 +10,7 @@ class Gate extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id','updated_uid','company_id','project_id','endproduct_id','code','name','description','purpose','timing'];
+    protected $fillable = ['user_id','updated_uid','company_id','project_id','endproduct_id','code','name','purpose','timing'];
 
     public function verification(): BelongsTo
     {

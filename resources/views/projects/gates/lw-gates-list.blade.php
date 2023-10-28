@@ -51,37 +51,6 @@
 
     </nav>
 
-
-    <pre>
-    @foreach ($gates as $record)
-
-
-    Gate::create([
-        'updated_uid' => 1,
-        'user_id' => 1,
-        'company_id' => 1,
-        'project_id' => 1,
-        'endproduct_id' => 0,
-        'code' => '{{$record->code}}',
-        'name' => '{{$record->name}}',
-        'purpose' => '{{$record->purpose}}',
-        'timing' => '{{$record->timing}}'
-    ]);
-
-    @endforeach
-    </pre>
-
-
-
-
-
-
-
-
-
-
-
-
     @if ($gates->count() > 0)
     <table class="table is-fullwidth">
 

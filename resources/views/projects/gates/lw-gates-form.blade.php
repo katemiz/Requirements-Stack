@@ -114,19 +114,6 @@
         @enderror
     </div>
 
-
-    <livewire:ck-editor
-        edId="ed10"
-        wire:model="description"
-        label='Description'
-        placeholder='Detailed description ....'
-        :content="$description"/>
-
-    @error('description')
-        <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
-    @enderror
-
-
     <livewire:ck-editor
         edId="ed20"
         wire:model="purpose"

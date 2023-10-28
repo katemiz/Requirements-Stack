@@ -91,12 +91,13 @@ class LwVerification extends Component
         $this->constants = config('verifications');
         $this->checkSessionVariables();
 
-        $this->verification_data = $this->getVerificationData();
     }
 
 
     public function render()
     {
+        $this->verification_data = $this->getVerificationData();
+
         return view('requirements.verifications-form',[
             'requirement' => $this->requirement ,
             'verification' => $this->verification,

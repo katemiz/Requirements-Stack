@@ -78,7 +78,19 @@
             <div class="columns">
 
                 <div class="column is-8">
-                    <p class="title has-text-weight-light is-size-2">{{$rtype}}-{{$requirement_no}} R{{$revision}}</p>
+                    <p class="title has-text-weight-light is-size-2">{{$rtype}}-{{$requirement_no}} R{{$revision}}
+                    
+                        @if (count($all_revs) > 1)
+                            @foreach ($all_revs as $key => $revId)
+
+                                @if ($key != $revision)
+                                <a class="ml-6" href="/requirements/view/{{$revId}}">R{{$key}}</a>
+                                @endif
+                                
+                            @endforeach
+                        @endif
+                    
+                    </p>
                     <p class="subtitle has-text-weight-light is-size-6"><strong>Status</strong> {{$status}}</p>
                 </div>
 
@@ -122,7 +134,7 @@
               <div class="column is-half has-text-right">
                 <p class="has-text-weight-light is-size-6">End Product</p>
 
-                <span class="tag is-success">{{ $endproduct_id > 0 ? $the_endproduct->code : '----' }}</span>
+                <span class="tag is-dark">{{ $endproduct_id > 0 ? $the_endproduct->code : '----' }}</span>
 
               </div>
 
@@ -161,6 +173,7 @@
                 </div>
 
                 <div class="column has-text-right is-2">
+                    @if ($status != 'Frozen')
                     @role(['admin','company_admin','requirement_engineer'])
                     <a href="/verifications/{{$uid}}/form" class="button is-link is-small">
                         <span class="icon is-small">
@@ -169,6 +182,7 @@
                         <span>Add</span>
                     </a>
                     @endrole
+                    @endif
                 </div>
 
             </div>
@@ -187,9 +201,11 @@
                       <th>Proof of Compliance</th>
                       <th>Witness</th>
                       <th>Remarks</th>
-                      @role(['admin','company_admin','requirement_engineer'])
-                      <th>Actions</th>
-                      @endrole
+                      @if ($status != 'Frozen')
+                        @role(['admin','company_admin','requirement_engineer'])
+                        <th>Actions</th>
+                        @endrole
+                      @endif
                   </tr>
 
                   @foreach ($verifications as $verification)
@@ -199,6 +215,7 @@
                       <td><abbr title="{{ $verification->poc->name }}">{{ $verification->poc->code }}</abbr></td>
                       <td>{{ $verification->witness->code }}</td>
                       <td class="is-size-7">{!! $verification->remarks !!}</td>
+                      @if ($status != 'Frozen')
                       @role(['admin','company_admin','requirement_engineer'])
                       <td>
                         <a href="/verifications/{{ $uid}}/form/{{ $verification->id}}">
@@ -211,6 +228,8 @@
                         </a>
                       </td>
                       @endrole
+                      @endif
+
                     </tr>
                   @endforeach
 

@@ -1,12 +1,26 @@
 <section class="section container">
 
-    <header class="mb-6">
-        <h1 class="title has-text-weight-light is-size-1">{{ $constants['list']['title'] }}</h1>
+    <div class="columns">
 
-        @if ( $constants['list']['subtitle'] )
-            <h2 class="subtitle has-text-weight-light">{{ $constants['list']['subtitle'] }}</h2>
-        @endif
-    </header>
+        <div class="column is-8">
+
+            <header class="mb-6">
+                <h1 class="title has-text-weight-light is-size-1">{{ $constants['list']['title'] }}</h1>
+        
+                @if ( $constants['list']['subtitle'] )
+                    <h2 class="subtitle has-text-weight-light">{{ $constants['list']['subtitle'] }}</h2>
+                @endif
+            </header>
+
+        </div>
+
+        <div class="column has-text-right">
+            <input type="checkbox" wire:model="show_latest" wire:click="$toggle('show_latest')"> Show only latest revisions
+        </div>
+
+    </div>
+
+
 
     @if(session('message'))
         <div class="notification is-info is-light">{{ session('message') }}</div>

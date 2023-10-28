@@ -34,6 +34,8 @@ class LwRequirement extends Component
     public $action = 'LIST'; // LIST,FORM,VIEW,VERIFICATION
     public $constants;
 
+    public $show_latest = true; /// Show only latest revisions
+
     public $uid = false;
     public $vid = false;    // Verification ID
 
@@ -56,6 +58,8 @@ class LwRequirement extends Component
     public $the_endproduct = false; // Viewed Phase EndProduct
 
     public $project_eproducts = [];
+
+    public $all_revs = [];
 
     public $requirement_no;
     public $revision;
@@ -168,6 +172,9 @@ class LwRequirement extends Component
                         ->when(session('current_eproduct_id'), function ($query) {
                             $query->where('endproduct_id', session('current_eproduct_id'));
                         })
+                        ->when($this->show_latest, function ($query) {
+                            $query->where('is_latest', true);
+                        })
                         ->orderBy($this->sortField,$this->sortDirection)
                         ->paginate(env('RESULTS_PER_PAGE'));
 
@@ -177,6 +184,9 @@ class LwRequirement extends Component
                     $requirements = Requirement::where('project_id', session('current_project_id'))
                         ->when(session('current_eproduct_id'), function ($query) {
                             $query->where('endproduct_id', session('current_eproduct_id'));
+                        })
+                        ->when($this->show_latest, function ($query) {
+                            $query->where('is_latest', true);
                         })
                         ->where(function ($sqlquery) {
                             $sqlquery->where('text', 'LIKE', "%".$this->query."%")
@@ -191,7 +201,10 @@ class LwRequirement extends Component
                 if (strlen(trim($this->query)) < 2 ) {
 
                     // ADMIN/NO PROJECT/NO QUERY
-                    $requirements = Requirement::orderBy($this->sortField,$this->sortDirection)
+                    $requirements = Requirement::when($this->show_latest, function ($query) {
+                        $query->where('is_latest', true);
+                    })
+                    ->orderBy($this->sortField,$this->sortDirection)
                         ->paginate(env('RESULTS_PER_PAGE'));
 
                 } else {
@@ -200,6 +213,9 @@ class LwRequirement extends Component
                     $requirements = Requirement::where('project_id', session('current_project_id'))
                         ->when(session('current_eproduct_id'), function ($query) {
                             $query->where('endproduct_id', session('current_eproduct_id'));
+                        })
+                        ->when($this->show_latest, function ($query) {
+                            $query->where('is_latest', true);
                         })
                         ->where(function ($sqlquery) {
                             $sqlquery->where('text', 'LIKE', "%".$this->query."%")
@@ -221,6 +237,9 @@ class LwRequirement extends Component
                     ->when(session('current_eproduct_id'), function ($query) {
                         $query->where('endproduct_id', session('current_eproduct_id'));
                     })
+                    ->when($this->show_latest, function ($query) {
+                        $query->where('is_latest', true);
+                    })
                     ->orderBy($this->sortField,$this->sortDirection)
                     ->paginate(env('RESULTS_PER_PAGE'));
 
@@ -233,6 +252,9 @@ class LwRequirement extends Component
                 })
                 ->when(session('current_eproduct_id'), function ($query) {
                     $query->where('endproduct_id', session('current_project_id'));
+                })
+                ->when($this->show_latest, function ($query) {
+                    $query->where('is_latest', true);
                 })
                 ->where(function ($sqlquery) {
                     $sqlquery->where('text', 'LIKE', "%".$this->query."%")
@@ -372,6 +394,14 @@ class LwRequirement extends Component
             if ($c->endproduct_id > 0) {
                 $this->the_endproduct = Endproduct::find($c->endproduct_id);
             }
+
+            // Revisions
+            foreach (Requirement::where('requirement_no',$this->requirement_no)->get() as $req) {
+                $this->all_revs[$req->revision] = $req->id;
+            }
+
+
+
 
             return $c->verifications;
         }
@@ -560,11 +590,13 @@ class LwRequirement extends Component
         $revised_requirement->revision = $original_requirement->revision+1;
         $revised_requirement->save();
 
-        foreach ($original_requirement->verificaions as $verification) {
+        foreach ($original_requirement->verifications as $verification) {
             $rev_verification = $verification->replicate();
             $rev_verification->requirement_id = $revised_requirement->id;
             $rev_verification->save();
         }
+
+        $original_requirement->update(['is_latest',false]);
 
         $this->uid = $revised_requirement->id;
         $this->action = 'VIEW';

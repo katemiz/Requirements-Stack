@@ -237,11 +237,10 @@ class LwProject extends Component
         foreach ($definitions['milestones'] as $milestone) {
             $props['code'] = $milestone->code;
             $props['name'] = $milestone->name;
-            $props['description'] = $milestone->description;
+            $props['purpose'] = $milestone->purpose;
+            $props['timing'] = $milestone->timing;
             Gate::create($props);
         }
-
-
 
         // MOC
         foreach ($definitions['mocs'] as $moc) {

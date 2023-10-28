@@ -26,7 +26,6 @@ return new class extends Migration
             $table->foreignIdFor(Endproduct::class);
             $table->string('code');
             $table->string('name');
-            $table->text('description')->nullable();
             $table->text('purpose')->nullable();
             $table->text('timing')->nullable();
             $table->timestamps();

@@ -25,6 +25,7 @@ return new class extends Migration
             $table->foreignIdFor(Endproduct::class)->nullable();
             $table->integer('requirement_no');
             $table->integer('revision')->default(1);
+            $table->boolean('is_latest')->default(true);
             $table->string('cross_ref_no')->nullable();
             $table->string('rtype');
             $table->string('source')->nullable();
