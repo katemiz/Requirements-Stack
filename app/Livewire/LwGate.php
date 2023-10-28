@@ -62,6 +62,8 @@ class LwGate extends Component
     public $name;
 
     public $description;
+    public $purpose;
+    public $timing;
 
     public $created_by;
     public $updated_by;
@@ -118,7 +120,7 @@ class LwGate extends Component
 
             if (session('current_project_id')) {
 
-                if (strlen(trim($this->query)) < 2 ) {
+                if (strlen(trim($this->query)) > 2 ) {
 
                     $phases = Gate::where('project_id', session('current_project_id'))
                     ->orderBy($this->sortField,$this->sortDirection)
@@ -130,13 +132,15 @@ class LwGate extends Component
                     ->where('code', 'LIKE', "%".$this->query."%")
                     ->orWhere('name','LIKE',"%".$this->query."%")
                     ->orWhere('description','LIKE',"%".$this->query."%")
+                    ->orWhere('purpose','LIKE',"%".$this->query."%")
+                    ->orWhere('timing','LIKE',"%".$this->query."%")
                     ->orderBy($this->sortField,$this->sortDirection)
                     ->paginate(env('RESULTS_PER_PAGE'));
                 }
 
             } else {
 
-                if (strlen(trim($this->query)) < 2 ) {
+                if (strlen(trim($this->query)) > 2 ) {
 
                     $phases = Gate::orderBy($this->sortField,$this->sortDirection)
                     ->paginate(env('RESULTS_PER_PAGE'));
@@ -146,6 +150,8 @@ class LwGate extends Component
                     $phases = Gate::where('code', 'LIKE', "%".$this->query."%")
                     ->orWhere('name','LIKE',"%".$this->query."%")
                     ->orWhere('description','LIKE',"%".$this->query."%")
+                    ->orWhere('purpose','LIKE',"%".$this->query."%")
+                    ->orWhere('timing','LIKE',"%".$this->query."%")
                     ->orderBy($this->sortField,$this->sortDirection)
                     ->paginate(env('RESULTS_PER_PAGE'));
                 }
@@ -156,14 +162,16 @@ class LwGate extends Component
 
             if (session('current_project_id')) {
 
-                if (strlen(trim($this->query)) < 2 ) {
+                if (strlen(trim($this->query)) > 2 ) {
 
                     $phases = Gate::where('project_id', session('current_project_id'))
                     ->where('company_id',$this->logged_user->company_id)
                     ->where(function ($sqlquery) {
                         $sqlquery->where('code', 'LIKE', "%".$this->query."%")
                               ->orWhere('name', 'LIKE', "%".$this->query."%")
-                              ->orWhere('description', 'LIKE', "%".$this->query."%");
+                              ->orWhere('description', 'LIKE', "%".$this->query."%")
+                              ->orWhere('purpose', 'LIKE', "%".$this->query."%")
+                              ->orWhere('timing', 'LIKE', "%".$this->query."%");
                     })
                     ->orderBy($this->sortField,$this->sortDirection)
                     ->paginate(env('RESULTS_PER_PAGE'));
@@ -178,13 +186,15 @@ class LwGate extends Component
             } else {
 
 
-                if (strlen(trim($this->query)) < 2 ) {
+                if (strlen(trim($this->query)) > 2 ) {
 
                     $phases = Gate::where('company_id',$this->logged_user->company_id)
                     ->where(function ($sqlquery) {
                         $sqlquery->where('code', 'LIKE', "%".$this->query."%")
                               ->orWhere('name', 'LIKE', "%".$this->query."%")
-                              ->orWhere('description', 'LIKE', "%".$this->query."%");
+                              ->orWhere('description', 'LIKE', "%".$this->query."%")
+                              ->orWhere('purpose', 'LIKE', "%".$this->query."%")
+                              ->orWhere('timing', 'LIKE', "%".$this->query."%");
                     })
                     ->orderBy($this->sortField,$this->sortDirection)
                     ->paginate(env('RESULTS_PER_PAGE'));
@@ -291,6 +301,10 @@ class LwGate extends Component
             $this->code = $c->code;
             $this->name = $c->name;
             $this->description = $c->description;
+            $this->purpose = $c->purpose;
+            $this->timing = $c->timing;
+            $this->company_id = $c->company_id;
+            $this->project_id = $c->project_id;
             $this->endproduct_id = $c->endproduct_id;
             $this->created_at = $c->created_at;
             $this->updated_at = $c->updated_at;
@@ -334,6 +348,8 @@ class LwGate extends Component
         $props['code'] = $this->code;
         $props['name'] = $this->name;
         $props['description'] = $this->description;
+        $props['purpose'] = $this->purpose;
+        $props['timing'] = $this->timing;
 
         if ( $this->uid ) {
             // update

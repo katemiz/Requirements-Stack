@@ -127,6 +127,30 @@
     @enderror
 
 
+    <livewire:ck-editor
+        edId="ed20"
+        wire:model="purpose"
+        label='Gate Purpose'
+        placeholder='Detailed description of gate/milestone purpose....'
+        :content="$purpose"/>
+
+    @error('purpose')
+        <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
+    @enderror
+
+
+
+    <livewire:ck-editor
+        edId="ed30"
+        wire:model="timing"
+        label='Gate Timing'
+        placeholder='Detailed description of gate/milestone timing....'
+        :content="$purpose"/>
+
+    @error('timing')
+        <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
+    @enderror
+
 
 
 

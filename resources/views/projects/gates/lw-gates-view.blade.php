@@ -56,16 +56,32 @@
                 <figure class="image is-48x48"><x-carbon-milestone /></figure>
             </div>
             <div class="media-content">
-                <p class="title is-4">M-{{ $uid }}</p>
-                <p class="subtitle is-6">{{ $code}} - {{ $name}}</p>
+                <p class="title is-4">G-{{ $uid }}</p>
+                <p class="subtitle is-6">
+                    {{ $code}} - {{ $name}}
+                    [
+                        <span class="has-text-weight-bold">{{ $the_company->name}}</span>,
+                        <span class="has-text-weight-normal">{{ $the_project->code }}-{{ $the_project->title }}</span>
+                        <span class="has-text-weignt-light">{{ $the_endproduct ? ', ' .$the_endproduct->title : ''}}</span>
+                    ]    
+                </p>
             </div>
         </div>
 
-        <p class="subtitle is-6">
-            <span class="has-text-danger-dark">{{ $the_company->name}}</span>
-            <span class="has-text-success-dark">{{ $the_project->code }} / {{ $the_project->title }}</span>
-            <span class="has-text-weignt-bold">{{ $the_endproduct ? ' - ' .$the_endproduct->title : ''}}</span>
-        </p>
+        {{-- <div class="column content">
+            <strong>Description</strong>
+            {!! $description !!}
+        </div> --}}
+
+        <div class="column content">
+            <strong>Purpose</strong>
+            {!! $purpose !!}
+        </div>
+
+        <div class="column content">
+            <strong>Timing</strong>
+            {!! $timing !!}
+        </div>
 
         <div class="columns is-size-7 has-text-grey mt-6">
 

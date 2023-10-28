@@ -35,7 +35,7 @@
 
                             <div class="media-content">
                             <p class="title is-4">
-                                <span>{{$greq->rtype}}-{{$greq->id}}</span>
+                                <span>{{$greq->rtype}}-{{$greq->requirement_no}} R{{$greq->revision}}</span>
                             </p>
                             </div>
                 

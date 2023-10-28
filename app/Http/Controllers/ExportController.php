@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Requirement;
 use App\Models\Verification;
-use App\Models\Meeting;
+use App\Models\Gate;
 use App\Models\Poc;
 
 use Maatwebsite\Excel\Facades\Excel;
@@ -43,7 +43,7 @@ class ExportController extends Controller
             $poc = Poc::find($verification->poc_id);
 
             $pocnames[$poc->code] = $poc->name;
-            $matrix[$poc->code][] = ['id' => $req->id,'no' => $req->rtype.'-'.$req->id];
+            $matrix[$poc->code][] = ['id' => $req->id,'no' => $req->rtype.'-'.$req->requirement_no.' R'.$req->revision];
         }
 
         return view('export.pocs-vs-reqs', [
@@ -57,7 +57,7 @@ class ExportController extends Controller
 
         $allvers = Verification::all();
         $pocs = Poc::all();
-        $dgates = Meeting::all();
+        $dgates = Gate::all();
 
         $pocsDizin = [];
 
@@ -69,8 +69,8 @@ class ExportController extends Controller
 
         foreach ($allvers as $verification) {
 
-            if ( !isset($matrix[$verification->meeting_id]) || !in_array($verification->poc_id,$matrix[$verification->meeting_id]) ) {
-                $matrix[$verification->meeting_id][] = $verification->poc_id;
+            if ( !isset($matrix[$verification->gate_id]) || !in_array($verification->poc_id,$matrix[$verification->gate_id]) ) {
+                $matrix[$verification->gate_id][] = $verification->poc_id;
             }
         }
 
