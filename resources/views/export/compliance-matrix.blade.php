@@ -29,7 +29,7 @@
 
         <thead>
             <tr>
-                <th>Id</th>
+                <th>No</th>
                 <th>Requirement Type</th>
                 <th>Requirement Definition</th>
                 <th>End Products (If any)</th>
@@ -42,7 +42,7 @@
 
             @foreach ($requirements as $item)
             <tr>
-                <td>{{ $item->id }}</td>
+                <td>{{ $item->rtype }}-{{ $item->requirement_no }} R{{ $item->revision }}</td>
                 <td>{{ config('requirements.form.rtype.options')[$item->rtype] }}</td>
                 <td>{!! $item->text !!}</td>
                 <td>

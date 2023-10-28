@@ -166,6 +166,51 @@
 
 
 
+
+
+
+        <div class="field block">
+            <label class="label">Support Files</label>
+
+            @livewire('file-list', [
+                'canDelete' => true,
+                'model' => 'Requirement',
+                'modelId' => $uid,
+                'tag' => 'support',                          // Any tag other than model name
+            ])
+
+            <div class="control">
+                @livewire('file-upload', [
+                    'model' => 'Requirement',
+                    'modelId' => $uid ? $uid : false,
+                    'isMultiple'=> true,                   // can multiple files be selected
+                    'tag' => 'support'                         // Any tag other than model name
+                ])
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         <div class="buttons is-right">
             <button wire:click.prevent="storeUpdateItem()" class="button is-dark">
                 @if ($uid)

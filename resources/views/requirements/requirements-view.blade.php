@@ -40,12 +40,14 @@
 
                 @if ($status == 'Frozen')
 
+                    @if ($is_latest)
                     <p class="level-item">
                         <a wire:click='reviseConfirm({{ $uid }})'>
                             <span class="icon"><x-carbon-version /></span>
                             <span>Revise</span>
                         </a>
                     </p>
+                    @endif
 
                 @else
 
@@ -78,20 +80,20 @@
             <div class="columns">
 
                 <div class="column is-8">
-                    <p class="title has-text-weight-light is-size-2">{{$rtype}}-{{$requirement_no}} R{{$revision}}
-                    
-                        @if (count($all_revs) > 1)
-                            @foreach ($all_revs as $key => $revId)
-
-                                @if ($key != $revision)
-                                <a class="ml-6" href="/requirements/view/{{$revId}}">R{{$key}}</a>
-                                @endif
-                                
-                            @endforeach
-                        @endif
-                    
-                    </p>
+                    <p class="title has-text-weight-light is-size-2">{{$rtype}}-{{$requirement_no}} R{{$revision}}</p>
                     <p class="subtitle has-text-weight-light is-size-6"><strong>Status</strong> {{$status}}</p>
+
+                    @if (count($all_revs) > 1)
+                    <nav class="breadcrumb has-bullet-separator" aria-label="breadcrumbs">
+                        <ul>
+                        @foreach ($all_revs as $key => $revId)
+                            @if ($key != $revision)
+                            <li><a href="/requirements/view/{{$revId}}">R{{$key}}</a></li>
+                            @endif
+                        @endforeach
+                        </ul>
+                    </nav>
+                    @endif
                 </div>
 
                 <div class="column has-text-right is-4">
@@ -148,12 +150,26 @@
         </div>
 
 
-        {{-- @if (strlen(trim($remarks)) > 0)
         <div class="column">
             <strong>Attachments</strong>
-            {!! $remarks !!}
+            @livewire('file-list', [
+                'canDelete' => false,
+                'model' => 'Requirement',
+                'modelId' => $uid,
+                'tag' => 'support',                          // Any tag other than model name
+            ])
         </div>
-        @endif --}}
+
+
+
+
+
+
+
+
+
+
+
 
 
         @if (strlen(trim($remarks)) > 0)

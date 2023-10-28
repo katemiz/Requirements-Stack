@@ -75,6 +75,9 @@ class LwRequirement extends Component
     public $source;
     public $xrefno;
 
+    public $is_latest;
+
+
     #[Rule('required', message: 'Requirement text is missing')]
     public $text;
 
@@ -376,6 +379,7 @@ class LwRequirement extends Component
             $this->revision = $c->revision;
             $this->rtype = $c->rtype;
             $this->text = $c->text;
+            $this->is_latest = $c->is_latest;
             $this->remarks = $c->remarks;
             $this->company_id = $c->company_id;
             $this->project_id = $c->project_id;
@@ -478,6 +482,9 @@ class LwRequirement extends Component
             $this->uid = Requirement::create($props)->id;
             session()->flash('message','Requirement has been created successfully.');
         }
+
+        // ATTACHMENTS, TRIGGER ATTACHMENT COMPONENT
+        $this->dispatch('triggerAttachment',modelId: $this->uid);
 
         $this->action = 'VIEW';
     }

@@ -86,7 +86,7 @@ class ExportController extends Controller
 
     public function compliancematrix() {
 
-        $all = Requirement::all();
+        $all = Requirement::where('is_latest',true)->get();
         return view('export.compliance-matrix', [
             'requirements' => $all
         ]);

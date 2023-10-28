@@ -54,6 +54,19 @@
                     dispatchRoute = 'onReviseConfirmed'
                     dispatchData = {}
                     break;
+
+                case 'attach':
+
+                    sa_title = 'Do you want delete attached file?'
+                    sa_text = 'Once deleted, there is no reverting back!'
+                    confirmText = 'Delete File'
+                    cancelText ='Cancel'
+
+                    dispatchRoute = 'deleteAttach'
+                    dispatchData = {}
+                    break;
+
+
             }
 
             Swal.fire({
