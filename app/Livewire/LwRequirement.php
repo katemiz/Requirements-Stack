@@ -24,9 +24,6 @@ use App\Models\Poc;
 use App\Models\Witness;
 
 
-
-
-
 class LwRequirement extends Component
 {
     use WithPagination;
@@ -76,7 +73,6 @@ class LwRequirement extends Component
     public $xrefno;
 
     public $is_latest;
-
 
     #[Rule('required', message: 'Requirement text is missing')]
     public $text;
@@ -404,9 +400,6 @@ class LwRequirement extends Component
                 $this->all_revs[$req->revision] = $req->id;
             }
 
-
-
-
             return $c->verifications;
         }
 
@@ -429,10 +422,6 @@ class LwRequirement extends Component
     }
 
 
-    
-
-
-
     #[On('onDeleteConfirmed')]
     public function deleteItem($type)
     {
@@ -450,10 +439,6 @@ class LwRequirement extends Component
             session()->flash('message','Verification has been deleted successfully.');
         }
     }
-
-
-
-
 
 
     public function storeUpdateItem () {
@@ -485,11 +470,8 @@ class LwRequirement extends Component
 
         // ATTACHMENTS, TRIGGER ATTACHMENT COMPONENT
         $this->dispatch('triggerAttachment',modelId: $this->uid);
-
         $this->action = 'VIEW';
     }
-
-
 
 
     public function formVerification ($rid,$vid) {
@@ -500,7 +482,6 @@ class LwRequirement extends Component
         }
         $this->action = 'VERIFICATION';
     }
-
 
 
     public function getVerificationProps () {
@@ -581,11 +562,11 @@ class LwRequirement extends Component
     }
 
 
-
     public function reviseConfirm($uid) {
         $this->uid = $uid;
         $this->dispatch('ConfirmDelete', type:'revise');
     }
+
 
     #[On('onReviseConfirmed')]
     public function doRevise() {
@@ -608,8 +589,4 @@ class LwRequirement extends Component
         $this->uid = $revised_requirement->id;
         $this->action = 'VIEW';
     }
-
-
-
-
 }

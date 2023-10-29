@@ -99,13 +99,32 @@
             })
         })
 
-        function showModal(modalNo) {
-            document.getElementById(modalNo).classList.add('is-active')
-        }
+        // window.addEventListener('done-file-upload',function(e) {
 
-        function hideModal(modalNo) {
-            document.getElementById(modalNo).classList.remove('is-active')
-        }
+        //     console.log('doneFileUpload')
+
+        //     alert(e.detail)
+        // })
+
+
+        document.addEventListener('livewire:initialized', () => {
+            @this.on('done-file-upload', (event) => {
+                console.log('doneFileUpload')
+
+                alert(event.detail)
+            });
+        });
+
+
+
+
+
+
+
+
+
+
+
 
     </script>
 

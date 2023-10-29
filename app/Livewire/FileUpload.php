@@ -7,13 +7,13 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 use Livewire\Component;
+use App\Livewire\FileList;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\On;
 
 use App\Models\Attachment;
 
 use Illuminate\Support\Facades\Log;
-
 
 
 class FileUpload extends Component
@@ -28,19 +28,12 @@ class FileUpload extends Component
     public $tag = false;
     public $canEdit = false;
 
-    public $hasItsForm = false; // Does component has its own form, independently file uploads
-
     public $dosyalar = [];
-    //public $attachments = [];
 
     public function render()
     {
         return view('components.elements.file-upload');
     }
-
-
-
-
 
 
     public function removeFile($fileToRemove) {
@@ -51,7 +44,6 @@ class FileUpload extends Component
             }
         }
     }
-
 
 
     #[On('triggerAttachment')]
@@ -79,13 +71,6 @@ class FileUpload extends Component
         }
 
         $this->reset('dosyalar');
-        $this->dispatch('refreshAttachments','Data to pass to parent');
+        $this->dispatch('refreshFileList')->to(FileList::class); // Rerender FileList component
     }
-
-
-
-
-
-
-
 }

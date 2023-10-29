@@ -26,7 +26,7 @@ class FileList extends Component
     public $canDelete = false;
 
 
-
+    #[On('refreshFileList')]
     public function render() {
         $this->getAttachments();
         return view('components.elements.file-list');
@@ -47,7 +47,6 @@ class FileList extends Component
             }
         }
     }
-
 
 
     public function downloadFile($idAttach) {
@@ -77,19 +76,17 @@ class FileList extends Component
     }
 
 
-
-
     public function startAttachDelete($idAttach) {
         $this->idAttach = $idAttach;
         $this->dispatch('ConfirmDelete', type:'attach');
     }
+
 
     #[On('deleteAttach')]
     public function deleteAttach() {
         Attachment::find($this->idAttach)->delete();
         $this->dispatch('attachDeleted');
     }
-
 
 
     public function checkPermission()
@@ -99,14 +96,6 @@ class FileList extends Component
         } else {
             return false;
         }
-    }
-
-
-    #[On('rerenderList')]
-
-
-    public function deneme() {
-        dd('    rerender       ');
     }
 
 }
