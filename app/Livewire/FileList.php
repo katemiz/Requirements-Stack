@@ -22,30 +22,36 @@ class FileList extends Component
     public $showMime = true;
     public $showSize = true;
 
-    public $attachments = [];
     public $canDelete = false;
 
 
     #[On('refreshFileList')]
     public function render() {
-        $this->getAttachments();
-        return view('components.elements.file-list');
+
+        return view('components.elements.file-list',[
+            'attachments' => $this->getAttachments()
+        ]);
     }
 
 
     public function getAttachments() {
+
         if ($this->modelId) {
             if ($this->tag) {
-                $this->attachments = Attachment::where('model_name',$this->model)
+                $attachments = Attachment::where('model_name',$this->model)
                 ->where('model_item_id',$this->modelId)
                 ->where('tag',$this->tag)
                 ->get();
             } else {
-                $this->attachments = Attachment::where('model_name',$this->model)
+                $attachments = Attachment::where('model_name',$this->model)
                 ->where('model_item_id',$this->modelId)
                 ->get();
             }
+
+            return $attachments;
         }
+
+        return [];
     }
 
 

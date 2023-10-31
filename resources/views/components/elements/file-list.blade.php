@@ -1,5 +1,5 @@
 <div>
-    @if ($attachments->count() > 0)
+    @if (count($attachments) > 0)
         <table class="table is-fullwidth is-size-7">
 
             @foreach ($attachments as $key => $attachment)

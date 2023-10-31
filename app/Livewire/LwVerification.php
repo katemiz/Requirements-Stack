@@ -234,11 +234,6 @@ class LwVerification extends Component
                 $query->where('endproduct_id', session('current_eproduct_id'));
             })->get();
 
-
-
-
-
-
         return [
             'ver_milestones' => $ver_milestones,
             'ver_mocs' => $ver_mocs,
