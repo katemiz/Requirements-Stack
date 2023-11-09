@@ -584,7 +584,7 @@ class LwRequirement extends Component
             $rev_verification->save();
         }
 
-        $original_requirement->update(['is_latest',false]);
+        $original_requirement->update(['is_latest' => false]);
 
         $this->uid = $revised_requirement->id;
         $this->action = 'VIEW';
