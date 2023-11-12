@@ -133,9 +133,7 @@ class LwWitness extends Component
                 ->orderBy($this->sortField,$this->sortDirection)
                 ->paginate(env('RESULTS_PER_PAGE'));
             }
-        }
-
-        if ($this->logged_user->is_company_admin) {
+        } else {
 
             if (strlen(trim($this->query)) > 0 ) {
 
@@ -164,9 +162,7 @@ class LwWitness extends Component
 
         if ($this->logged_user->is_admin) {
             $this->companies = Company::all();
-        }
-
-        if ($this->logged_user->is_company_admin) {
+        } else  {
             $this->companies = Company::where('id',$this->logged_user->company_id)->get();
             $this->company_id = $this->logged_user->company_id;
         }

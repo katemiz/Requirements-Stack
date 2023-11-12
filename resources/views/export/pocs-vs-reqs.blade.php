@@ -18,6 +18,10 @@
 
     <section class="section container">
 
+    @if (count($matrix) < 1)
+        <div class="notification is-link is-light">No requirements, no matrix</div>
+    @else
+
         <header class="my-6">
             <h1 class="title has-text-weight-light is-size-1">Proof of Compliances vs Requirements</h1>
             <h2 class="subtitle has-text-weight-light">Evidence / Proof of Compliances / Deliverables vs Requirement</h2>
@@ -72,6 +76,9 @@
 
         </table>
 
+    @endif
+
     </section>
+
 </body>
 </html>

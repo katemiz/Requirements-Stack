@@ -8,6 +8,7 @@ use App\Livewire\ListRequirements;
 use App\Livewire\RequirementLivewire;
 
 use App\Livewire\LwCompany;
+use App\Livewire\ChangePassword;
 use App\Livewire\LwEndProduct;
 use App\Livewire\LwGate;
 use App\Livewire\LwMoc;
@@ -104,9 +105,12 @@ Route::middleware('auth')->group(function () {
 
     // APP
     // ************************************************************
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    // Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get('/profile', ChangePassword::class);
+
 
     // Attachment
     Route::get('/add-attach/{item}/{itemId}',  Attachment::class);

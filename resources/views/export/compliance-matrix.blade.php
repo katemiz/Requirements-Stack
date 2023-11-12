@@ -8,76 +8,80 @@
         <h2 class="subtitle has-text-weight-light">Requirements vs Compliance Status</h2>
     </header>
 
-    <div class="column has-text-right">
+    @if (count($requirements) > 0)
+        
+        <div class="column has-text-right">
 
-        <a href="javascript:tableToExcel()">
+            <a href="javascript:tableToExcel()">
 
-            <span class="icon-text">
-    
-                <span class="icon">
-                    <x-carbon-document-export />
+                <span class="icon-text">
+        
+                    <span class="icon">
+                        <x-carbon-document-export />
+                    </span>
+                    <span>Excel Export</span>
                 </span>
-                <span>Excel Export</span>
-            </span>
-        </a>
+            </a>
 
-    </div>
+        </div>
 
-    <table class="table is-fullwidth" id="CMMAtrix">
+        <table class="table is-fullwidth" id="CMMAtrix">
 
-        <caption>Compliances Matrix</caption>
+            <caption>Compliances Matrix</caption>
 
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Requirement Type</th>
-                <th>Requirement Definition</th>
-                <th>End Products (If any)</th>
-                <th>Compliance</th>
-                <th>Contractor Comments</th>
-            </tr>
-        </thead>
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Requirement Type</th>
+                    <th>Requirement Definition</th>
+                    <th>End Products (If any)</th>
+                    <th>Compliance</th>
+                    <th>Contractor Comments</th>
+                </tr>
+            </thead>
 
-        <tbody>
+            <tbody>
 
-            @foreach ($requirements as $item)
-            <tr>
-                <td>{{ $item->rtype }}-{{ $item->requirement_no }} R{{ $item->revision }}</td>
-                <td>{{ config('requirements.form.rtype.options')[$item->rtype] }}</td>
-                <td>{!! $item->text !!}</td>
-                <td>
-                    @foreach ($item->endproducts as $ep)
-                    <span class="tag is-info">{{ $ep->code }}</span><br>
-                    @endforeach
-                </td>
-                <td>
-                    <label class="checkbox is-size-7">
-                    <input type="checkbox"> Comply
-                    </label>
-                    <label class="checkbox is-size-7">
-                        <input type="checkbox"> Partially Comply
+                @foreach ($requirements as $item)
+                <tr>
+                    <td>{{ $item->rtype }}-{{ $item->requirement_no }} R{{ $item->revision }}</td>
+                    <td>{{ config('requirements.form.rtype.options')[$item->rtype] }}</td>
+                    <td>{!! $item->text !!}</td>
+                    <td>
+                        @foreach ($item->endproducts as $ep)
+                        <span class="tag is-info">{{ $ep->code }}</span><br>
+                        @endforeach
+                    </td>
+                    <td>
+                        <label class="checkbox is-size-7">
+                        <input type="checkbox"> Comply
                         </label>
                         <label class="checkbox is-size-7">
-                            <input type="checkbox"> Not Comply
-                        </label>
-                </td>
-                <td>&nbsp;</td>
-            </tr>
-            @endforeach
+                            <input type="checkbox"> Partially Comply
+                            </label>
+                            <label class="checkbox is-size-7">
+                                <input type="checkbox"> Not Comply
+                            </label>
+                    </td>
+                    <td>&nbsp;</td>
+                </tr>
+                @endforeach
 
-        </tbody>
-    </table>
+            </tbody>
+        </table>
 
+        <script>
+            var table2excel = new Table2Excel();
 
+            function tableToExcel() {
+                table2excel.export(document.querySelectorAll('table'));
+            }
+        </script>
 
-    <script>
-        var table2excel = new Table2Excel();
-
-        function tableToExcel() {
-            table2excel.export(document.querySelectorAll('table'));
-        }
-    </script>
-
+    @else   
+        <div class="notification is-link is-light">No requirements found</div>
+    
+    @endif
 
 
 </section>

@@ -12,12 +12,15 @@ use App\Models\Poc;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\CMExport;
 
-
 class ExportController extends Controller
 {
+    public function __construct() {
+        $this->checkCurrentProduct();
+    }
+
     public function allreqs() {
 
-        $all = Requirement::all();
+        $all = $this->getProductRequirements();
 
         $allreqs = [];
 
@@ -31,19 +34,37 @@ class ExportController extends Controller
     }
 
 
-    public function pocsvsreqs() {
+    public function getProductRequirements() {
 
-        $allvers = Verification::all();
+        return Requirement::where('project_id', session('current_project_id'))
+        ->when(session('current_eproduct_id'), function ($query) {
+            $query->where('endproduct_id', session('current_eproduct_id'));
+        })
+        ->where('is_latest', true)
+        ->get();
+    }
+
+
+    public function pocsvsreqs() {
 
         $matrix = [];
         $pocnames = [];
 
-        foreach ($allvers as $verification) {
-            $req = Requirement::find($verification->requirement_id);
-            $poc = Poc::find($verification->poc_id);
+        $product_reqs = $this->getProductRequirements();
 
-            $pocnames[$poc->code] = $poc->name;
-            $matrix[$poc->code][] = ['id' => $req->id,'no' => $req->rtype.'-'.$req->requirement_no.' R'.$req->revision];
+        foreach ($product_reqs as $preq) {
+
+            // all verification for single req
+            $req_vers = Verification::where('requirement_id',$preq->id)->get();
+
+            foreach ($req_vers as $verification) {
+                $poc = Poc::find($verification->poc_id);
+    
+                $pocnames[$poc->code] = $poc->name;
+                $matrix[$poc->code][] = ['id' => $preq->id,'no' => $preq->rtype.'-'.$preq->requirement_no.' R'.$preq->revision];
+            }
+
+            ksort($matrix);
         }
 
         return view('export.pocs-vs-reqs', [
@@ -55,9 +76,11 @@ class ExportController extends Controller
 
     public function dgatesvspocs() {
 
-        $allvers = Verification::all();
-        $pocs = Poc::all();
-        $dgates = Gate::orderBy('code')->get();
+        $pocs = Poc::where('project_id', session('current_project_id'))
+            ->when(session('current_eproduct_id'), function ($query) {
+                $query->where('endproduct_id', session('current_eproduct_id'));
+            })
+            ->get();
 
         $pocsDizin = [];
 
@@ -65,12 +88,30 @@ class ExportController extends Controller
             $pocsDizin[$poc['id']] = ['code'=>$poc->code,'name'=>$poc->name];
         }
 
+        $dgates = Gate::where('project_id', session('current_project_id'))
+            ->when(session('current_eproduct_id'), function ($query) {
+                $query->where('endproduct_id', session('current_eproduct_id'));
+            })
+            ->orderBy('code')
+            ->get();
+
+        $product_reqs = $this->getProductRequirements();
+
+        $usedPocs = [];
         $matrix = [];
 
-        foreach ($allvers as $verification) {
+        foreach ($product_reqs as $preq) {
 
-            if ( !isset($matrix[$verification->gate_id]) || !in_array($verification->poc_id,$matrix[$verification->gate_id]) ) {
-                $matrix[$verification->gate_id][] = $verification->poc_id;
+            // all verification for single req
+            $req_vers = Verification::where('requirement_id',$preq->id)->get();
+
+            foreach ($req_vers as $verification) {
+
+                array_push($usedPocs,$verification->poc_id);
+
+                if ( !isset($matrix[$verification->gate_id]) || !in_array($verification->poc_id,$matrix[$verification->gate_id]) ) {
+                    $matrix[$verification->gate_id][] = $verification->poc_id;
+                }
             }
         }
 
@@ -82,16 +123,14 @@ class ExportController extends Controller
     }
 
 
-
-
     public function compliancematrix() {
 
-        $all = Requirement::where('is_latest',true)->get();
+        $product_reqs = $this->getProductRequirements();
+
         return view('export.compliance-matrix', [
-            'requirements' => $all
+            'requirements' => $product_reqs
         ]);
     }
-
 
 
     public function excelCMExport()
@@ -100,11 +139,18 @@ class ExportController extends Controller
     }
 
 
+    public function checkCurrentProduct() {
 
+        /*
+        session('current_project_id');
+        session('current_project_name');
 
+        session('current_eproduct_id');
+        session('current_eproduct_name');
+        */
 
-
-
-
-
+        if (!session('current_project_id') && !session('current_product_id')) {
+            return redirect(url()->previous());
+        }
+    }
 }

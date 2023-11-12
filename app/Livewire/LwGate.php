@@ -153,9 +153,7 @@ class LwGate extends Component
                     ->paginate(env('RESULTS_PER_PAGE'));
                 }
             }
-        }
-
-        if ($this->is_user_company_admin) {
+        } else {
 
             if (session('current_project_id')) {
 

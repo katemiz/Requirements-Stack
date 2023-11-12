@@ -91,9 +91,8 @@ class LwProject extends Component
             ->orWhere('title','LIKE',"%".$this->query."%")
             ->orderBy($this->sortField,$this->sortDirection)
             ->paginate(env('RESULTS_PER_PAGE'));
-        }
 
-        if ($this->logged_user->is_company_admin) {
+        } elseif ($this->logged_user->is_company_admin) {
 
             $projects = Project::where([
                 ['company_id', '=', $this->logged_user->company_id],
@@ -105,6 +104,16 @@ class LwProject extends Component
             ])
             ->orderBy($this->sortField,$this->sortDirection)
             ->paginate(env('RESULTS_PER_PAGE'));
+
+        } else {
+
+            $usr_prj_ids = [];
+
+            foreach ($this->logged_user->projects as $prj) {
+                array_push($usr_prj_ids,$prj->id);
+            }
+
+            $projects = Project::whereIn('id',$usr_prj_ids)->paginate(env('RESULTS_PER_PAGE'));
         }
 
         return $projects;

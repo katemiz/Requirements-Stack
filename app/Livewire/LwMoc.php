@@ -154,9 +154,7 @@ class LwMoc extends Component
                 }
             }
 
-        }
-
-        if ($this->is_user_company_admin) {
+        } else {
 
             if (session('current_project_id')) {
 

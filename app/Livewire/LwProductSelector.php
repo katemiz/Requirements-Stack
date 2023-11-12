@@ -93,9 +93,7 @@ class LwProductSelector extends Component
 
         if ($this->is_user_admin) {
             $companies = Company::all();
-        }
-
-        if ($this->is_user_company_admin) {
+        } else  {
             $companies = Company::where('id',$this->logged_user->company_id)->get();
             $this->company_id = $this->logged_user->company_id;
         }
@@ -112,10 +110,10 @@ class LwProductSelector extends Component
 
         if ($this->is_user_admin) {
             $projects = Project::where('company_id',$this->company_id)->get();
-        }
-
-        if ($this->is_user_company_admin) {
+        } elseif ($this->is_user_company_admin) {
             $projects = Project::where('company_id',$this->logged_user->company_id)->get();
+        } else {
+            $projects = $this->logged_user->projects;
         }
 
         if (count($projects) == 1) {

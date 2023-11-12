@@ -14,6 +14,9 @@ use Livewire\Attributes\Rule;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+
 
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -88,7 +91,6 @@ class LwUser extends Component
 
         $this->getCompaniesList();
         $this->getProjects();
-
 
         return view('admin.users.lw-users',[
             'users' => $this->getUsersList()

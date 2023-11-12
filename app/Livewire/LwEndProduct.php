@@ -153,9 +153,8 @@ class LwEndProduct extends Component
                     ->paginate(env('RESULTS_PER_PAGE'));
                 }
             }
-        }
 
-        if ($this->is_user_company_admin) {
+        } elseif ($this->is_user_company_admin) {
 
             if (session('current_project_id')) {
 
@@ -197,6 +196,12 @@ class LwEndProduct extends Component
                     ->paginate(env('RESULTS_PER_PAGE'));
                 }
             }
+
+        } else {
+
+            $eproducts = Endproduct::where('company_id', $this->logged_user->company_id)
+            ->orderBy($this->sortField,$this->sortDirection)
+            ->paginate(env('RESULTS_PER_PAGE'));
         }
 
         return $eproducts;
@@ -207,7 +212,7 @@ class LwEndProduct extends Component
 
         if ($this->is_user_admin) {
             $companies = Company::all();
-        } else if ($this->is_user_company_admin) {
+        } else {
             $companies = Company::where('id',$this->logged_user->company_id)->get();
             $this->company_id = $this->logged_user->company_id;
         }
@@ -224,19 +229,15 @@ class LwEndProduct extends Component
 
         if ($this->is_user_admin) {
             $projects = Project::where('company_id',$this->company_id)->get();
-        }
-
-        if ($this->is_user_company_admin) {
+        } elseif ($this->is_user_company_admin) {
             $projects = Project::where('company_id',$this->logged_user->company_id)->get();
+        } else {
+            $projects = $this->logged_user->projects;
         }
 
         if (count($projects) == 1) {
             $this->project_id = $projects['0']->id;
         }
-
-        $this->js("console.log('$this->company_id')");
-
-        $this->js("console.log('$projects')");
 
         return $projects;
     }

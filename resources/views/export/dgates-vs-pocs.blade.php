@@ -16,47 +16,53 @@
 
     <section class="section container">
 
-        <header class="my-6">
-            <h1 class="title has-text-weight-light is-size-1">Decision Gates vs Proof of Compliances (POCS)</h1>
-            <h2 class="subtitle has-text-weight-light">Proof of Compliances / Deliverables in Decision Gates</h2>
-        </header>
+        @if (count($dgates) > 0)
+            
+            <header class="my-6">
+                <h1 class="title has-text-weight-light is-size-1">Decision Gates vs Proof of Compliances (POCS)</h1>
+                <h2 class="subtitle has-text-weight-light">Proof of Compliances / Deliverables in Decision Gates</h2>
+            </header>
 
-        <table class="table is-fullwidth">
+            <table class="table is-fullwidth">
 
-            <thead>
-                <tr>
-                    <th class="is-3 has-background-grey-lighter">Decision Gates</th>
-                    <th class="has-background-grey-lighter">Deliverables/POCs in Decision Gates</th>
-                </tr>
-            </thead>
+                <thead>
+                    <tr>
+                        <th class="is-3 has-background-grey-lighter">Decision Gates</th>
+                        <th class="has-background-grey-lighter">Deliverables/POCs in Decision Gates</th>
+                    </tr>
+                </thead>
 
-            <tbody>
-                @foreach ($dgates as $dgate)
-                <tr>
-                    <td class="has-background-white-ter">
-                        <strong>{{ $dgate->code }}</strong><br>
-                        {{ $dgate->name }}
-                    </td>
-                    <td>
-                        @if (isset($matrix[$dgate->id]))
+                <tbody>
+                    @foreach ($dgates as $dgate)
+                    <tr>
+                        <td class="has-background-white-ter">
+                            <strong>{{ $dgate->code }}</strong><br>
+                            {{ $dgate->name }}
+                        </td>
+                        <td>
+                            @if (isset($matrix[$dgate->id]))
 
-                            <h2 class="subtitle has-text-info is-size-6">{{ count($matrix[$dgate->id]) }} POCS for this Decison Gate </h2>
-                            @foreach ($matrix[$dgate->id] as $idPoc)
-                                <p>
-                                <strong>{{ $pocs[$idPoc]['code'] }}</strong> - {{ $pocs[$idPoc]['name'] }}
-                                </p>
-                            @endforeach
+                                <h2 class="subtitle has-text-info is-size-6">{{ count($matrix[$dgate->id]) }} POCS for this Decison Gate </h2>
+                                @foreach ($matrix[$dgate->id] as $idPoc)
+                                    <p>
+                                    <strong>{{ $pocs[$idPoc]['code'] }}</strong> - {{ $pocs[$idPoc]['name'] }}
+                                    </p>
+                                @endforeach
 
-                        @else
-                        -
-                        @endif
+                            @else
+                            -
+                            @endif
 
-                    </td>
-                </tr>
-                @endforeach
-            <tbody>
+                        </td>
+                    </tr>
+                    @endforeach
+                <tbody>
 
-        </table>
+            </table>
+
+        @else 
+            <div class="notification is-link is-light">No requirements, no Decision Gate vs POCs</div>            
+        @endif
 
     </section>
 </body>
