@@ -20,6 +20,7 @@ use App\Livewire\LwProject;
 use App\Livewire\LwRole;
 use App\Livewire\LwRequirement;
 use App\Livewire\LwUser;
+use App\Livewire\LwTest;
 use App\Livewire\LwWitness;
 use App\Livewire\LwVerification;
 
@@ -78,6 +79,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/projects-witnesses/{action}/{id?}', LwWitness::class);
     Route::get('/projects-mocs/{action}/{id?}', LwMoc::class);
     Route::get('/projects-pocs/{action}/{id?}', LwPoc::class);
+    Route::get('/projects-tests/{action}/{id?}', LwTest::class);
+
 
 
     // PRODUCT SELECTOR

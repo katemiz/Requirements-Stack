@@ -74,6 +74,11 @@
                     <span>PoCs</span>
                 </a>
 
+                <a href="/projects-tests/list" class="navbar-item icon-text">
+                    <span class="icon has-text-warning"><x-carbon-cloud-monitoring /></span>
+                    <span>Tests</span>
+                </a>
+
                 <div class="navbar-item has-dropdown is-hoverable">
                     <p class="navbar-link" href="/Admin">Export</p>
                     <div class="navbar-dropdown">
