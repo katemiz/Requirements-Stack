@@ -21,6 +21,7 @@ use App\Models\Verification;
 use App\Models\Gate;
 use App\Models\Moc;
 use App\Models\Poc;
+use App\Models\Test;
 use App\Models\Witness;
 
 
@@ -87,6 +88,11 @@ class LwRequirement extends Component
 
     public $status;
 
+    // Tests
+    public $requirement_tests = [];
+
+    public $tests;
+
     public $rtypes = [
         'GR' => 'General Requirement',
         'TR' => 'Technical Requirement'
@@ -125,7 +131,8 @@ class LwRequirement extends Component
         return view('requirements.requirements',[
             'requirements' => $this->getRequirementsList(),
             'verifications' => $existing_verifications,
-            'verification_data' => $this->getVerificationProps()
+            'verification_data' => $this->getVerificationProps(),
+            'tests' => $this->getTestsList()
         ]);
     }
 
@@ -319,10 +326,19 @@ class LwRequirement extends Component
 
 
     public function getEndProductsList()  {
-
         if ($this->project_id) {
             $this->project_eproducts = Endproduct::where('project_id',$this->project_id)->get();
         }
+    }
+
+
+    public function getTestsList()  {
+        if ($this->project_id) {
+            return Test::where('project_id',$this->project_id)
+                ->where('is_latest',true)->get();
+        }
+
+        return collect([]);
     }
 
 
@@ -390,6 +406,8 @@ class LwRequirement extends Component
 
             $this->the_company = Company::find($c->company_id);
             $this->the_project = Project::find($c->project_id);
+
+            $this->tests = $c->tests;
 
             if ($c->endproduct_id > 0) {
                 $this->the_endproduct = Endproduct::find($c->endproduct_id);
@@ -467,6 +485,11 @@ class LwRequirement extends Component
             $this->uid = Requirement::create($props)->id;
             session()->flash('message','Requirement has been created successfully.');
         }
+
+        $requirement = Requirement::find($this->uid);
+
+        $requirement->tests()->detach();
+        $requirement->tests()->attach($this->requirement_tests);
 
         // ATTACHMENTS, TRIGGER ATTACHMENT COMPONENT
         $this->dispatch('triggerAttachment',modelId: $this->uid);

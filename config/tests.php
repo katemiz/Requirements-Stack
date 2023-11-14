@@ -15,42 +15,20 @@ return [
 
         "headers" => [
 
-            "rtype"=> [
+            "full_test_no"=> [
                 "title" => "Type",
                 "sortable" => true,
                 "align" => "left",
                 "direction" => "asc"
             ],
 
-            "Test_no"=> [
-                "title" => "No",
+            "title"=> [
+                "title" => "Test Title",
                 "sortable" => true,
                 "align" => "left",
                 "direction" => "asc"
             ],
 
-            "revision"=> [
-                "title" => "Rev",
-                "sortable" => true,
-                "align" => "left",
-                "direction" => "asc"
-            ],
-
-            "project_name"=> [
-                "title" => "Project",
-                "sortable" => false,
-                "align" => "left",
-                "direction" => "asc"
-            ],
-
-
-            "text"=> [
-                "title" => "Test Text",
-                "sortable" => true,
-                "align" => "left",
-                "direction" => "asc",
-                "is_html" => true
-            ],
 
             "created_at"=> [
                 "title" => "Created On",

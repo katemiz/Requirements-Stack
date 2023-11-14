@@ -128,7 +128,7 @@
             wire:model="remarks"
             label='Test Description'
             placeholder='What will be tested ....'
-            :content="$text"/>
+            :content="$remarks"/>
 
         @error('remarks')
             <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>

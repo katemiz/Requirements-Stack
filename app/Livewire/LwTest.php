@@ -31,7 +31,6 @@ class LwTest extends Component
     public $show_latest = true; /// Show only latest revisions
 
     public $uid = false;
-    public $vid = false;    // Verification ID
 
     public $query = '';
     public $sortField = 'created_at';
@@ -42,7 +41,6 @@ class LwTest extends Component
     public $is_user_admin = false;
     public $is_user_company_admin = false;
 
-    // Verification
     public $companies = [];
     public $projects = [];
     public $endproducts = [];
@@ -55,7 +53,7 @@ class LwTest extends Component
 
     public $all_revs = [];
 
-    public $requirement_no;
+    public $test_no;
     public $revision;
 
     #[Rule('required|numeric', message: 'Please select company')]
@@ -65,17 +63,12 @@ class LwTest extends Component
     public $project_id = false;
 
     public $endproduct_id = false;
-
-    public $source;
-    public $xrefno;
-
     public $is_latest;
 
-    #[Rule('required', message: 'Requirement text is missing')]
-    public $text;
+    #[Rule('required', message: 'Test title/description is missing')]
+    public $title;
 
     public $remarks;    // Requirement remarks
-    public $vremarks;   // Verification remarks
 
     public $created_by;
     public $updated_by;
@@ -93,7 +86,7 @@ class LwTest extends Component
     ];
 
     #[Rule('required', message: 'Please select test type')]
-    public $test_type = 'GR';
+    public $test_type = 'DEV';
 
 
     public function mount()
@@ -367,21 +360,19 @@ class LwTest extends Component
 
     public function setProps() {
 
-        if ($this->uid && in_array($this->action,['VIEW','FORM','VERIFICATION']) ) {
+        if ($this->uid && in_array($this->action,['VIEW','FORM']) ) {
 
-            $c = Requirement::find($this->uid);
+            $c = Test::find($this->uid);
 
-            $this->requirement_no = $c->requirement_no;
+            $this->test_no = $c->test_no;
             $this->revision = $c->revision;
-            $this->rtype = $c->rtype;
-            $this->text = $c->text;
+            $this->test_type = $c->test_type;
+            $this->title = $c->title;
             $this->is_latest = $c->is_latest;
             $this->remarks = $c->remarks;
             $this->company_id = $c->company_id;
             $this->project_id = $c->project_id;
             $this->endproduct_id = $c->endproduct_id;
-            $this->xrefno = $c->cross_ref_no;
-            $this->source = $c->source;
             $this->status = $c->status;
             $this->created_at = $c->created_at;
             $this->updated_at = $c->updated_at;
@@ -396,39 +387,29 @@ class LwTest extends Component
             }
 
             // Revisions
-            foreach (Requirement::where('requirement_no',$this->requirement_no)->get() as $req) {
+            foreach (Test::where('test_no',$this->test_no)->get() as $req) {
                 $this->all_revs[$req->revision] = $req->id;
             }
-
-            return $c->verifications;
         }
-
-        return false;
-
     }
 
 
     public function triggerDelete($type, $uid) {
 
-        if ($type === 'requirement') {
+        if ($type === 'test') {
             $this->uid = $uid;
         }
 
-        if ($type === 'verification') {
-            $this->vid = $uid;
-        }
-
-        $this->dispatch('ConfirmDelete', type:$type);
+        $this->dispatch('ConfirmModal', type:$type);
     }
 
 
     #[On('onDeleteConfirmed')]
     public function deleteItem($type)
     {
-        if ($type === 'requirement') {
-            Requirement::find($this->uid)->delete();
-            Verification::where('requirement_id',$this->uid)->delete();
-            session()->flash('message','Requirement and linked verifications have been deleted successfully.');
+        if ($type === 'test') {
+            Test::find($this->uid)->delete();
+            session()->flash('message','Test has been deleted successfully.');
 
             $this->action = 'LIST';
             $this->resetPage();
@@ -445,27 +426,25 @@ class LwTest extends Component
 
         $this->validate();
 
-        $props['requirement_no'] = $this->getRequirementNo();
+        $props['test_no'] = $this->getTestNo();
         $props['updated_uid'] = Auth::id();
         $props['company_id'] = $this->company_id;
         $props['project_id'] = $this->project_id;
         $props['endproduct_id'] = $this->endproduct_id ? $this->endproduct_id : 0;
-        $props['rtype'] = $this->rtype;
-        $props['source'] = $this->source;
-        $props['cross_ref_no'] = $this->xrefno;
-        $props['text'] = $this->text;
+        $props['test_type'] = $this->test_type;
+        $props['title'] = $this->title;
         $props['remarks'] = $this->remarks;
 
         if ( $this->uid ) {
             // update
-            Requirement::find($this->uid)->update($props);
-            session()->flash('message','Requirement has been updated successfully.');
+            Test::find($this->uid)->update($props);
+            session()->flash('message','Test has been updated successfully.');
 
         } else {
             // create
             $props['user_id'] = Auth::id();
-            $this->uid = Requirement::create($props)->id;
-            session()->flash('message','Requirement has been created successfully.');
+            $this->uid = Test::create($props)->id;
+            session()->flash('message','Test has been created successfully.');
         }
 
         // ATTACHMENTS, TRIGGER ATTACHMENT COMPONENT
@@ -474,57 +453,57 @@ class LwTest extends Component
     }
 
 
-    public function formVerification ($rid,$vid) {
+    // public function formVerification ($rid,$vid) {
 
-        $this->uid = $rid;
-        if ($vid) {
-            $this->vid = $vid;
-        }
-        $this->action = 'VERIFICATION';
-    }
-
-
-    public function getVerificationProps () {
-
-        $verification = false;
-
-        $ver_milestones = Gate::where('company_id', $this->logged_user->company_id)
-            ->where('project_id', session('current_project_id'))
-            ->when(session('current_eproduct_id'), function ($query) {
-                $query->where('endproduct_id', session('current_eproduct_id'));
-            })->get();
-
-        $ver_mocs = Moc::where('company_id', $this->logged_user->company_id)
-            ->where('project_id', session('current_project_id'))
-            ->when(session('current_eproduct_id'), function ($query) {
-                $query->where('endproduct_id', session('current_eproduct_id'));
-            })->get();
-
-        $ver_pocs = Poc::where('company_id', $this->logged_user->company_id)
-            ->where('project_id', session('current_project_id'))
-            ->when(session('current_eproduct_id'), function ($query) {
-                $query->where('endproduct_id', session('current_eproduct_id'));
-            })->get();
+    //     $this->uid = $rid;
+    //     if ($vid) {
+    //         $this->vid = $vid;
+    //     }
+    //     $this->action = 'VERIFICATION';
+    // }
 
 
-        $ver_witnesses = Witness::where('company_id', $this->logged_user->company_id)
-            ->where('project_id', session('current_project_id'))
-            ->when(session('current_eproduct_id'), function ($query) {
-                $query->where('endproduct_id', session('current_eproduct_id'));
-            })->get();
+    // public function getVerificationProps () {
 
-        if ($this->vid) {
-            $verification = Verification::find($this->vid);
-        }
+    //     $verification = false;
 
-        return [
-            'verification' => $verification,
-            'ver_milestones' => $ver_milestones,
-            'ver_mocs' => $ver_mocs,
-            'ver_pocs' => $ver_pocs,
-            'ver_witnesses' => $ver_witnesses
-        ];
-    }
+    //     $ver_milestones = Gate::where('company_id', $this->logged_user->company_id)
+    //         ->where('project_id', session('current_project_id'))
+    //         ->when(session('current_eproduct_id'), function ($query) {
+    //             $query->where('endproduct_id', session('current_eproduct_id'));
+    //         })->get();
+
+    //     $ver_mocs = Moc::where('company_id', $this->logged_user->company_id)
+    //         ->where('project_id', session('current_project_id'))
+    //         ->when(session('current_eproduct_id'), function ($query) {
+    //             $query->where('endproduct_id', session('current_eproduct_id'));
+    //         })->get();
+
+    //     $ver_pocs = Poc::where('company_id', $this->logged_user->company_id)
+    //         ->where('project_id', session('current_project_id'))
+    //         ->when(session('current_eproduct_id'), function ($query) {
+    //             $query->where('endproduct_id', session('current_eproduct_id'));
+    //         })->get();
+
+
+    //     $ver_witnesses = Witness::where('company_id', $this->logged_user->company_id)
+    //         ->where('project_id', session('current_project_id'))
+    //         ->when(session('current_eproduct_id'), function ($query) {
+    //             $query->where('endproduct_id', session('current_eproduct_id'));
+    //         })->get();
+
+    //     if ($this->vid) {
+    //         $verification = Verification::find($this->vid);
+    //     }
+
+    //     return [
+    //         'verification' => $verification,
+    //         'ver_milestones' => $ver_milestones,
+    //         'ver_mocs' => $ver_mocs,
+    //         'ver_pocs' => $ver_pocs,
+    //         'ver_witnesses' => $ver_witnesses
+    //     ];
+    // }
 
 
 
@@ -551,42 +530,36 @@ class LwTest extends Component
 
     public function freezeConfirm($uid) {
         $this->uid = $uid;
-        $this->dispatch('ConfirmDelete', type:'freeze');
+        $this->dispatch('ConfirmModal', type:'freeze');
     }
 
     #[On('onFreezeConfirmed')]
     public function doFreeze() {
 
         $this->action = 'VIEW';
-        Requirement::find($this->uid)->update(['status' =>'Frozen']);
+        Test::find($this->uid)->update(['status' =>'Frozen']);
     }
 
 
     public function reviseConfirm($uid) {
         $this->uid = $uid;
-        $this->dispatch('ConfirmDelete', type:'revise');
+        $this->dispatch('ConfirmModal', type:'revise');
     }
 
 
     #[On('onReviseConfirmed')]
     public function doRevise() {
 
-        $original_requirement = Requirement::find($this->uid);
+        $original_test = Test::find($this->uid);
 
-        $revised_requirement = $original_requirement->replicate();
-        $revised_requirement->status = 'Verbatim';
-        $revised_requirement->revision = $original_requirement->revision+1;
-        $revised_requirement->save();
+        $revised_test = $original_test->replicate();
+        $revised_test->status = 'Verbatim';
+        $revised_test->revision = $original_test->revision+1;
+        $revised_test->save();
 
-        foreach ($original_requirement->verifications as $verification) {
-            $rev_verification = $verification->replicate();
-            $rev_verification->requirement_id = $revised_requirement->id;
-            $rev_verification->save();
-        }
+        $original_test->update(['is_latest' => false]);
 
-        $original_requirement->update(['is_latest' => false]);
-
-        $this->uid = $revised_requirement->id;
+        $this->uid = $revised_test->id;
         $this->action = 'VIEW';
     }
 }

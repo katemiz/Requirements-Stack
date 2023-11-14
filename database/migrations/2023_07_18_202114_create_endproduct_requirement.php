@@ -7,8 +7,6 @@ use Illuminate\Support\Facades\Schema;
 use App\Models\Requirement;
 use App\Models\Endproduct;
 
-
-
 return new class extends Migration
 {
     /**

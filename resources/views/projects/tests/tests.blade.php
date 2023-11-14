@@ -2,27 +2,15 @@
 
     <script>
 
-        window.addEventListener('ConfirmDelete',function(e) {
+        window.addEventListener('ConfirmModal',function(e) {
 
             let sa_title, sa_text, confirmText, cancelText
             let dispatchRoute, dispatchData
 
             switch (e.detail.type) {
 
-                case 'requirement':
-
-                    sa_title = 'Do you really want to delete this requirement and its linked verifications?'
-                    sa_text = 'Once deleted, there is no reverting back!'
-                    confirmText = 'Delete'
-                    cancelText ='Oops ...'
-
-                    dispatchRoute = 'onDeleteConfirmed'
-                    dispatchData = {type:e.detail.type}
-                    break;
-
-                case 'verification':
-
-                    sa_title = 'Do you really want to delete this verification?'
+                case 'test':
+                    sa_title = 'Do you really want to delete this test?'
                     sa_text = 'Once deleted, there is no reverting back!'
                     confirmText = 'Delete'
                     cancelText ='Oops ...'
@@ -33,20 +21,19 @@
 
                 case 'freeze':
 
-                    sa_title = 'Requirement will be frozen!'
+                    sa_title = 'Test will be frozen!'
                     sa_text = 'Once frozen, no editing is possible.'
                     confirmText = 'Freeze'
                     cancelText ='Cancel'
 
                     dispatchRoute = 'onFreezeConfirmed'
                     dispatchData = {}
-
                     break;
 
 
                 case 'revise':
 
-                    sa_title = 'Do you want revise this requirement?'
+                    sa_title = 'Do you want revise this test?'
                     sa_text = 'New revision will be editable.'
                     confirmText = 'Revise'
                     cancelText ='Cancel'

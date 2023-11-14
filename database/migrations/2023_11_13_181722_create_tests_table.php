@@ -25,7 +25,6 @@ return new class extends Migration
             $table->foreignIdFor(Company::class);
             $table->foreignIdFor(Project::class);
             $table->foreignIdFor(Endproduct::class)->nullable();
-            $table->integer('requirement_no');
             $table->integer('test_no');
             $table->text('title');
             $table->integer('revision')->default(1);

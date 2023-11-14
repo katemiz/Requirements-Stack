@@ -25,4 +25,12 @@ class Test extends Model
         'remarks',
         'status',
     ];
+
+
+
+
+    public function getFullTestNoAttribute()
+    {
+        return 'T'.$this->test_no.' R'.$this->revision;
+    }
 }

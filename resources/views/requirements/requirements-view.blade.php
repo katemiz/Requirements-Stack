@@ -206,6 +206,7 @@
 
 
         <div class="column">
+
             @if ( count($verifications) > 0 )
 
               <table class="table is-fullwidth">
@@ -256,6 +257,24 @@
               No verifications exist
             @endif
         </div>
+
+
+        <div class="column">
+            <strong>Test Links</strong>
+            @if ( $tests->count() > 0 )
+                @foreach ($tests as $test)
+                    <div>
+                        <span class="has-text-weight-bold">T{{ $test->test_no }} R{{ $test->revision }}</span>
+                        <span><a href="/projects-tests/view/{{ $test->id }}">{{ $test->title }}</a></span>
+                    </div>
+                @endforeach
+            @else
+              No test link exist
+            @endif
+        </div>
+
+
+
 
         <div class="columns is-size-7 has-text-grey mt-6">
 

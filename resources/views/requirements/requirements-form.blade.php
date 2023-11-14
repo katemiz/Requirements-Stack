@@ -193,13 +193,25 @@
 
 
 
+        {{-- REQUIRED TESTING --}}
 
 
 
 
 
+        <div class="field">
 
+            <label class="label">Testing Links</label>
 
+            <div class="control">
+
+                @foreach ($tests as $test)
+                <input type="checkbox" value="{{ $test->id }}" wire:model="requirement_tests"> {{ $test->test_no }} {{ $test->title }}<br>
+                @endforeach
+
+            </div>
+
+        </div>
 
 
 

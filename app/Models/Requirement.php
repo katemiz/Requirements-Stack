@@ -9,11 +9,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-use App\Models\Attachment;
-use App\Models\Endproduct;
-use App\Models\Verification;
-use App\Models\Meeting;
-
+// use App\Models\Attachment;
+// use App\Models\Endproduct;
+// use App\Models\Verification;
+// use App\Models\Meeting;
 
 
 class Requirement extends Model
@@ -86,6 +85,11 @@ class Requirement extends Model
     {
         $usr = User::find($this->updated_uid);
         return $usr->name.' '.$usr->lastname;
+    }
+
+    public function tests()
+    {
+        return $this->belongsToMany(Test::class)->withTimestamps();
     }
 
 
