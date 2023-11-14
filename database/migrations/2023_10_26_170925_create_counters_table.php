@@ -12,10 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('counters', function (Blueprint $table) {
-            $table->id();
-            $table->integer('requirement_no');
+            $table->string('counter_type')->primary();
+            $table->integer('counter_value');
             $table->timestamps();
         });
+
+
     }
 
     /**

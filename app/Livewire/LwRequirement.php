@@ -530,21 +530,21 @@ class LwRequirement extends Component
 
     public function getRequirementNo() {
 
-        $initial_no = 1000;
-        $counter = Counter::find(1);
+        $parameter = 'requirement_no';
+        $initial_no = config('appconstants.counters.requirement_no');
+        $counter = Counter::find($parameter);
 
         if ($counter == null) {
-
             Counter::create([
-                'id' => 1,
-                'requirement_no' => $initial_no]
-            );
+                'counter_type' => $parameter,
+                'counter_value' => $initial_no
+            ]);
 
             return $initial_no;
         }
 
-        $new_no = $counter->requirement_no+1;
-        $counter->update(['requirement_no' => $new_no]);         // Update Counter
+        $new_no = $counter->counter_value + 1;
+        $counter->update(['counter_value' => $new_no]);         // Update Counter
         return $new_no;
     }
 
