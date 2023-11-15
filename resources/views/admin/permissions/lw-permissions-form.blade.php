@@ -1,4 +1,7 @@
-<x-title :params="$pid ? $constants['update'] : $constants['create']" />
+<header class="mb-6">
+    <h1 class="title has-text-weight-light is-size-1">Permissions</h1>
+    <h2 class="subtitle has-text-weight-light">{{ $cid ? 'Edit Permission Attributes' : 'Add Permission Company' }}</h2>
+</header>
 
 
 <form method="POST" enctype="multipart/form-data">
@@ -33,5 +36,4 @@
     </div>
 
 </form>
-    
-    
+

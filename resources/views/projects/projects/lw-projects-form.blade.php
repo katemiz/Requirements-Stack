@@ -1,10 +1,10 @@
-<x-title :params="$uid ? $constants['update'] : $constants['create']" />
-
+<header class="mb-6">
+    <h1 class="title has-text-weight-light is-size-1">Projects</h1>
+    <h2 class="subtitle has-text-weight-light">{{ $uid ? 'Edit Project Attributes' : 'Add Project Company' }}</h2>
+</header>
 
 <form method="POST" enctype="multipart/form-data">
     @csrf
-
-
 
     <div class="field">
         <label class="label">Company</label>
@@ -18,7 +18,7 @@
             </select>
             </div>
         </div>
-    
+
         @error('company_id')
         <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
         @enderror
@@ -76,5 +76,4 @@
     </div>
 
 </form>
-    
-    
+
