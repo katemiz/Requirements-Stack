@@ -1,4 +1,8 @@
-<x-title :params="config('users.read')" />
+
+<header class="mb-6">
+    <h1 class="title has-text-weight-light is-size-1">Users</h1>
+    <h2 class="subtitle has-text-weight-light">View User Attributes</h2>
+</header>
 
 <div class="card">
 
@@ -7,7 +11,7 @@
             <div class="media-left">
             <figure class="image is-48x48">
                 <a href="/admin-users/list"><x-carbon-list /></a>
-            </figure>              
+            </figure>
             </div>
 
             <div class="media-content">

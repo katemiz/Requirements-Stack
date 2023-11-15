@@ -1,7 +1,8 @@
-<x-title :params="$users ? config('users.update') : config('users.create')" />
 
-{{-- <form action="{{ config('users.cu_route') }}{{ $user ? $user->id : '' }}" method="POST" enctype="multipart/form-data"> --}}
-{{-- @csrf --}}
+<header class="mb-6">
+    <h1 class="title has-text-weight-light is-size-1">Users</h1>
+    <h2 class="subtitle has-text-weight-light">{{ $uid ? 'Update User Attributes' : 'Add New User' }}</h2>
+</header>
 
 <form method="POST" enctype="multipart/form-data">
     @csrf
@@ -18,7 +19,7 @@
             </select>
             </div>
         </div>
-    
+
         @error('company_id')
         <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
         @enderror
@@ -85,62 +86,62 @@
 
             <div class="field">
                 <label class="label">User Projects</label>
-            
+
                 <div class="control">
-    
+
                     @if ( count($allprojects) > 0)
-                    
+
                         @foreach ($allprojects as $project)
                             <label class="checkbox is-block">
                                 <input type="checkbox" wire:model="user_projects" value="{{$project->id}}"> {{ $project->code }}
                             </label>
                         @endforeach
-        
-                    @else  
+
+                    @else
                         <p>No projects</p>
-                    @endif                                       
-                                
+                    @endif
+
                 </div>
             </div>
 
 
             <div class="field">
                 <label class="label">User Roles</label>
-            
+
                 <div class="control">
-    
+
                     @if ( count($allroles) > 0)
-                    
+
                         @foreach ($allroles as $role)
                             <label class="checkbox is-block">
                                 <input type="checkbox" wire:model="user_roles" value="{{$role->id}}"> {{ $role->name }}
                             </label>
                         @endforeach
-        
-                    @else  
+
+                    @else
                         <p>{{ config('roles.list.noitem') }}</p>
-                    @endif                                       
-                                
+                    @endif
+
                 </div>
             </div>
 
             <div class="field">
                 <label class="label">User Permissions</label>
-            
+
                 <div class="control">
-            
+
                     @if ( count($permissions) > 0)
-                
+
                         @foreach ($permissions as $perm)
                             <label class="checkbox is-block">
                                 <input type="checkbox" wire:model='user_permissions' value="{{$perm->id}}" > {{ $perm->name }}
                             </label>
                         @endforeach
-        
-                    @else  
+
+                    @else
                         <p>{{ config('permissions.list.noitem') }}</p>
-                    @endif          
-                                
+                    @endif
+
                 </div>
             </div>
 
@@ -168,5 +169,4 @@
     </div>
 
 </form>
-    
-    
+
