@@ -26,25 +26,6 @@
             })
         });
 
-        window.addEventListener('attachDeleted',function(e) {
-
-            Swal.fire({
-                position: 'top-end',
-                icon: 'success',
-                title: 'File/Attachment has been deleted',
-                showConfirmButton: false,
-                timer: 1500
-            })
-        })
-
-        function showModal(modalNo) {
-            document.getElementById(modalNo).classList.add('is-active')
-        }
-
-        function hideModal(modalNo) {
-            document.getElementById(modalNo).classList.remove('is-active')
-        }
-
     </script>
 
     @switch($action)

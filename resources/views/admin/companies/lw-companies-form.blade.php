@@ -1,6 +1,8 @@
+<script src="{{ asset('/ckeditor5/ckeditor.js') }}"></script>
+
 <header class="mb-6">
     <h1 class="title has-text-weight-light is-size-1">Companies</h1>
-    <h2 class="subtitle has-text-weight-light">{{ $cid ? $constants['update'] : $constants['create'] }}</h2>
+    <h2 class="subtitle has-text-weight-light">{{ $cid ? 'Edit Company Attributes' : 'Add New Company' }}</h2>
 </header>
 
 <form method="POST" enctype="multipart/form-data">
@@ -23,7 +25,6 @@
         @enderror
     </div>
 
-
     <div class="field">
 
         <label class="label">Company Fullname</label>
@@ -41,14 +42,20 @@
         @enderror
     </div>
 
+    <livewire:ck-editor
+        edId="ed10"
+        wire:model="remarks"
+        label='Notes and Remarks'
+        placeholder='Any kind of remarks/notes about part/product.'
+        :content="$remarks"/>
+
+    @error('remarks')
+    <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
+    @enderror
 
     <div class="buttons is-right">
         <button wire:click.prevent="storeUpdateItem()" class="button is-dark">
-            @if ($cid)
-                {{ $constants['update']['submitText'] }}
-            @else
-                {{ $constants['create']['submitText'] }}
-            @endif
+            {{ $cid ? 'Update Company' : 'Add Company' }}
         </button>
     </div>
 

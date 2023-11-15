@@ -12,13 +12,49 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 use App\Models\Company;
+use App\Models\User;
 
 class LwCompany extends Component
 {
     use WithPagination;
 
+    public $constants = [
+
+        "filterText" => "Search ...",
+        "listCaption" => false,
+
+        "list" => [
+
+            "id"=> [
+                "title" => "Id",
+                "sortable" => true,
+                "align" => "left",
+                "direction" => "asc"
+            ],
+
+            "name"=> [
+                "title" => "Name",
+                "sortable" => true,
+                "align" => "left",
+                "direction" => "asc"
+            ],
+            "fullname"=> [
+                "title" => "Fullname",
+                "sortable" => true,
+                "align" => "left",
+                "direction" => "asc"
+            ],
+
+            "created_at"=> [
+                "title" => "Created On",
+                "sortable" => true,
+                "align" => "left",
+                "direction" => "asc"
+            ]
+        ]
+    ];
+
     public $action = 'LIST'; // LIST,FORM,VIEW
-    public $constants;
 
     public $cid = false;
 
@@ -26,11 +62,13 @@ class LwCompany extends Component
     public $sortField = 'created_at';
     public $sortDirection = 'DESC';
 
-    #[Rule('required', message: 'Please enter company short name')] 
+    #[Rule('required', message: 'Please enter company short name')]
     public $name;
 
-    #[Rule('required', message: 'Please enter company fullname')] 
+    #[Rule('required', message: 'Please enter company fullname')]
     public $fullname;
+
+    public $remarks;
 
     public $created_by;
     public $updated_by;
@@ -45,23 +83,37 @@ class LwCompany extends Component
 
         if (request('id')) {
             $this->cid = request('id');
-            $this->setProps();
         }
-
-        $this->constants = config('companies');
     }
 
 
     public function render()
     {
-        $companies = Company::where('name', 'LIKE', "%".$this->query."%")
-        ->orWhere('fullname','LIKE',"%".$this->query."%")
-        ->orderBy($this->sortField,$this->sortDirection)
-        ->paginate(env('RESULTS_PER_PAGE'));
+        $this->setProps();
 
         return view('admin.companies.lw-companies',[
-            'companies' => $companies
+            'companies' => $this->getCompaniesList()
         ]);
+    }
+
+
+    public function getCompaniesList() {
+
+        if ( !in_array($this->action,['LIST']) ) {
+            return false;
+        }
+
+        if ( strlen($this->query) > 2) {
+            $sonuc = Company::where('name', 'LIKE', "%".$this->query."%")
+                ->orWhere('fullname','LIKE',"%".$this->query."%")
+                ->orderBy($this->sortField,$this->sortDirection)
+                ->paginate(env('RESULTS_PER_PAGE'));
+        } else {
+
+            $sonuc = Company::orderBy($this->sortField,$this->sortDirection)
+                ->paginate(env('RESULTS_PER_PAGE'));
+        }
+        return $sonuc;
     }
 
 
@@ -85,35 +137,34 @@ class LwCompany extends Component
     public function viewItem($cid) {
         $this->cid = $cid;
         $this->action = 'VIEW';
-
-        $this->setProps();
     }
 
     public function editItem($cid) {
         $this->cid = $cid;
         $this->action = 'FORM';
-
-        $this->setProps();
     }
 
     public function addItem() {
         $this->cid = false;
         $this->action = 'FORM';
-
-        $this->reset('name','fullname');
+        $this->reset('name','fullname','remarks');
     }
 
 
     public function setProps() {
 
-        $c = Company::find($this->cid);
+        if ($this->cid) {
+            $c = Company::find($this->cid);
 
-        $this->name = $c->name;
-        $this->fullname = $c->fullname;
-        $this->created_at = $c->created_at;
-        $this->updated_at = $c->updated_at;
-        $this->created_by = $c->user_id;
-        $this->updated_by = $c->updated_uid;
+            $this->name = $c->name;
+            $this->fullname = $c->fullname;
+            $this->created_at = $c->created_at;
+            $this->remarks = $c->remarks;
+            $this->updated_at = $c->updated_at;
+
+            $this->created_by = User::find($c->user_id);
+            $this->updated_by = User::find($c->updated_uid);
+        }
     }
 
 
@@ -128,11 +179,12 @@ class LwCompany extends Component
     {
         Company::find($this->cid)->delete();
         session()->flash('message','Company has been deleted successfully.');
+        $this->reset('cid');
         $this->action = 'LIST';
         $this->resetPage();
     }
 
-    
+
     public function storeUpdateItem () {
 
         $this->validate();
@@ -140,6 +192,7 @@ class LwCompany extends Component
         $props['updated_uid'] = Auth::id();
         $props['name'] = $this->name;
         $props['fullname'] = $this->fullname;
+        $props['remarks'] = $this->remarks;
 
         if ( $this->cid ) {
             // update

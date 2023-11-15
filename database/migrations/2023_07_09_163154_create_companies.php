@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('updated_uid')->nullable();
             $table->string('name');
             $table->string('fullname');
+            $table->text('remarks')->nullable();
             $table->timestamps();
         });
     }
