@@ -1,12 +1,14 @@
-<x-title :params="$cid ? $constants['update'] : $constants['create']" />
-
+<header class="mb-6">
+    <h1 class="title has-text-weight-light is-size-1">Companies</h1>
+    <h2 class="subtitle has-text-weight-light">{{ $cid ? $constants['update'] : $constants['create'] }}</h2>
+</header>
 
 <form method="POST" enctype="multipart/form-data">
     @csrf
 
     <div class="field">
 
-        <label class="label">Company Short Name</label>
+        <label class="label">Company Name (Short)</label>
         <div class="control">
 
             <input
@@ -24,7 +26,7 @@
 
     <div class="field">
 
-        <label class="label">Company Full Name</label>
+        <label class="label">Company Fullname</label>
         <div class="control">
 
             <input
@@ -51,5 +53,4 @@
     </div>
 
 </form>
-    
-    
+

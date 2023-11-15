@@ -16,38 +16,38 @@
         <nav class="level mb-6">
             <!-- Left side -->
             <div class="level-left">
-        
+
                 <p class="level-item">
-                    <a href="/projects-phases/list">                    
+                    <a href="/projects-phases/list">
                         <span class="icon is-small"><x-carbon-table /></span>
                         <span>List All</span>
                     </a>
                 </p>
-        
+
                 <p class="level-item">
                     <a href="/projects-phases/form/">
-                        <span class="icon is-small"><x-carbon-add-large /></span>
+                        <span class="icon is-small"><x-carbon-add /></span>
                         <span>Add</span>
                     </a>
                 </p>
-        
+
             </div>
-        
+
             <!-- Right side -->
             <div class="level-right">
-        
+
                 <p class="level-item">
                     <a href='/projects-phases/form/{{ $uid }}'>
                         <span class="icon"><x-carbon-edit /></span>
                     </a>
                 </p>
-        
+
                 <p class="level-item">
                     <a wire:click='triggerDelete({{ $uid }})'>
                         <span class="icon has-text-danger"><x-carbon-trash-can /></span>
                     </a>
                 </p>
-        
+
             </div>
         </nav>
 
@@ -68,7 +68,7 @@
         </p>
 
 
-        @if (strlen(trim($description)) > 0) 
+        @if (strlen(trim($description)) > 0)
         <p class="subtitle is-6">
             {!! $description !!}
         </p>
@@ -80,14 +80,14 @@
                 <p>{{ $created_by }}</p>
                 <p>{{ $created_at }}</p>
             </div>
-        
+
             <div class="column has-text-right">
                 <p>{{ $updated_by }}</p>
                 <p>{{ $updated_at }}</p>
             </div>
-        
+
         </div>
-        
+
     </div>
 
 </div>

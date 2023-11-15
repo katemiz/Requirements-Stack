@@ -26,7 +26,7 @@
 
                 <p class="level-item">
                     <a href="/projects-tests/form/">
-                        <span class="icon is-small"><x-carbon-add-large /></span>
+                        <span class="icon is-small"><x-carbon-add /></span>
                         <span>Add</span>
                     </a>
                 </p>
