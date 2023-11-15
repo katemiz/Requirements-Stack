@@ -1,5 +1,7 @@
-<x-title :params="$rid ? $constants['update'] : $constants['create']" />
-
+<header class="mb-6">
+    <h1 class="title has-text-weight-light is-size-1">Roles</h1>
+    <h2 class="subtitle has-text-weight-light">{{ $rid ? 'Update Role Attributes' : 'Add New Role' }}</h2>
+</header>
 
 <form method="POST" enctype="multipart/form-data">
     @csrf
@@ -33,5 +35,4 @@
     </div>
 
 </form>
-    
-    
+
