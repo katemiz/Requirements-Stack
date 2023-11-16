@@ -1,4 +1,4 @@
-<div class="field">
+<div class="field content">
     <label class="label">{{ $label }}</label>
     <div wire:ignore class="control">
         <textarea wire:model="content" class="textarea ckeditor"

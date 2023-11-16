@@ -205,9 +205,16 @@
 
             <div class="control">
 
+                @if ($tests)
+
                 @foreach ($tests as $test)
                 <input type="checkbox" value="{{ $test->id }}" wire:model="requirement_tests"> {{ $test->test_no }} {{ $test->title }}<br>
                 @endforeach
+
+                @else
+
+                <p>No tests defined yet</p>
+                @endif
 
             </div>
 

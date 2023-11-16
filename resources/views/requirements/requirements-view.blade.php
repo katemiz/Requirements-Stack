@@ -145,8 +145,12 @@
 
 
         <div class="column">
+
+            <div class="content">
             <strong>Requirement Text</strong>
             {!! $text !!}
+            </div>
+
         </div>
 
 
