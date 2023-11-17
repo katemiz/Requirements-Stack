@@ -10,15 +10,12 @@
 
     <input type="hidden" id="H{{$edId}}" value="{{ $content }}">
 
-
     <script>
 
         ClassicEditor
             .create(document.querySelector('#{{$edId}}'))
             .then(editor => {
-
                 editor.setData( document.getElementById('H{{$edId}}').value );
-
                 editor.model.document.on('change:data', () => {
                     @this.set('content', editor.getData());
                 })
