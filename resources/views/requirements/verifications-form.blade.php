@@ -1,6 +1,6 @@
 <section class="section container">
 
-    <script src="{{ asset('/js/ckeditor5/ckeditor.js') }}"></script>
+    <script src="{{ asset('/ckeditor5/ckeditor.js') }}"></script>
 
     <header class="mb-6">
         <h1 class="title has-text-weight-light is-size-1">{{ $constants['create']['title'] }}</h1>

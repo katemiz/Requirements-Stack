@@ -17,6 +17,7 @@ class CkEditor extends Component
 
     public function mount($content = ''){
         $this->content = $content;
+        $this->edId = uniqid('ED');
     }
 
     public function render()

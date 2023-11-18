@@ -1,6 +1,8 @@
 <section class="section container">
 
-    <script src="{{ asset('/js/ckeditor5/ckeditor.js') }}"></script>
+    {{-- <script src="{{ asset('/ckeditor5/ckeditor.light.js') }}"></script> --}}
+
+    <script src="https://cdn.ckeditor.com/ckeditor5/37.0.1/classic/ckeditor.js"></script>
 
     <header class="mb-6">
         <h1 class="title has-text-weight-light is-size-1">{{ $constants['create']['title'] }}</h1>
@@ -141,7 +143,7 @@
 
 
         <livewire:ck-editor
-            edId="ed10"
+            {{-- edId="ed10" --}}
             wire:model="text"
             label='Requirement Text / Description'
             placeholder='Requirement text/description ....'
@@ -153,7 +155,7 @@
 
 
         <livewire:ck-editor
-            edId="ed20"
+            {{-- edId="ed20" --}}
             wire:model="remarks"
             label='Remarks'
             placeholder='Remarks about requirement and its text ....'
@@ -162,11 +164,6 @@
         @error('remarks')
             <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
         @enderror
-
-
-
-
-
 
 
         <div class="field block">
