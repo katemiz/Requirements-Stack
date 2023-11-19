@@ -12,27 +12,52 @@
 
     <script>
 
-        const editor_config{{$edId}} = {
-            toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote' ],
-            heading: {
-                options: [
-                    { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-                    { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
-                    { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' }
-                ]
-            }
-        } 
+        ed_type = '{{$ed_type}}'
+
+        switch (ed_type) {
+            case 'LIGHT':
+
+                edconfig = {
+                    removePlugins: [ 'Heading', 'Link' ],
+                    toolbar: [ 'bold', 'italic', 'bulletedList', 'numberedList', 'blockQuote' ]
+                }
+                
+                break;
 
 
+            case 'STANDARD':
 
+                edconfig = {
+                    removePlugins: [ 'Heading', 'Link' ],
+                    toolbar: [ 'bold', 'italic', 'bulletedList', 'numberedList', 'blockQuote' ]
+                }
+                
+                break;
 
+            case 'FULL':
 
+                edconfig = {
+                    //removePlugins: [ 'Heading', 'Link' ],
+                    toolbar: 
+                        [ 'link','bold', 'italic', 'bulletedList', 'numberedList', 'blockQuote' ,
+                        'FontColor','bold', 'italic', 'bulletedList', 'numberedList', 'blockQuote' ]
 
+                    
+                }
+                
+                break;
+        
+            default:
+
+        }
 
         ClassicEditor
-            .create(document.querySelector('#{{$edId}}',editor_config{{$edId}}))
+            .create(document.querySelector('#{{$edId}}'), edconfig )
             .then(editor => {
-                
+
+                // Prints all available plugins : DO NOT REMOVE
+                //console.log(ClassicEditor.builtinPlugins.map( plugin => plugin.pluginName ));
+
                 editor.setData( document.getElementById('H{{$edId}}').value );
                 editor.model.document.on('change:data', () => {
                     @this.set('content', editor.getData());
