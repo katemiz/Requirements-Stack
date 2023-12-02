@@ -5,6 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 use App\Models\Company;
+use App\Models\Chapter;
 use App\Models\Endproduct;
 use App\Models\User;
 use App\Models\Project;
@@ -23,6 +24,7 @@ return new class extends Migration
             $table->foreignIdFor(Company::class);
             $table->foreignIdFor(Project::class);
             $table->foreignIdFor(Endproduct::class)->nullable();
+            $table->foreignIdFor(Chapter::class)->nullable();
             $table->integer('requirement_no');
             $table->integer('revision')->default(1);
             $table->boolean('is_latest')->default(true);

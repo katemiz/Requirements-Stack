@@ -79,6 +79,11 @@
                     <span>Tests</span>
                 </a>
 
+                <a href="/projects-chapters/list" class="navbar-item icon-text">
+                    <span class="icon has-text-warning"><x-carbon-cics-system-group /></span>
+                    <span>Chapters</span>
+                </a>
+                
                 <div class="navbar-item has-dropdown is-hoverable">
                     <p class="navbar-link" href="/Admin">Export</p>
                     <div class="navbar-dropdown">

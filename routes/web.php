@@ -8,6 +8,7 @@ use App\Livewire\ListRequirements;
 use App\Livewire\RequirementLivewire;
 
 use App\Livewire\LwCompany;
+use App\Livewire\LwChapter;
 use App\Livewire\ChangePassword;
 use App\Livewire\LwEndProduct;
 use App\Livewire\LwGate;
@@ -80,6 +81,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/projects-mocs/{action}/{id?}', LwMoc::class);
     Route::get('/projects-pocs/{action}/{id?}', LwPoc::class);
     Route::get('/projects-tests/{action}/{id?}', LwTest::class);
+    Route::get('/projects-chapters/{action}/{id?}', LwChapter::class);
+
 
 
 
