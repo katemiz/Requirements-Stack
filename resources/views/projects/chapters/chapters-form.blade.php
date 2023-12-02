@@ -1,7 +1,5 @@
 <section class="section container">
 
-    <script src="{{ asset('/ckeditor5/ckeditor.js') }}"></script>
-
     <header class="mb-6">
         <h1 class="title has-text-weight-light is-size-1">{{ $constants['create']['title'] }}</h1>
         <h2 class="subtitle has-text-weight-light">{{ $uid ? $constants['update']['subtitle'] : $constants['create']['subtitle'] }}</h2>
@@ -84,8 +82,6 @@
         </div>
 
 
-
-
         <div class="field">
             <label class="label">Chapter Title</label>
             <div class="control">
@@ -98,42 +94,6 @@
 
         </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         <div class="buttons is-right">
             <button wire:click.prevent="storeUpdateItem()" class="button is-dark">
                 @if ($uid)
@@ -144,20 +104,6 @@
             </button>
         </div>
 
-
-
-
     </form>
-
-    {{-- @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-    @endif --}}
-
 
 </section>

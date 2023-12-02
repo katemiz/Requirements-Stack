@@ -2,8 +2,6 @@
 
     <script src="{{ asset('/ckeditor5/ckeditor.js') }}"></script>
 
-    {{-- <script src="https://cdn.ckeditor.com/ckeditor5/37.0.1/classic/ckeditor.js"></script> --}}
-
     <header class="mb-6">
         <h1 class="title has-text-weight-light is-size-1">{{ $constants['create']['title'] }}</h1>
         <h2 class="subtitle has-text-weight-light">{{ $uid ? $constants['update']['subtitle'] : $constants['create']['subtitle'] }}</h2>
@@ -130,10 +128,39 @@
 
                 </div>
 
-
-
-
             </div>
+        </div>
+
+
+
+
+
+
+        <div class="field">
+            <label class="label">Select Related Chapter</label>
+            <div class="control">
+
+                @if (count($chapters) > 0)
+
+                <div class="select">
+
+                    <select wire:model='chapter_id'>
+                        <option>Select Chapter...</option>
+                        @foreach ($chapters as $chapters)
+                            <option value="{{ $chapters->id }}">{{ $chapters->title }}</option>
+                        @endforeach
+                    </select>
+
+                </div>
+
+                @else
+                    <p>No chapters found</p>
+                @endif
+            </div>
+
+            @error('endproduct_id')
+            <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
+            @enderror
         </div>
 
 

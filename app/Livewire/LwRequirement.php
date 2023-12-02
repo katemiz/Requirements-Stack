@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 use App\Models\Company;
+use App\Models\Chapter;
 use App\Models\Counter;
 use App\Models\Endproduct;
 use App\Models\Requirement;
@@ -50,6 +51,8 @@ class LwRequirement extends Component
     public $companies = [];
     public $projects = [];
     public $endproducts = [];
+    public $chapters = [];
+
 
     public $the_company = false;    // Viewed Phase Company
     public $the_project = false;    // Viewed Phase Project
@@ -69,6 +72,7 @@ class LwRequirement extends Component
     public $project_id = false;
 
     public $endproduct_id = false;
+    public $chapter_id = false;
 
     public $source;
     public $xrefno;
@@ -132,7 +136,8 @@ class LwRequirement extends Component
             'requirements' => $this->getRequirementsList(),
             'verifications' => $existing_verifications,
             'verification_data' => $this->getVerificationProps(),
-            'tests' => $this->getTestsList()
+            'tests' => $this->getTestsList(),
+            'chapters' => $this->getChaptersList()
         ]);
     }
 
@@ -342,6 +347,23 @@ class LwRequirement extends Component
     }
 
 
+    public function getChaptersList()  {
+        if ($this->project_id) {
+            return Chapter::where('project_id',$this->project_id)
+                ->when(session('current_eproduct_id'), function ($query) {
+                    $query->where('endproduct_id', session('current_project_id'));
+                })->get();
+        }
+
+        return collect([]);
+    }
+
+
+    
+
+
+
+
     public function changeSortDirection ($key) {
 
         $this->sortField = $key;
@@ -396,6 +418,7 @@ class LwRequirement extends Component
             $this->company_id = $c->company_id;
             $this->project_id = $c->project_id;
             $this->endproduct_id = $c->endproduct_id;
+            $this->chapter_id = $c->chapter_id;
             $this->xrefno = $c->cross_ref_no;
             $this->source = $c->source;
             $this->status = $c->status;
@@ -467,6 +490,7 @@ class LwRequirement extends Component
         $props['company_id'] = $this->company_id;
         $props['project_id'] = $this->project_id;
         $props['endproduct_id'] = $this->endproduct_id ? $this->endproduct_id : 0;
+        $props['chapter_id'] = $this->chapter_id ? $this->chapter_id : 0;
         $props['rtype'] = $this->rtype;
         $props['source'] = $this->source;
         $props['cross_ref_no'] = $this->xrefno;
