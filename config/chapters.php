@@ -15,8 +15,25 @@ return [
 
         "headers" => [
 
+
+
             "title"=> [
                 "title" => "Chapter Title",
+                "sortable" => true,
+                "align" => "left",
+                "direction" => "asc"
+            ],
+
+
+            "project_name"=> [
+                "title" => "Project",
+                "sortable" => true,
+                "align" => "left",
+                "direction" => "asc"
+            ],
+
+            "endproduct_name"=> [
+                "title" => "End Product",
                 "sortable" => true,
                 "align" => "left",
                 "direction" => "asc"

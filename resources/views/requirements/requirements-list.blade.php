@@ -76,7 +76,7 @@
         <thead>
             <tr>
                 @foreach ($constants['list']['headers'] as $col_name => $headerParams)
-                    <th class="has-text-{{ $headerParams['align'] }}">
+                    <th class="{{ $headerParams['class'] ? $headerParams['class'] :''}}">
                         {{ $headerParams['title'] }}
 
                         @if ($headerParams['sortable'])

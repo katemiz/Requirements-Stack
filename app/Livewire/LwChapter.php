@@ -31,8 +31,8 @@ class LwChapter extends Component
     public $uid = false;
 
     public $query = '';
-    public $sortField = 'created_at';
-    public $sortDirection = 'DESC';
+    public $sortField = 'ordering';
+    public $sortDirection = 'ASC';
 
     public $logged_user;
 
@@ -255,7 +255,6 @@ class LwChapter extends Component
             if (session('current_project_id')) {
                 $this->project_id = session('current_project_id');
                 $this->projects = Project::find($this->project_id)->get();
-
             } else {
                 $this->projects = Project::where('company_id',$this->company_id)->get();
             }
@@ -389,6 +388,7 @@ class LwChapter extends Component
         } else {
             // create
             $props['user_id'] = Auth::id();
+            $props['ordering'] = $this->getMaxOrderNo()+1;
             $this->uid = Chapter::create($props)->id;
             session()->flash('message','Chapter has been created successfully.');
         }
@@ -397,78 +397,34 @@ class LwChapter extends Component
     }
 
 
-    // public function formVerification ($rid,$vid) {
+    public function moveUpDown($idRecord,$up_or_down) {
 
-    //     $this->uid = $rid;
-    //     if ($vid) {
-    //         $this->vid = $vid;
-    //     }
-    //     $this->action = 'VERIFICATION';
-    // }
+        $current_chapter = Chapter::find($idRecord);
 
+        $current_order = $current_chapter->ordering;
 
-    // public function getVerificationProps () {
-
-    //     $verification = false;
-
-    //     $ver_milestones = Gate::where('company_id', $this->logged_user->company_id)
-    //         ->where('project_id', session('current_project_id'))
-    //         ->when(session('current_eproduct_id'), function ($query) {
-    //             $query->where('endproduct_id', session('current_eproduct_id'));
-    //         })->get();
-
-    //     $ver_mocs = Moc::where('company_id', $this->logged_user->company_id)
-    //         ->where('project_id', session('current_project_id'))
-    //         ->when(session('current_eproduct_id'), function ($query) {
-    //             $query->where('endproduct_id', session('current_eproduct_id'));
-    //         })->get();
-
-    //     $ver_pocs = Poc::where('company_id', $this->logged_user->company_id)
-    //         ->where('project_id', session('current_project_id'))
-    //         ->when(session('current_eproduct_id'), function ($query) {
-    //             $query->where('endproduct_id', session('current_eproduct_id'));
-    //         })->get();
-
-
-    //     $ver_witnesses = Witness::where('company_id', $this->logged_user->company_id)
-    //         ->where('project_id', session('current_project_id'))
-    //         ->when(session('current_eproduct_id'), function ($query) {
-    //             $query->where('endproduct_id', session('current_eproduct_id'));
-    //         })->get();
-
-    //     if ($this->vid) {
-    //         $verification = Verification::find($this->vid);
-    //     }
-
-    //     return [
-    //         'verification' => $verification,
-    //         'ver_milestones' => $ver_milestones,
-    //         'ver_mocs' => $ver_mocs,
-    //         'ver_pocs' => $ver_pocs,
-    //         'ver_witnesses' => $ver_witnesses
-    //     ];
-    // }
-
-
-
-    public function getTestNo() {
-
-        $parameter = 'test_no';
-        $initial_no = config('appconstants.counters.test_no');
-        $counter = Counter::find($parameter);
-
-        if ($counter == null) {
-            Counter::create([
-                'counter_type' => $parameter,
-                'counter_value' => $initial_no
-            ]);
-
-            return $initial_no;
+        if ($up_or_down == 'up') {
+            $new_order = $current_order -1;
+        } else {
+            $new_order = $current_order +1;
         }
 
-        $new_no = $counter->counter_value + 1;
-        $counter->update(['counter_value' => $new_no]);         // Update Counter
-        return $new_no;
+        $second_chapter =  Chapter::where('project_id', session('current_project_id'))
+        ->when(session('current_eproduct_id'), function ($query) {
+            $query->where('endproduct_id', session('current_eproduct_id'));
+        })->where('ordering',$new_order)->sole();
+
+        $current_chapter->update(['ordering' => $new_order]);
+        $second_chapter->update(['ordering' => $current_order]);
+    }
+
+
+    public function getMaxOrderNo() {
+
+        return Chapter::where('project_id', session('current_project_id'))
+            ->when(session('current_eproduct_id'), function ($query) {
+                $query->where('endproduct_id', session('current_eproduct_id'));
+            })->max('ordering');
     }
 
 

@@ -51,8 +51,6 @@ class LwRequirement extends Component
     public $companies = [];
     public $projects = [];
     public $endproducts = [];
-    public $chapters = [];
-
 
     public $the_company = false;    // Viewed Phase Company
     public $the_project = false;    // Viewed Phase Project
@@ -73,6 +71,7 @@ class LwRequirement extends Component
 
     public $endproduct_id = false;
     public $chapter_id = false;
+    public $chapter;
 
     public $source;
     public $xrefno;
@@ -262,7 +261,7 @@ class LwRequirement extends Component
                     $query->where('project_id', session('current_project_id'));
                 })
                 ->when(session('current_eproduct_id'), function ($query) {
-                    $query->where('endproduct_id', session('current_project_id'));
+                    $query->where('endproduct_id', session('current_eproduct_id'));
                 })
                 ->when($this->show_latest, function ($query) {
                     $query->where('is_latest', true);
@@ -348,10 +347,12 @@ class LwRequirement extends Component
 
 
     public function getChaptersList()  {
+        
+
         if ($this->project_id) {
             return Chapter::where('project_id',$this->project_id)
                 ->when(session('current_eproduct_id'), function ($query) {
-                    $query->where('endproduct_id', session('current_project_id'));
+                    $query->where('endproduct_id', session('current_eproduct_id'));
                 })->get();
         }
 
@@ -431,6 +432,10 @@ class LwRequirement extends Component
             $this->the_project = Project::find($c->project_id);
 
             $this->tests = $c->tests;
+
+            if ($c->chapter_id > 0) {
+                $this->chapter = Chapter::find($c->chapter_id);
+            }
 
             if ($c->endproduct_id > 0) {
                 $this->the_endproduct = Endproduct::find($c->endproduct_id);

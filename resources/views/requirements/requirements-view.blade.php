@@ -144,6 +144,17 @@
         </div>
 
 
+
+        <div class="column">
+
+            <strong>Chapter Requirements Belongs To</strong>
+
+            <p>{{ $chapter->title }}</p>
+
+        </div>
+
+
+
         <div class="column">
 
             <div class="content">
@@ -163,16 +174,6 @@
                 'tag' => 'support',                          // Any tag other than model name
             ])
         </div>
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -273,7 +274,7 @@
                     </div>
                 @endforeach
             @else
-              No test link exist
+              <p>No test link exist</p>
             @endif
         </div>
 

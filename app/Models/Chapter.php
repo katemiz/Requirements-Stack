@@ -15,6 +15,24 @@ class Chapter extends Model
         'company_id',
         'project_id',
         'endproduct_id',
+        'ordering',
         'title',
     ];
+
+
+
+
+    public function getProjectNameAttribute()
+    {
+        return Project::find($this->project_id)->code;
+    }
+
+    
+    public function getEndProductNameAttribute()
+    {
+        return Endproduct::find($this->endproduct_id)->code;
+    }
+
+
+
 }

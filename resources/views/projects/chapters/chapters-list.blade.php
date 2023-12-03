@@ -1,6 +1,5 @@
 <section class="section container">
 
-
     <div class="column">
 
         <header class="mb-6">
@@ -10,12 +9,11 @@
 
     </div>
 
-
-
-
     @if(session('message'))
         <div class="notification is-info is-light">{{ session('message') }}</div>
     @endif
+
+    <div class="notification is-info is-light">Only current project/end product chapters are listed</div>
 
     <nav class="level my-6">
 
@@ -65,7 +63,10 @@
         @endif
 
         <thead>
+
             <tr>
+                <th>Order</th>
+
                 @foreach ($constants['list']['headers'] as $col_name => $headerParams)
                     <th class="has-text-{{ $headerParams['align'] }}">
                         {{ $headerParams['title'] }}
@@ -97,8 +98,26 @@
 
         <tbody>
 
-            @foreach ($chapters as $record)
+            @foreach ($chapters as $k => $record)
+
             <tr wire:key="{{ $record->id }}">
+
+                <td>
+                    @if ($record->ordering != 1)
+                    <a wire:click="moveUpDown({{ $record->id}},'up')">
+                        <span class="icon is-small"><x-carbon-arrow-up /></span>
+                    </a>
+                    @endif
+        
+
+                    @if ($record->ordering != count($chapters))
+
+                    <a wire:click="moveUpDown({{ $record->id}},'down')" class="mr-4">
+                        <span class="icon is-small"><x-carbon-arrow-down /></span>
+                    </a>
+                    @endif
+
+                </td>
 
                 @foreach (array_keys($constants['list']['headers']) as $col_name)
                     <td>
@@ -122,9 +141,9 @@
                             <span class="icon"><x-carbon-edit /></span>
                         </a>
 
-                        {{-- <a wire:click.prevent="triggerDelete({{$record->id}})">
+                        <a wire:click.prevent="triggerDelete({{$record->id}})">
                             <span class="icon has-text-danger-dark"><x-carbon-trash-can /></span>
-                        </a> --}}
+                        </a>
                     @endrole
 
                 </td>

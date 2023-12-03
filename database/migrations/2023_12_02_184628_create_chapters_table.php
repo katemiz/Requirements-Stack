@@ -23,6 +23,7 @@ return new class extends Migration
             $table->foreignIdFor(Company::class);
             $table->foreignIdFor(Project::class);
             $table->foreignIdFor(Endproduct::class);
+            $table->integer('ordering');
             $table->string('title');
             $table->timestamps();
         });

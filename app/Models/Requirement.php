@@ -76,6 +76,13 @@ class Requirement extends Model
     }
 
 
+    public function getFullNoAttribute()
+    {
+        return $this->rtype.'-'.$this->requirement_no.' R'.$this->revision;
+    }
+
+
+
     public function getCreatedByNameAttribute()
     {
         $usr = User::find($this->user_id);

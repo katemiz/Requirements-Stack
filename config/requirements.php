@@ -15,31 +15,38 @@ return [
 
         "headers" => [
 
-            "rtype"=> [
-                "title" => "Type",
-                "sortable" => true,
-                "align" => "left",
-                "direction" => "asc"
-            ],
-
-            "requirement_no"=> [
+            "full_no"=> [
                 "title" => "No",
                 "sortable" => true,
-                "align" => "left",
+                "class" => "has-text-left is-narrow",
                 "direction" => "asc"
             ],
 
-            "revision"=> [
-                "title" => "Rev",
-                "sortable" => true,
-                "align" => "left",
-                "direction" => "asc"
-            ],
+            // "rtype"=> [
+            //     "title" => "Type",
+            //     "sortable" => true,
+            //     "align" => "left",
+            //     "direction" => "asc"
+            // ],
+
+            // "requirement_no"=> [
+            //     "title" => "No",
+            //     "sortable" => true,
+            //     "align" => "left",
+            //     "direction" => "asc"
+            // ],
+
+            // "revision"=> [
+            //     "title" => "Rev",
+            //     "sortable" => true,
+            //     "align" => "left",
+            //     "direction" => "asc"
+            // ],
 
             "project_name"=> [
                 "title" => "Project",
                 "sortable" => false,
-                "align" => "left",
+                "class" => "has-text-left",
                 "direction" => "asc"
             ],
 
@@ -47,7 +54,7 @@ return [
             "text"=> [
                 "title" => "Requirement Text",
                 "sortable" => true,
-                "align" => "left",
+                "class" => "has-text-left",
                 "direction" => "asc",
                 "is_html" => true
             ],
@@ -55,7 +62,7 @@ return [
             "created_at"=> [
                 "title" => "Created On",
                 "sortable" => true,
-                "align" => "left",
+                "class" => "has-text-left",
                 "direction" => "asc"
             ]
 
