@@ -179,7 +179,6 @@
     {{-- <x-form-editor :params="config('verifications.form.remarks')" value="{{ $verification ? $verification->remarks : '' }}"/> --}}
 
     <livewire:ck-editor
-        edId="ed10"
         wire:model="vremarks"
         label='Verification Notes/Remarks'
         placeholder='Add any note on verification ....'

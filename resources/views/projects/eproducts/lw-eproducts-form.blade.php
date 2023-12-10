@@ -90,7 +90,6 @@
 
 
     <livewire:ck-editor
-        edId="ed10"
         wire:model="description"
         label='Description'
         placeholder='Detailed description ....'

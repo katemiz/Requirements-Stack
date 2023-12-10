@@ -115,7 +115,6 @@
     </div>
 
     <livewire:ck-editor
-        edId="ed20"
         wire:model="purpose"
         label='Gate Purpose'
         placeholder='Detailed description of gate/milestone purpose....'
@@ -128,7 +127,6 @@
 
 
     <livewire:ck-editor
-        edId="ed30"
         wire:model="timing"
         label='Gate Timing'
         placeholder='Detailed description of gate/milestone timing....'

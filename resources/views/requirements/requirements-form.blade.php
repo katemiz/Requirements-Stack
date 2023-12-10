@@ -170,7 +170,6 @@
 
 
         <livewire:ck-editor
-            {{-- edId="ed10" --}}
             ed_type="FULL"
             wire:model="text"
             label='Requirement Text / Description'
@@ -183,8 +182,7 @@
 
 
         <livewire:ck-editor
-            {{-- edId="ed20" --}}
-            ed_type="LIGHT"
+            ed_type="MIN"
             wire:model="remarks"
             label='Remarks'
             placeholder='Remarks about requirement and its text ....'

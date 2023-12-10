@@ -124,7 +124,6 @@
 
 
         <livewire:ck-editor
-            edId="ed10"
             wire:model="remarks"
             label='Test Description'
             placeholder='What will be tested ....'
