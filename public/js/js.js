@@ -2,9 +2,8 @@
 // CKEDITOR
 // ***********************
 
-let edconfig, edtype
-
-
+let ck_toolbar,cktype
+let IsCkUploadAdapterDefined = false
 
 
 // BULMA MOBILE MENU TRIGGER

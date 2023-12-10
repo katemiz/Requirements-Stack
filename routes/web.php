@@ -30,6 +30,8 @@ use App\Http\Controllers\ExportController;
 use App\Http\Controllers\RequirementController;
 use App\Http\Controllers\CurrentProjectController;
 use App\Http\Controllers\RolesPermissionsController;
+use App\Http\Controllers\CkImgController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -61,6 +63,9 @@ Route::get('lang/{lang}', [
 
 Route::middleware('auth')->group(function () {
 
+    // CK IMG UPLOAD
+    Route::post('/ckimages', [CkImgController::class, 'store'])->name('ckimages');
+
     // ADMIN
     // ************************************************************
     Route::get('/convertOldToNew', [RolesPermissionsController::class, 'convertOldToNew']);
@@ -69,6 +74,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin-roles/{action}/{id?}', LwRole::class);
     Route::get('/admin-permissions/{action}/{id?}', LwPermission::class);
     Route::get('/admin-companies/{action}/{id?}', LwCompany::class);
+
+    Route::get('/profile', ChangePassword::class);
 
 
     // ADMIN / COMPANY-ADMIN
@@ -83,9 +90,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/projects-tests/{action}/{id?}', LwTest::class);
     Route::get('/projects-chapters/{action}/{id?}', LwChapter::class);
 
-
-
-
     // PRODUCT SELECTOR
     // ************************************************************
     Route::get('/product-selector/{pageBackIdentifier?}', LwProductSelector::class);
@@ -93,30 +97,10 @@ Route::middleware('auth')->group(function () {
 
     // REQUIREMENTS
     // ************************************************************
-
-    // old
-    // Route::get('/requirements', ListRequirements::class);
-    // Route::get('/requirements/view/{id}', [RequirementController::class, 'view']);
-    //Route::get('/requirements/form/{id?}', RequirementLivewire::class);
-    // Route::get('/requirements/verform/{rid}/{id?}', [RequirementController::class, 'verform']);
-    // Route::post('/requirements/store/{id?}', [RequirementController::class, 'store']);
-    Route::get('/requirements/export', [RequirementController::class, 'excelExport']);
-    // Route::post('/verifications/store/{rid}/{id?}', [RequirementController::class, 'verstore']);
-    // Route::get('/verifications/delete/{rid}/{id}', [RequirementController::class, 'delver']);
-    // Route::get('/requirements/delete/{id}', [RequirementController::class, 'delete']);
-
     Route::get('/requirements/{action}/{id?}', LwRequirement::class);
     Route::get('/verifications/{rid}/{action}/{id?}', LwVerification::class);
 
-
-    // APP
-    // ************************************************************
-    // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    // Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-    Route::get('/profile', ChangePassword::class);
-
+    Route::get('/requirements/export', [RequirementController::class, 'excelExport']);
 
     // Attachment
     Route::get('/add-attach/{item}/{itemId}',  Attachment::class);

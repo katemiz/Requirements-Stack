@@ -163,14 +163,8 @@
             @enderror
         </div>
 
-
-
-
-
-
-
         <livewire:ck-editor
-            ed_type="FULL"
+            cktype="FULL"
             wire:model="text"
             label='Requirement Text / Description'
             placeholder='Requirement text/description ....'
@@ -182,7 +176,7 @@
 
 
         <livewire:ck-editor
-            ed_type="MIN"
+            cktype="MIN"
             wire:model="remarks"
             label='Remarks'
             placeholder='Remarks about requirement and its text ....'

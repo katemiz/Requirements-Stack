@@ -8,19 +8,19 @@ use Livewire\Component;
 class CkEditor extends Component
 {
     public $edId;
-    public $ed_type;
+    public $cktype;
     public $edconfig;
     public $varname;
     public $label;
     public $placeholder;
 
-    #[Modelable] 
+    #[Modelable]
     public $content;
 
-    public function mount($content = '',$ed_type='STANDARD'){
+    public function mount($content = '',$cktype='MIN'){
         $this->content = $content;
         $this->edId = uniqid('ED');
-        $this->ed_type = $ed_type;
+        $this->cktype = $cktype;
     }
 
     public function render()
