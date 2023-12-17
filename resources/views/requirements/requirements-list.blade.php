@@ -69,6 +69,9 @@
     @if ($requirements->count() > 0)
     <table class="table is-fullwidth">
 
+        <caption>{{ $requirements->total() }} {{ $requirements->total() > 1 ? ' Requirements' :' Requirement' }}</caption>
+
+
         @if ($constants['list']['listCaption'])
             <caption>{{ $constants['list']['listCaption'] }}</caption>
         @endif
