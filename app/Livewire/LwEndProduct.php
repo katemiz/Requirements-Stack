@@ -15,8 +15,11 @@ use App\Models\Company;
 use App\Models\Endproduct;
 use App\Models\Project;
 use App\Models\User;
-
-
+use App\Models\Gate;
+use App\Models\Moc;
+use App\Models\Phase;
+use App\Models\Poc;
+use App\Models\Witness;
 
 class LwEndProduct extends Component
 {
@@ -58,6 +61,19 @@ class LwEndProduct extends Component
     public $created_at;
     public $updated_at;
 
+    #[Rule('required|boolean', message: 'Please select Phases Option')]
+    public $use_parent_phases = true;
+
+    #[Rule('required|boolean', message: 'Please select Gates Option')]
+    public $use_parent_gates = true;
+
+    #[Rule('required|boolean', message: 'Please select MOCs Option')]
+    public $use_parent_mocs = true;
+
+    #[Rule('required|boolean', message: 'Please select POCs Option')]
+    public $use_parent_pocs = true;
+
+
     public function mount()
     {
         if (request('action')) {
@@ -69,21 +85,22 @@ class LwEndProduct extends Component
             $this->setProps();
         }
 
+        $this->checkUserRoles();
+        $this->checkSessionVariables();
+
         $this->constants = config('endproducts');
     }
 
 
     public function render()
     {
-        $this->checkUserRoles();
-        $this->checkSessionVariables();
-
         $this->setProps();
 
         return view('projects.eproducts.lw-eproducts',[
             'companies' => $this->getCompaniesList(),
             'projects' => $this->getProjectsList(),
-            'eproducts' => $this->getEProductsList()
+            'eproducts' => $this->getEProductsList(),
+            'populate_defaults' => $this->getPopulateDefaults()
         ]);
     }
 
@@ -92,7 +109,6 @@ class LwEndProduct extends Component
 
         $this->logged_user = Auth::user();
         $this->company_id = $this->logged_user->company_id;
-
 
         if ($this->logged_user->hasRole('admin')) {
             $this->is_user_admin = true;
@@ -282,6 +298,70 @@ class LwEndProduct extends Component
     }
 
 
+    public function populate($uid) {
+        $this->uid = $uid;
+        $this->action = 'POPULATE';
+    }
+
+
+    public function getPopulateDefaults() {
+
+        if ($this->action != 'POPULATE') {
+            return false;
+        }
+
+        // PHASES
+        $predefinedPhases = Phase::where([
+            ['company_id',1],
+            ['project_id',1],
+        ])
+        ->orderBy('code','asc')
+        ->get();
+
+        // MILESTONES
+        $predefinedMilestones = Gate::where([
+            ['company_id',1],
+            ['project_id',1],
+        ])
+        ->orderBy('code','asc')
+        ->get();
+
+        // MOCS
+        $predefinedMocs = Moc::where([
+            ['company_id',1],
+            ['project_id',1],
+        ])
+        ->orderBy('code','asc')
+        ->get();
+
+        // POCS
+        $predefinedPocs = Poc::where([
+            ['company_id',1],
+            ['project_id',1],
+        ])
+        ->orderBy('code','asc')
+        ->get();
+
+        return [
+            'is_for_project' => false,
+            'phases' => $predefinedPhases,
+            'milestones' => $predefinedMilestones,
+            'mocs' => $predefinedMocs,
+            'pocs' => $predefinedPocs
+        ];
+    }
+
+
+
+
+
+
+
+
+
+
+
+
     public function setProps() {
 
         if ($this->uid && in_array($this->action,['VIEW','FORM']) ) {
@@ -295,6 +375,11 @@ class LwEndProduct extends Component
             $this->updated_at = $c->updated_at;
             $this->created_by = User::find($c->user_id)->fullname;
             $this->updated_by = User::find($c->updated_uid)->fullname;
+
+            $this->use_parent_phases = $c->use_parent_phases;
+            $this->use_parent_gates =$c->use_parent_gates;
+            $this->use_parent_mocs =$c->use_parent_mocs;
+            $this->use_parent_pocs =$c->use_parent_pocs;
 
             $this->the_company = Company::find($c->company_id);
             $this->the_project = Project::find($c->project_id);
@@ -322,15 +407,20 @@ class LwEndProduct extends Component
 
         $this->validate();
 
-        $props['updated_uid'] = Auth::id();
         $props['company_id'] = $this->company_id;
         $props['project_id'] = $this->project_id;
         $props['code'] = $this->code;
         $props['title'] = $this->title;
         $props['description'] = $this->description;
 
+        $props['use_parent_phases'] = $this->use_parent_phases;
+        $props['use_parent_gates'] = $this->use_parent_gates;
+        $props['use_parent_mocs'] = $this->use_parent_mocs;
+        $props['use_parent_pocs'] = $this->use_parent_pocs;
+
         if ( $this->uid ) {
             // update
+            $props['updated_uid'] = Auth::id();
             Endproduct::find($this->uid)->update($props);
             session()->flash('message','End Product has been updated successfully.');
 

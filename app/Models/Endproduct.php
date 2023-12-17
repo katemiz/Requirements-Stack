@@ -15,7 +15,19 @@ class Endproduct extends Model
     use HasFactory;
 
     protected $table = 'endproducts';
-    protected $fillable = ['user_id','updated_uid','company_id','project_id','code', 'title','description'];
+    protected $fillable = [
+        'user_id',
+        'updated_uid',
+        'company_id',
+        'project_id',
+        'code', 
+        'use_parent_phases',
+        'use_parent_gates',
+        'use_parent_mocs',
+        'use_parent_pocs',
+        'title',
+        'description'
+    ];
 
     public function project(): BelongsTo
     {

@@ -24,18 +24,22 @@
                     </a>
                 </p>
 
+                @role(['admin','company_admin','requirement_engineer'])
                 <p class="level-item">
                     <a href="/projects-witnesses/form/">
                         <span class="icon is-small"><x-carbon-add /></span>
                         <span>Add</span>
                     </a>
                 </p>
+                @endrole
+
 
             </div>
 
             <!-- Right side -->
             <div class="level-right">
 
+                @role(['admin','company_admin','requirement_engineer'])
                 <p class="level-item">
                     <a href='/projects-witnesses/form/{{ $uid }}'>
                         <span class="icon"><x-carbon-edit /></span>
@@ -47,6 +51,8 @@
                         <span class="icon has-text-danger"><x-carbon-trash-can /></span>
                     </a>
                 </p>
+                @endrole
+
 
             </div>
         </nav>

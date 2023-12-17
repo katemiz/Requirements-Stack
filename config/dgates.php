@@ -28,6 +28,13 @@ return [
                 "direction" => "asc"
             ],
 
+            "end_product_name"=> [
+                "title" => "End Product",
+                "sortable" => false,
+                "align" => "left",
+                "direction" => "asc"
+            ],   
+
             "code"=> [
                 "title" => "Code",
                 "sortable" => true,

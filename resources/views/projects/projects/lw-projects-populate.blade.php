@@ -1,12 +1,12 @@
 <header class="mb-6">
-    <h1 class="title has-text-weight-light is-size-1">Populate</h1>
-    <h2 class="subtitle has-text-weight-light">Populate Project with Predefined Definitions</h2>
+    <h1 class="title has-text-weight-light is-size-1">Populate {{ $populate_defaults['is_for_project'] ? 'for Project' :' for End Product' }}</h1>
+    <h2 class="subtitle has-text-weight-light">Populate {{ $populate_defaults['is_for_project'] ? 'Project' :' End Product' }} with Predefined Definitions</h2>
 </header>
 
 
 <div class="notification is-link is-light">
     This app defines <u>predefined</u> definitions for projects and/or End Products. These definitions are based on generic Systems Engineering flow and are limited<br>
-    These definitions can be used as starting point with <strong>tailoring/customisation</strong>It is recommended to use these predefined definitions and modify them to your needs.
+    These definitions can be used as starting point with <strong>tailoring/customisation</strong>. It is recommended to use these predefined definitions and modify them to your needs.
 </div>
 
 

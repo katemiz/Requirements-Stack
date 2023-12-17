@@ -202,7 +202,6 @@ class LwProject extends Component
         ->get();
 
         // POCS
-
         $predefinedPocs = Poc::where([
             ['company_id',1],
             ['project_id',1],
@@ -211,6 +210,7 @@ class LwProject extends Component
         ->get();
 
         return [
+            'is_for_project' => true,
             'phases' => $predefinedPhases,
             'milestones' => $predefinedMilestones,
             'mocs' => $predefinedMocs,

@@ -119,89 +119,101 @@ class LwGate extends Component
 
             if (session('current_project_id')) {
 
-                if (strlen(trim($this->query)) > 2 ) {
+                if (strlen(trim($this->query)) < 2 ) {
 
-                    $phases = Gate::where('project_id', session('current_project_id'))
-                    ->orderBy($this->sortField,$this->sortDirection)
-                    ->paginate(env('RESULTS_PER_PAGE'));
+                    $gates = Gate::where('project_id', session('current_project_id'))
+                            ->when(session('current_eproduct_id'), function ($query) {
+                                $query->where('endproduct_id', session('current_eproduct_id'));
+                            })
+                            ->orderBy($this->sortField,$this->sortDirection)
+                            ->paginate(env('RESULTS_PER_PAGE'));
     
                 } else {
     
-                    $phases = Gate::where('project_id', session('current_project_id'))
-                    ->where('code', 'LIKE', "%".$this->query."%")
-                    ->orWhere('name','LIKE',"%".$this->query."%")
-                    ->orWhere('purpose','LIKE',"%".$this->query."%")
-                    ->orWhere('timing','LIKE',"%".$this->query."%")
-                    ->orderBy($this->sortField,$this->sortDirection)
-                    ->paginate(env('RESULTS_PER_PAGE'));
+                    $gates = Gate::where('project_id', session('current_project_id'))
+                            ->when(session('current_eproduct_id'), function ($query) {
+                                $query->where('endproduct_id', session('current_eproduct_id'));
+                            })
+                            ->where('code', 'LIKE', "%".$this->query."%")
+                            ->orWhere('name','LIKE',"%".$this->query."%")
+                            ->orWhere('purpose','LIKE',"%".$this->query."%")
+                            ->orWhere('timing','LIKE',"%".$this->query."%")
+                            ->orderBy($this->sortField,$this->sortDirection)
+                            ->paginate(env('RESULTS_PER_PAGE'));
                 }
 
             } else {
 
-                if (strlen(trim($this->query)) > 2 ) {
+                if (strlen(trim($this->query)) < 2 ) {
 
-                    $phases = Gate::orderBy($this->sortField,$this->sortDirection)
-                    ->paginate(env('RESULTS_PER_PAGE'));
+                    $gates = Gate::orderBy($this->sortField,$this->sortDirection)
+                            ->paginate(env('RESULTS_PER_PAGE'));
     
                 } else {
     
-                    $phases = Gate::where('code', 'LIKE', "%".$this->query."%")
-                    ->orWhere('name','LIKE',"%".$this->query."%")
-                    ->orWhere('purpose','LIKE',"%".$this->query."%")
-                    ->orWhere('timing','LIKE',"%".$this->query."%")
-                    ->orderBy($this->sortField,$this->sortDirection)
-                    ->paginate(env('RESULTS_PER_PAGE'));
+                    $gates = Gate::where('code', 'LIKE', "%".$this->query."%")
+                            ->orWhere('name','LIKE',"%".$this->query."%")
+                            ->orWhere('purpose','LIKE',"%".$this->query."%")
+                            ->orWhere('timing','LIKE',"%".$this->query."%")
+                            ->orderBy($this->sortField,$this->sortDirection)
+                            ->paginate(env('RESULTS_PER_PAGE'));
                 }
             }
         } else {
 
             if (session('current_project_id')) {
 
-                if (strlen(trim($this->query)) > 2 ) {
+                if (strlen(trim($this->query)) < 2 ) {
 
-                    $phases = Gate::where('project_id', session('current_project_id'))
-                    ->where('company_id',$this->logged_user->company_id)
-                    ->where(function ($sqlquery) {
-                        $sqlquery->where('code', 'LIKE', "%".$this->query."%")
-                              ->orWhere('name', 'LIKE', "%".$this->query."%")
-                              ->orWhere('purpose', 'LIKE', "%".$this->query."%")
-                              ->orWhere('timing', 'LIKE', "%".$this->query."%");
-                    })
-                    ->orderBy($this->sortField,$this->sortDirection)
-                    ->paginate(env('RESULTS_PER_PAGE'));
+                    $gates = Gate::where('project_id', session('current_project_id'))
+                            ->when(session('current_eproduct_id'), function ($query) {
+                                $query->where('endproduct_id', session('current_eproduct_id'));
+                            })
+                            ->where('company_id',$this->logged_user->company_id)
+                            ->where(function ($sqlquery) {
+                                $sqlquery->where('code', 'LIKE', "%".$this->query."%")
+                                    ->orWhere('name', 'LIKE', "%".$this->query."%")
+                                    ->orWhere('purpose', 'LIKE', "%".$this->query."%")
+                                    ->orWhere('timing', 'LIKE', "%".$this->query."%");
+                            })
+                            ->orderBy($this->sortField,$this->sortDirection)
+                            ->paginate(env('RESULTS_PER_PAGE'));
     
                 } else {
     
-                    $phases = Gate::where('company_id', $this->logged_user->company_id)
-                    ->orderBy($this->sortField,$this->sortDirection)
-                    ->paginate(env('RESULTS_PER_PAGE'));
+                    $gates = Gate::where('project_id', session('current_project_id'))
+                            ->when(session('current_eproduct_id'), function ($query) {
+                                $query->where('endproduct_id', session('current_eproduct_id'));
+                            })
+                            ->where('company_id', $this->logged_user->company_id)
+                            ->orderBy($this->sortField,$this->sortDirection)
+                            ->paginate(env('RESULTS_PER_PAGE'));
                 }
 
             } else {
 
+                if (strlen(trim($this->query)) < 2 ) {
 
-                if (strlen(trim($this->query)) > 2 ) {
-
-                    $phases = Gate::where('company_id',$this->logged_user->company_id)
-                    ->where(function ($sqlquery) {
-                        $sqlquery->where('code', 'LIKE', "%".$this->query."%")
-                              ->orWhere('name', 'LIKE', "%".$this->query."%")
-                              ->orWhere('purpose', 'LIKE', "%".$this->query."%")
-                              ->orWhere('timing', 'LIKE', "%".$this->query."%");
-                    })
-                    ->orderBy($this->sortField,$this->sortDirection)
-                    ->paginate(env('RESULTS_PER_PAGE'));
+                    $gates = Gate::where('company_id',$this->logged_user->company_id)
+                            ->where(function ($sqlquery) {
+                                $sqlquery->where('code', 'LIKE', "%".$this->query."%")
+                                    ->orWhere('name', 'LIKE', "%".$this->query."%")
+                                    ->orWhere('purpose', 'LIKE', "%".$this->query."%")
+                                    ->orWhere('timing', 'LIKE', "%".$this->query."%");
+                            })
+                            ->orderBy($this->sortField,$this->sortDirection)
+                            ->paginate(env('RESULTS_PER_PAGE'));
     
                 } else {
     
-                    $phases = Gate::where('company_id', $this->logged_user->company_id)
-                    ->orderBy($this->sortField,$this->sortDirection)
-                    ->paginate(env('RESULTS_PER_PAGE'));
+                    $gates = Gate::where('company_id', $this->logged_user->company_id)
+                            ->orderBy($this->sortField,$this->sortDirection)
+                            ->paginate(env('RESULTS_PER_PAGE'));
                 }
             }
         }
 
-        return $phases;
+        return $gates;
     }
 
 
@@ -209,9 +221,7 @@ class LwGate extends Component
 
         if ($this->is_user_admin) {
             $this->companies = Company::all();
-        }
-
-        if ($this->is_user_company_admin) {
+        } else {
             $this->companies = Company::where('id',$this->logged_user->company_id)->get();
             $this->company_id = $this->logged_user->company_id;
         }
@@ -222,14 +232,16 @@ class LwGate extends Component
 
         if ($this->is_user_admin && $this->company_id) {
             $this->projects = Project::where('company_id',$this->company_id)->get();
-        }
-
-        if ($this->is_user_company_admin) {
+        } else {
             $this->projects = Project::where('company_id',$this->logged_user->company_id)->get();
         }
 
         if (count($this->projects) == 1) {
             $this->project_id = $this->projects['0']->id;
+        }
+
+        if (session('current_project_id')) {
+            $this->project_id = session('current_project_id');
         }
 
         $this->getEndProductsList();
@@ -240,6 +252,10 @@ class LwGate extends Component
 
         if ($this->project_id) {
             $this->project_eproducts = Endproduct::where('project_id',$this->project_id)->get();
+        }
+
+        if (session('current_eproduct_id')) {
+            $this->endproduct_id = session('current_eproduct_id');
         }
     }
 

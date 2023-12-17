@@ -22,6 +22,11 @@ class Gate extends Model
         return Project::find($this->project_id)->code;
     }
 
+    public function getEndProductNameAttribute()
+    {
+        return Endproduct::find($this->endproduct_id)->code;
+    }
+
     public function getCreatedByNameAttribute()
     {
         $usr = User::find($this->user_id);

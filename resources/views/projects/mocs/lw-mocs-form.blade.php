@@ -44,17 +44,18 @@
                 @enderror
             </div>
 
+
             <div class="field">
                 <label class="label">End Products</label>
                 <div class="control">
 
-                    @if ($project_id && count($project_eproducts[$project_id]) > 0)
+                    @if (count($project_eproducts) > 0)
 
                     <div class="select">
 
                         <select wire:model='endproduct_id'>
                             <option>Select a End Product...</option>
-                                @foreach ($project_eproducts[$project_id] as $endproduct)
+                                @foreach ($project_eproducts as $endproduct)
                                     <option value="{{ $endproduct->id }}">{{ $endproduct->title }}</option>
                                 @endforeach
                         </select>
@@ -70,6 +71,7 @@
                 <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
                 @enderror
             </div>
+
         </div>
     </div>
 

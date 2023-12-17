@@ -235,7 +235,6 @@ class LwTest extends Component
                     ->orderBy($this->sortField,$this->sortDirection)
                     ->paginate(env('RESULTS_PER_PAGE'));
 
-
             } else {
 
                 $tests = Test::where('company_id', $this->logged_user->company_id)
@@ -254,7 +253,6 @@ class LwTest extends Component
                 })
                 ->orderBy($this->sortField,$this->sortDirection)
                 ->paginate(env('RESULTS_PER_PAGE'));
-
             }
         }
 

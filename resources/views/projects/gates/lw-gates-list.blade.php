@@ -16,7 +16,7 @@
         <!-- Left side -->
         <div class="level-left">
 
-            @role(['admin','company_admin'])
+            @role(['admin','company_admin','requirement_engineer'])
             <div class="level-item has-text-centered">
                     <a href="/projects-gates/form" class="button is-dark">
                         <span class="icon is-small"><x-carbon-add /></span>
@@ -110,8 +110,8 @@
                         <span class="icon"><x-carbon-view/></span>
                     </a>
 
-                    @role(['admin','company_admin'])
-                        <a href="/projects-gates/form/{{ $record->id }}">
+                    @role(['admin','company_admin','requirement_engineer'])
+                    <a href="/projects-gates/form/{{ $record->id }}">
                         {{-- <a wire:click="editItem({{ $record->id }})"> --}}
                             <span class="icon"><x-carbon-edit /></span>
                         </a>

@@ -62,6 +62,12 @@
             @include('projects.eproducts.lw-eproducts-list')
             @break
 
+
+        @case('POPULATE')
+            @include('projects.projects.lw-projects-populate')
+            @break
+
+
     @endswitch
 
 </section>

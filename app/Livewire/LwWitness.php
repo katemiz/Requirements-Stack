@@ -34,6 +34,10 @@ class LwWitness extends Component
     public $sortDirection = 'DESC';
 
     public $logged_user;
+
+    public $is_user_admin = false;
+    public $is_user_company_admin = false;
+
     public $companies = [];
     public $projects = [];
     public $endproducts = [];
@@ -85,8 +89,7 @@ class LwWitness extends Component
 
     public function render()
     {
-        $this->logged_user = $this->checkUserRoles(Auth::user());
-
+        $this->checkUserRoles();
         $this->getCompaniesList();
         $this->getProjectsList();
 
@@ -98,63 +101,118 @@ class LwWitness extends Component
     }
 
 
-    public function checkUserRoles($usr) {
+    public function checkUserRoles() {
 
-        $usr->is_admin = false;
-        $usr->is_company_admin = false;
+        $this->logged_user = Auth::user();
 
-        if ($usr->hasRole('admin')) {
-            $usr->is_admin = true;
+        if ($this->logged_user->hasRole('admin')) {
+            $this->is_user_admin = true;
         }
 
-        if ($usr->hasRole('company_admin')) {
-            $usr->is_company_admin = true;
+        if ($this->logged_user->hasRole('company_admin')) {
+            $this->is_user_company_admin = true;
         }
-
-        return $usr;
     }
 
 
 
     public function getWitnessesList()  {
 
-        if ($this->logged_user->is_admin) {
+        if ($this->is_user_admin) {
 
-            if (strlen(trim($this->query)) > 0 ) {
+            if (session('current_project_id')) {
 
-                $w = Witness::orderBy($this->sortField,$this->sortDirection)
-                ->paginate(env('RESULTS_PER_PAGE'));
+                if (strlen(trim($this->query)) < 2 ) {
+
+                    $witnesses = Witness::where('project_id', session('current_project_id'))
+                            ->when(session('current_eproduct_id'), function ($query) {
+                                $query->where('endproduct_id', session('current_eproduct_id'));
+                            })
+                            ->orderBy($this->sortField,$this->sortDirection)
+                            ->paginate(env('RESULTS_PER_PAGE'));
+    
+                } else {
+    
+                    $witnesses = Witness::where('project_id', session('current_project_id'))
+                            ->when(session('current_eproduct_id'), function ($query) {
+                                $query->where('endproduct_id', session('current_eproduct_id'));
+                            })
+                            ->where('code', 'LIKE', "%".$this->query."%")
+                            ->orWhere('name','LIKE',"%".$this->query."%")
+                            ->orWhere('descption','LIKE',"%".$this->query."%")
+                            ->orderBy($this->sortField,$this->sortDirection)
+                            ->paginate(env('RESULTS_PER_PAGE'));
+                }
 
             } else {
 
-                $w = Witness::where('code', 'LIKE', "%".$this->query."%")
-                ->orWhere('name','LIKE',"%".$this->query."%")
-                ->orWhere('description','LIKE',"%".$this->query."%")
-                ->orderBy($this->sortField,$this->sortDirection)
-                ->paginate(env('RESULTS_PER_PAGE'));
+                if (strlen(trim($this->query)) < 2 ) {
+
+                    $witnesses = Witness::orderBy($this->sortField,$this->sortDirection)
+                            ->paginate(env('RESULTS_PER_PAGE'));
+    
+                } else {
+    
+                    $witnesses = Witness::where('code', 'LIKE', "%".$this->query."%")
+                            ->orWhere('name','LIKE',"%".$this->query."%")
+                            ->orWhere('description','LIKE',"%".$this->query."%")
+                            ->orderBy($this->sortField,$this->sortDirection)
+                            ->paginate(env('RESULTS_PER_PAGE'));
+                }
             }
         } else {
 
-            if (strlen(trim($this->query)) > 0 ) {
+            if (session('current_project_id')) {
 
-                $w = Witness::where('company_id',$this->logged_user->company_id)
-                ->where(function ($sqlquery) {
-                    $sqlquery->where('code', 'LIKE', "%".$this->query."%")
-                          ->orWhere('name', 'LIKE', "%".$this->query."%")
-                          ->orWhere('description', 'LIKE', "%".$this->query."%");
-                })
-                ->orderBy($this->sortField,$this->sortDirection)
-                ->paginate(env('RESULTS_PER_PAGE'));
+                if (strlen(trim($this->query)) < 2 ) {
+
+                    $witnesses = Witness::where('project_id', session('current_project_id'))
+                            ->when(session('current_eproduct_id'), function ($query) {
+                                $query->where('endproduct_id', session('current_eproduct_id'));
+                            })
+                            ->where('company_id',$this->logged_user->company_id)
+                            ->where(function ($sqlquery) {
+                                $sqlquery->where('code', 'LIKE', "%".$this->query."%")
+                                    ->orWhere('name', 'LIKE', "%".$this->query."%")
+                                    ->orWhere('description', 'LIKE', "%".$this->query."%");
+                            })
+                            ->orderBy($this->sortField,$this->sortDirection)
+                            ->paginate(env('RESULTS_PER_PAGE'));
+    
+                } else {
+    
+                    $witnesses = Witness::where('project_id', session('current_project_id'))
+                            ->when(session('current_eproduct_id'), function ($query) {
+                                $query->where('endproduct_id', session('current_eproduct_id'));
+                            })
+                            ->where('company_id', $this->logged_user->company_id)
+                            ->orderBy($this->sortField,$this->sortDirection)
+                            ->paginate(env('RESULTS_PER_PAGE'));
+                }
 
             } else {
 
-                $w = Witness::where('company_id', $this->logged_user->company_id)
-                ->orderBy($this->sortField,$this->sortDirection)
-                ->paginate(env('RESULTS_PER_PAGE'));
+                if (strlen(trim($this->query)) < 2 ) {
+
+                    $witnesses = Witness::where('company_id',$this->logged_user->company_id)
+                            ->where(function ($sqlquery) {
+                                $sqlquery->where('code', 'LIKE', "%".$this->query."%")
+                                    ->orWhere('name', 'LIKE', "%".$this->query."%")
+                                    ->orWhere('description', 'LIKE', "%".$this->query."%");
+                            })
+                            ->orderBy($this->sortField,$this->sortDirection)
+                            ->paginate(env('RESULTS_PER_PAGE'));
+    
+                } else {
+    
+                    $witnesses = Witness::where('company_id', $this->logged_user->company_id)
+                            ->orderBy($this->sortField,$this->sortDirection)
+                            ->paginate(env('RESULTS_PER_PAGE'));
+                }
             }
         }
 
-        return $w;
+        return $witnesses;
     }
 
 
@@ -171,16 +229,18 @@ class LwWitness extends Component
 
     public function getProjectsList()  {
 
-        if ($this->logged_user->is_admin && $this->company_id) {
+        if ($this->is_user_admin && $this->company_id) {
             $this->projects = Project::where('company_id',$this->company_id)->get();
-        }
-
-        if ($this->logged_user->is_company_admin) {
+        } else {
             $this->projects = Project::where('company_id',$this->logged_user->company_id)->get();
         }
 
         if (count($this->projects) == 1) {
             $this->project_id = $this->projects['0']->id;
+        }
+
+        if (session('current_project_id')) {
+            $this->project_id = session('current_project_id');
         }
 
         $this->getEndProductsList();
@@ -190,6 +250,10 @@ class LwWitness extends Component
 
         if ($this->project_id) {
             $this->project_eproducts = Endproduct::where('project_id',$this->project_id)->get();
+        }
+
+        if (session('current_eproduct_id')) {
+            $this->endproduct_id = session('current_eproduct_id');
         }
     }
 

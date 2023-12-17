@@ -24,6 +24,12 @@ return new class extends Migration
             $table->string('code');
             $table->string('title');
             $table->text('description')->nullable();
+
+            $table->boolean('use_parent_phases')->default(true);
+            $table->boolean('use_parent_gates')->default(true);
+            $table->boolean('use_parent_mocs')->default(true);
+            $table->boolean('use_parent_pocs')->default(true);
+
             $table->timestamps();
         });
     }

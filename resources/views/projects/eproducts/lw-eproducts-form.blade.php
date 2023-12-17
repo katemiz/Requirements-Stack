@@ -15,11 +15,11 @@
                 <label class="label">Company</label>
                 <div class="control">
                     <div class="select">
-                    <select wire:model='company_id' wire:change='getProjectsList'>
+                    <select wire:model='company_id' wire:change='$refresh'>
                         <option>Select a company...</option>
-                            @foreach ($companies as $company)
-                                <option value="{{ $company->id }}">{{ $company->name }}</option>
-                            @endforeach
+                        @foreach ($companies as $company)
+                            <option value="{{ $company->id }}">{{ $company->name }}</option>
+                        @endforeach
                     </select>
                     </div>
                 </div>
@@ -85,6 +85,99 @@
         <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
         @enderror
     </div>
+
+
+
+
+
+
+    <div class="field ">
+        <div class="field-body">
+
+            <div class="field">
+                <label class="label">Use Project Phases?</label>
+                <div class="control">
+                    <label class="radio">
+                        <input type="radio" value="{{ true }}" wire:model="use_parent_phases"> Yes
+                    </label>
+                    <label class="radio">
+                        <input type="radio" value="{{ false }}" wire:model="use_parent_phases"> No
+                    </label>
+                </div>
+
+                @error('use_parent_phases')
+                <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
+                @enderror
+            </div>
+
+
+            <div class="field">
+                <label class="label">Use Project Gates?</label>
+                <div class="control">
+                    <label class="radio">
+                        <input type="radio" value="{{ true }}" wire:model="use_parent_gates"> Yes
+                    </label>
+                    <label class="radio">
+                        <input type="radio" value="{{ false }}" wire:model="use_parent_gates"> No
+                    </label>
+                </div>
+
+                @error('use_parent_gates')
+                <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
+                @enderror
+            </div>
+
+
+
+
+            <div class="field">
+                <label class="label">Use Project MOCs?</label>
+                <div class="control">
+                    <label class="radio">
+                        <input type="radio" value="{{ true }}" wire:model="use_parent_mocs"> Yes
+                    </label>
+                    <label class="radio">
+                        <input type="radio" value="{{ false }}" wire:model="use_parent_mocs"> No
+                    </label>
+                </div>
+
+                @error('use_parent_mocs')
+                <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
+                @enderror
+            </div>
+
+
+
+            <div class="field">
+                <label class="label">Use Project POCs?</label>
+                <div class="control">
+                    <label class="radio">
+                        <input type="radio" value="{{ true }}" wire:model="use_parent_pocs"> Yes
+                    </label>
+                    <label class="radio">
+                        <input type="radio" value="{{ false }}" wire:model="use_parent_pocs"> No
+                    </label>
+                </div>
+
+                @error('use_parent_pocs')
+                <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
+                @enderror
+            </div>
+
+
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
 
 
 

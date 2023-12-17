@@ -20,7 +20,7 @@
         <!-- Left side -->
         <div class="level-left">
 
-            @role(['admin','company_admin'])
+            @role(['admin','company_admin','requirement_engineer'])
             <div class="level-item has-text-centered">
                     <a href="/projects-mocs/form" class="button is-dark">
                     {{-- <a wire:click='addItem' class="button is-dark"> --}}
@@ -115,7 +115,7 @@
                         <span class="icon"><x-carbon-view/></span>
                     </a>
 
-                    @role(['admin','company_admin'])
+                    @role(['admin','company_admin','requirement_engineer'])
                         <a href="/projects-mocs/form/{{ $record->id }}">
                         {{-- <a wire:click="editItem({{ $record->id }})"> --}}
                             <span class="icon"><x-carbon-edit /></span>

@@ -69,8 +69,6 @@
             @include('projects.projects.lw-projects-populate')
             @break
 
-
-
     @endswitch
 
 </section>
