@@ -15,7 +15,7 @@
             <div class="control">
                 @foreach ($rtypes as $abbr => $tip_name)
                 <label class="radio">
-                    <input type="radio" value="{{$abbr}}" wire:model="rtype">
+                    <input type="radio" value="{{$abbr}}" wire:model="rtype" wire:click='checkIsDefinition'>
                     {{$tip_name}}
                     </label>
                 @endforeach
@@ -101,35 +101,50 @@
         </div>
 
 
-        <div class="field ">
-            <div class="field-body">
-
-                <div class="field">
-                    <label class="label">Source</label>
-                    <div class="control">
-                        <input class="input" type="text" wire:model='source' placeholder="Requirement Source ...">
-                    </div>
-
-                    @error('source')
-                        <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
-                    @enderror
-
+        @if ($is_definition)
+            <div class="field">
+                <label class="label">Title of Definition</label>
+                <div class="control">
+                    <input class="input" type="text" wire:model='title' placeholder="What is defined ...">
                 </div>
 
-                <div class="field">
-                    <label class="label">Cross Reference Number</label>
-                    <div class="control">
-                        <input class="input" type="text" wire:model='xrefno'  placeholder="Requirement Cross Reference Number ...">
-                    </div>
-
-                    @error('xrefno')
-                        <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
-                    @enderror
-
-                </div>
+                @error('title')
+                    <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
+                @enderror
 
             </div>
-        </div>
+        @else
+            <div class="field ">
+                <div class="field-body">
+
+                    <div class="field">
+                        <label class="label">Source</label>
+                        <div class="control">
+                            <input class="input" type="text" wire:model='source' placeholder="Requirement Source ...">
+                        </div>
+
+                        @error('source')
+                            <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
+                        @enderror
+
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Cross Reference Number</label>
+                        <div class="control">
+                            <input class="input" type="text" wire:model='xrefno'  placeholder="Requirement Cross Reference Number ...">
+                        </div>
+
+                        @error('xrefno')
+                            <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
+                        @enderror
+
+                    </div>
+
+                </div>
+            </div>
+        @endif
+
 
 
 
@@ -166,7 +181,7 @@
         <livewire:ck-editor
             cktype="FULL"
             wire:model="text"
-            label='Requirement Text / Description'
+            label='Requirement Text'
             placeholder='Requirement text/description ....'
             :content="$text"/>
 

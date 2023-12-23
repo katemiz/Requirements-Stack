@@ -31,6 +31,7 @@ return new class extends Migration
             $table->string('cross_ref_no')->nullable();
             $table->string('rtype');
             $table->string('source')->nullable();
+            $table->string('title')->nullable();
             $table->text('text');
             $table->text('remarks')->nullable();
             $table->string('status')->default('Verbatim');

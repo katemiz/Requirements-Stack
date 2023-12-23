@@ -35,6 +35,8 @@ class LwRequirement extends Component
 
     public $show_latest = true; /// Show only latest revisions
 
+    public $is_definition = false;
+
     public $uid = false;
     public $vid = false;    // Verification ID
 
@@ -78,6 +80,8 @@ class LwRequirement extends Component
 
     public $is_latest;
 
+    public $title;
+
     #[Rule('required', message: 'Requirement text is missing')]
     public $text;
 
@@ -98,7 +102,8 @@ class LwRequirement extends Component
 
     public $rtypes = [
         'GR' => 'General Requirement',
-        'TR' => 'Technical Requirement'
+        'TR' => 'Technical Requirement',
+        'DEF' => 'Definition'
     ];
 
     #[Rule('required', message: 'Please select requirement type')]
@@ -122,6 +127,8 @@ class LwRequirement extends Component
 
     public function render()
     {
+        $this->checkIsDefinition();
+
         $this->checkUserRoles();
         $this->checkCurrentProduct();
         $this->getCompaniesList();
@@ -140,6 +147,14 @@ class LwRequirement extends Component
         ]);
     }
 
+    public function checkIsDefinition() {
+
+        if ($this->rtype == 'DEF') {
+            $this->is_definition = true;
+        } else {
+            $this->is_definition = false;
+        }
+    }
 
     public function checkUserRoles() {
 
@@ -413,6 +428,7 @@ class LwRequirement extends Component
             $this->requirement_no = $c->requirement_no;
             $this->revision = $c->revision;
             $this->rtype = $c->rtype;
+            $this->title = $c->title;
             $this->text = $c->text;
             $this->is_latest = $c->is_latest;
             $this->remarks = $c->remarks;
@@ -499,6 +515,7 @@ class LwRequirement extends Component
         $props['rtype'] = $this->rtype;
         $props['source'] = $this->source;
         $props['cross_ref_no'] = $this->xrefno;
+        $props['title'] = $this->title;
         $props['text'] = $this->text;
         $props['remarks'] = $this->remarks;
 

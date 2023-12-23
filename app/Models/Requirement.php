@@ -29,6 +29,7 @@ class Requirement extends Model
         'requirement_no',
         'revision',
         'cross_ref_no',
+        'title',
         'text',
         'rtype',
         'source',

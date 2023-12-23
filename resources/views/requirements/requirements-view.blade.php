@@ -144,24 +144,28 @@
         </div>
 
 
-
+        @if ( $rtype === 'DEF')
         <div class="column">
-
-            <strong>Chapter Requirements Belongs To</strong>
-
-            <p>{{ $chapter->title }}</p>
-
+            <strong>Title</strong>
+            <p>{{ $title }}</p>
         </div>
+        @endif
+
+
+        @if ($chapter_id)
+        <div class="column">
+            <strong>Chapter Requirements Belongs To</strong>
+            <p>{{ $chapter->title }}</p>
+        </div>
+        @endif
 
 
 
         <div class="column">
-
             <div class="content">
             <strong>Requirement Text</strong>
             {!! $text !!}
             </div>
-
         </div>
 
 
@@ -185,98 +189,101 @@
         @endif
 
 
-        {{-- VERIFICATIONS --}}
-        <div class="column">
-            <div class="columns is-vcentered">
+        @if ( $rtype != 'DEF')
 
-                <div class="column is-10">
-                    <strong>Verifications</strong>
-                </div>
+            {{-- VERIFICATIONS --}}
+            <div class="column">
+                <div class="columns is-vcentered">
 
-                <div class="column has-text-right is-2">
-                    @if ($status != 'Frozen')
-                    @role(['admin','company_admin','requirement_engineer'])
-                    <a href="/verifications/{{$uid}}/form" class="button is-link is-small">
-                        <span class="icon is-small">
-                            <x-carbon-add />
-                        </span>
-                        <span>Add</span>
-                    </a>
-                    @endrole
-                    @endif
-                </div>
-
-            </div>
-        </div>
-
-
-        <div class="column">
-
-            @if ( count($verifications) > 0 )
-
-              <table class="table is-fullwidth">
-
-              <tbody>
-                  <tr>
-                      <th>Decision Gate</th>
-                      <th>MOC/Verification Method</th>
-                      <th>Proof of Compliance</th>
-                      <th>Witness</th>
-                      <th>Remarks</th>
-                      @if ($status != 'Frozen')
-                        @role(['admin','company_admin','requirement_engineer'])
-                        <th>Actions</th>
-                        @endrole
-                      @endif
-                  </tr>
-
-                  @foreach ($verifications as $verification)
-                    <tr>
-                      <td><abbr title="{{ $verification->dgate->name }}">{{ $verification->dgate->code }}</abbr></td>
-                      <td><abbr title="{{ $verification->moc->name }}">{{ $verification->moc->code }}</abbr></td>
-                      <td><abbr title="{{ $verification->poc->name }}">{{ $verification->poc->code }}</abbr></td>
-                      <td>{{ $verification->witness->code }}</td>
-                      <td class="is-size-7">{!! $verification->remarks !!}</td>
-                      @if ($status != 'Frozen')
-                      @role(['admin','company_admin','requirement_engineer'])
-                      <td>
-                        <a href="/verifications/{{ $uid}}/form/{{ $verification->id}}">
-                          <span class="icon has-text-link"><x-carbon-pen /></span>
-                        </a>
-                        <a wire:click="triggerDelete('verification',{{ $verification->id }})">
-
-                        {{-- <a wire:click="triggerDelete('verification',{{ $verification->id }})"> --}}
-                          <span class="icon has-text-danger"><x-carbon-trash-can /></span>
-                        </a>
-                      </td>
-                      @endrole
-                      @endif
-
-                    </tr>
-                  @endforeach
-
-              </tbody>
-              </table>
-
-            @else
-              No verifications exist
-            @endif
-        </div>
-
-
-        <div class="column">
-            <strong>Test Links</strong>
-            @if ( $tests->count() > 0 )
-                @foreach ($tests as $test)
-                    <div>
-                        <span class="has-text-weight-bold">T{{ $test->test_no }} R{{ $test->revision }}</span>
-                        <span><a href="/projects-tests/view/{{ $test->id }}">{{ $test->title }}</a></span>
+                    <div class="column is-10">
+                        <strong>Verifications</strong>
                     </div>
-                @endforeach
-            @else
-              <p>No test link exist</p>
-            @endif
-        </div>
+
+                    <div class="column has-text-right is-2">
+                        @if ($status != 'Frozen')
+                        @role(['admin','company_admin','requirement_engineer'])
+                        <a href="/verifications/{{$uid}}/form" class="button is-link is-small">
+                            <span class="icon is-small">
+                                <x-carbon-add />
+                            </span>
+                            <span>Add</span>
+                        </a>
+                        @endrole
+                        @endif
+                    </div>
+
+                </div>
+            </div>      
+
+            <div class="column">
+
+                @if ( count($verifications) > 0 )
+
+                <table class="table is-fullwidth">
+
+                <tbody>
+                    <tr>
+                        <th>Decision Gate</th>
+                        <th>MOC/Verification Method</th>
+                        <th>Proof of Compliance</th>
+                        <th>Witness</th>
+                        <th>Remarks</th>
+                        @if ($status != 'Frozen')
+                            @role(['admin','company_admin','requirement_engineer'])
+                            <th>Actions</th>
+                            @endrole
+                        @endif
+                    </tr>
+
+                    @foreach ($verifications as $verification)
+                        <tr>
+                        <td><abbr title="{{ $verification->dgate->name }}">{{ $verification->dgate->code }}</abbr></td>
+                        <td><abbr title="{{ $verification->moc->name }}">{{ $verification->moc->code }}</abbr></td>
+                        <td><abbr title="{{ $verification->poc->name }}">{{ $verification->poc->code }}</abbr></td>
+                        <td>{{ $verification->witness->code }}</td>
+                        <td class="is-size-7">{!! $verification->remarks !!}</td>
+                        @if ($status != 'Frozen')
+                        @role(['admin','company_admin','requirement_engineer'])
+                        <td>
+                            <a href="/verifications/{{ $uid}}/form/{{ $verification->id}}">
+                            <span class="icon has-text-link"><x-carbon-pen /></span>
+                            </a>
+                            <a wire:click="triggerDelete('verification',{{ $verification->id }})">
+
+                            {{-- <a wire:click="triggerDelete('verification',{{ $verification->id }})"> --}}
+                            <span class="icon has-text-danger"><x-carbon-trash-can /></span>
+                            </a>
+                        </td>
+                        @endrole
+                        @endif
+
+                        </tr>
+                    @endforeach
+
+                </tbody>
+                </table>
+
+                @else
+                No verifications exist
+                @endif
+            </div>
+
+
+            <div class="column">
+                <strong>Test Links</strong>
+                @if ( $tests->count() > 0 )
+                    @foreach ($tests as $test)
+                        <div>
+                            <span class="has-text-weight-bold">T{{ $test->test_no }} R{{ $test->revision }}</span>
+                            <span><a href="/projects-tests/view/{{ $test->id }}">{{ $test->title }}</a></span>
+                        </div>
+                    @endforeach
+                @else
+                <p>No test link exist</p>
+                @endif
+            </div>
+
+        @endif
 
 
 
