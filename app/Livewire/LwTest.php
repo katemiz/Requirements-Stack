@@ -113,12 +113,10 @@ class LwTest extends Component
 
         $this->checkSessionVariables();
 
-        $existing_verifications = $this->setProps();
+        $this->setProps();
 
         return view('projects.tests.tests',[
             'tests' => $this->getTestsList()
-            // 'verifications' => $existing_verifications,
-            // 'verification_data' => $this->getVerificationProps()
         ]);
     }
 
@@ -382,6 +380,8 @@ class LwTest extends Component
 
             if ($c->endproduct_id > 0) {
                 $this->the_endproduct = Endproduct::find($c->endproduct_id);
+
+                dd($this->the_endproduct);
             }
 
             // Revisions

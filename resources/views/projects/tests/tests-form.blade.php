@@ -15,13 +15,13 @@
             <div class="control">
                 @foreach ($test_types as $abbr => $tip_name)
                 <label class="radio">
-                    <input type="radio" value="{{$abbr}}" wire:model="rtype">
+                    <input type="radio" value="{{$abbr}}" wire:model="test_type">
                     {{$tip_name}}
                     </label>
                 @endforeach
             </div>
 
-            @error('rtype')
+            @error('test_type')
             <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
             @enderror
         </div>
