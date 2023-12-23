@@ -29,8 +29,8 @@ class LwGate extends Component
     public $uid = false;
 
     public $query = '';
-    public $sortField = 'created_at';
-    public $sortDirection = 'DESC';
+    public $sortField = 'ordering';
+    public $sortDirection = 'ASC';
 
     public $logged_user;
 
@@ -63,6 +63,7 @@ class LwGate extends Component
 
     public $purpose;
     public $timing;
+    public $ordering;
 
     public $created_by;
     public $updated_by;
@@ -260,9 +261,6 @@ class LwGate extends Component
     }
 
 
-
-
-
     public function changeSortDirection ($key) {
 
         $this->sortField = $key;
@@ -311,6 +309,7 @@ class LwGate extends Component
             $this->name = $c->name;
             $this->purpose = $c->purpose;
             $this->timing = $c->timing;
+            $this->ordering = $c->ordering;
             $this->company_id = $c->company_id;
             $this->project_id = $c->project_id;
             $this->endproduct_id = $c->endproduct_id;
@@ -360,16 +359,65 @@ class LwGate extends Component
 
         if ( $this->uid ) {
             // update
+            if ($this->ordering < 1) {
+                $props['ordering'] = $this->getMaxOrderNo()+1;
+            }
             Gate::find($this->uid)->update($props);
             session()->flash('message','Project milestone/decision gate has been updated successfully.');
 
         } else {
             // create
             $props['user_id'] = Auth::id();
+            $props['ordering'] = $this->getMaxOrderNo()+1;
             $this->uid = Gate::create($props)->id;
             session()->flash('message','Project milestone/decision gate has been created successfully.');
         }
 
         $this->action = 'VIEW';
     }
+
+
+
+
+
+
+
+    public function moveUpDown($idRecord,$up_or_down) {
+
+        $current_gate = Gate::find($idRecord);
+
+        $current_order = $current_gate->ordering;
+
+        if ($up_or_down == 'up') {
+            $new_order = $current_order -1;
+        } else {
+            $new_order = $current_order +1;
+        }
+
+        $second_gate =  Gate::where('project_id', session('current_project_id'))
+        ->when(session('current_eproduct_id'), function ($query) {
+            $query->where('endproduct_id', session('current_eproduct_id'));
+        })->where('ordering',$new_order)->sole();
+
+        $current_gate->update(['ordering' => $new_order]);
+        $second_gate->update(['ordering' => $current_order]);
+    }
+
+
+    public function getMaxOrderNo() {
+
+        return Gate::where('project_id', session('current_project_id'))
+            ->when(session('current_eproduct_id'), function ($query) {
+                $query->where('endproduct_id', session('current_eproduct_id'));
+            })->max('ordering');
+    }
+
+
+
+
+
+
+
+
+
 }

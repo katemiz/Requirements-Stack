@@ -54,10 +54,45 @@
     @if ($gates->count() > 0)
     <table class="table is-fullwidth">
 
-        @if ($constants['list']['listCaption'])
-            <caption>{{ $constants['list']['listCaption'] }}</caption>
-        @endif
+        <caption>{{ $gates->total() }} {{ $gates->total() > 1 ? ' Milestones/Gates' :' Milestone/Gate' }}</caption>
 
+
+        <thead>
+
+            <tr>
+                <th>Order</th>
+
+                @foreach ($constants['list']['headers'] as $col_name => $headerParams)
+                    <th class="has-text-{{ $headerParams['align'] }}">
+                        {{ $headerParams['title'] }}
+
+                        @if ($headerParams['sortable'])
+
+                            <a class="{{ $headerParams['direction'] == 'asc' ? 'is-hidden': '' }}" wire:click="changeSortDirection('{{$col_name}}')">
+                                <span class="icon has-text-link">
+                                    <x-carbon-chevron-sort-up />
+                                </span>
+                            </a>
+
+                            <a class="{{ $headerParams['direction'] == 'desc' ? 'is-hidden': '' }}" wire:click="changeSortDirection('{{$col_name}}')">
+                                <span class="icon has-text-link">
+                                    <x-carbon-chevron-sort-down />
+                                </span>
+                            </a>
+
+                        @endif
+                    </th>
+                @endforeach
+
+                <th class="has-text-right"><span class="icon"><x-carbon-user-activity /></span></th>
+
+            </tr>
+        </thead>
+
+
+
+
+{{-- 
         <thead>
             <tr>
                 @foreach ($constants['list']['headers'] as $col_name => $headerParams)
@@ -87,12 +122,31 @@
                 @endif
 
             </tr>
-        </thead>
+        </thead> --}}
 
         <tbody>
 
             @foreach ($gates as $record)
             <tr wire:key="{{ $record->id }}">
+
+
+                <td>
+                    @if ($record->ordering != 1)
+                    <a wire:click="moveUpDown({{ $record->id}},'up')">
+                        <span class="icon is-small"><x-carbon-arrow-up /></span>
+                    </a>
+                    @endif
+        
+
+                    @if ($record->ordering != count($gates))
+
+                    <a wire:click="moveUpDown({{ $record->id}},'down')" class="mr-4">
+                        <span class="icon is-small"><x-carbon-arrow-down /></span>
+                    </a>
+                    @endif
+
+                </td>
+
 
                 @foreach (array_keys($constants['list']['headers']) as $col_name)
                     <td>

@@ -58,9 +58,7 @@
     @if ($chapters->count() > 0)
     <table class="table is-fullwidth">
 
-        @if ($constants['list']['listCaption'])
-            <caption>{{ $constants['list']['listCaption'] }}</caption>
-        @endif
+        <caption>{{ $chapters->total() }} {{ $chapters->total() > 1 ? ' Chapters' :' Chapter' }}</caption>
 
         <thead>
 
@@ -89,9 +87,7 @@
                     </th>
                 @endforeach
 
-                @if ( isset($constants['list']['actions']) )
-                    <th class="has-text-right"><span class="icon"><x-carbon-user-activity /></span></th>
-                @endif
+                <th class="has-text-right"><span class="icon"><x-carbon-user-activity /></span></th>
 
             </tr>
         </thead>

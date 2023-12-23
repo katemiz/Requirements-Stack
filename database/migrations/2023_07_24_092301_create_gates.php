@@ -28,6 +28,7 @@ return new class extends Migration
             $table->string('name');
             $table->text('purpose')->nullable();
             $table->text('timing')->nullable();
+            $table->integer('ordering');
             $table->timestamps();
         });
     }
