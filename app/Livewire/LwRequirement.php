@@ -539,6 +539,8 @@ class LwRequirement extends Component
         $requirement->tests()->detach();
         $requirement->tests()->attach($this->requirement_tests);
 
+        $this->setProps();
+
         // ATTACHMENTS, TRIGGER ATTACHMENT COMPONENT
         $this->dispatch('triggerAttachment',modelId: $this->uid);
         $this->action = 'VIEW';
