@@ -380,8 +380,6 @@ class LwTest extends Component
 
             if ($c->endproduct_id > 0) {
                 $this->the_endproduct = Endproduct::find($c->endproduct_id);
-
-                dd($this->the_endproduct);
             }
 
             // Revisions
