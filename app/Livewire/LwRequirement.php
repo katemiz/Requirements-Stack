@@ -63,6 +63,7 @@ class LwRequirement extends Component
     public $all_revs = [];
 
     public $requirement_no;
+    public $requirement; // Requirement Object
     public $revision;
 
     #[Rule('required|numeric', message: 'Please select company')]
@@ -121,14 +122,13 @@ class LwRequirement extends Component
             $this->setProps();
         }
 
+
         $this->constants = config('requirements');
     }
 
 
     public function render()
     {
-        $this->checkIsDefinition();
-
         $this->checkUserRoles();
         $this->checkCurrentProduct();
         $this->getCompaniesList();
@@ -136,11 +136,9 @@ class LwRequirement extends Component
 
         $this->checkSessionVariables();
 
-        $existing_verifications = $this->setProps();
-
         return view('requirements.requirements',[
             'requirements' => $this->getRequirementsList(),
-            'verifications' => $existing_verifications,
+            'verifications' => $this->getExistingVerifications(),
             'verification_data' => $this->getVerificationProps(),
             'tests' => $this->getTestsList(),
             'chapters' => $this->getChaptersList()
@@ -375,11 +373,6 @@ class LwRequirement extends Component
     }
 
 
-    
-
-
-
-
     public function changeSortDirection ($key) {
 
         $this->sortField = $key;
@@ -423,38 +416,38 @@ class LwRequirement extends Component
 
         if ($this->uid && in_array($this->action,['VIEW','FORM','VERIFICATION']) ) {
 
-            $c = Requirement::find($this->uid);
+            $this->requirement = Requirement::find($this->uid);
 
-            $this->requirement_no = $c->requirement_no;
-            $this->revision = $c->revision;
-            $this->rtype = $c->rtype;
-            $this->title = $c->title;
-            $this->text = $c->text;
-            $this->is_latest = $c->is_latest;
-            $this->remarks = $c->remarks;
-            $this->company_id = $c->company_id;
-            $this->project_id = $c->project_id;
-            $this->endproduct_id = $c->endproduct_id;
-            $this->chapter_id = $c->chapter_id;
-            $this->xrefno = $c->cross_ref_no;
-            $this->source = $c->source;
-            $this->status = $c->status;
-            $this->created_at = $c->created_at;
-            $this->updated_at = $c->updated_at;
-            $this->created_by = User::find($c->user_id)->fullname;
-            $this->updated_by = User::find($c->updated_uid)->fullname;
+            $this->requirement_no = $this->requirement->requirement_no;
+            $this->revision = $this->requirement->revision;
+            $this->rtype = $this->requirement->rtype;
+            $this->title = $this->requirement->title;
+            $this->text = $this->requirement->text;
+            $this->is_latest = $this->requirement->is_latest;
+            $this->remarks = $this->requirement->remarks;
+            $this->company_id = $this->requirement->company_id;
+            $this->project_id = $this->requirement->project_id;
+            $this->endproduct_id = $this->requirement->endproduct_id;
+            $this->chapter_id = $this->requirement->chapter_id;
+            $this->xrefno = $this->requirement->cross_ref_no;
+            $this->source = $this->requirement->source;
+            $this->status = $this->requirement->status;
+            $this->created_at = $this->requirement->created_at;
+            $this->updated_at = $this->requirement->updated_at;
+            $this->created_by = User::find($this->requirement->user_id)->fullname;
+            $this->updated_by = User::find($this->requirement->updated_uid)->fullname;
 
-            $this->the_company = Company::find($c->company_id);
-            $this->the_project = Project::find($c->project_id);
+            $this->the_company = Company::find($this->requirement->company_id);
+            $this->the_project = Project::find($this->requirement->project_id);
 
-            $this->tests = $c->tests;
+            $this->tests = $this->requirement->tests;
 
-            if ($c->chapter_id > 0) {
-                $this->chapter = Chapter::find($c->chapter_id);
+            if ($this->requirement->chapter_id > 0) {
+                $this->chapter = Chapter::find($this->requirement->chapter_id);
             }
 
-            if ($c->endproduct_id > 0) {
-                $this->the_endproduct = Endproduct::find($c->endproduct_id);
+            if ($this->requirement->endproduct_id > 0) {
+                $this->the_endproduct = Endproduct::find($this->requirement->endproduct_id);
             }
 
             // Revisions
@@ -462,11 +455,19 @@ class LwRequirement extends Component
                 $this->all_revs[$req->revision] = $req->id;
             }
 
-            return $c->verifications;
+            $this->checkIsDefinition();
+        }
+
+        return true;
+    }
+
+    public function getExistingVerifications() {
+
+        if ($this->requirement) {
+            return $this->requirement->verifications;
         }
 
         return false;
-
     }
 
 
