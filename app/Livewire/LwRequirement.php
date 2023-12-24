@@ -395,6 +395,7 @@ class LwRequirement extends Component
     public function viewItem($uid) {
         $this->action = 'VIEW';
         $this->uid = $uid;
+        $this->setProps();
     }
 
 
