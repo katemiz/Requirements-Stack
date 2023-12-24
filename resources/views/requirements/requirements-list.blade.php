@@ -125,19 +125,14 @@
 
                 <td class="has-text-right">
 
-                    <a wire:click="viewItem({{ $record->id}})">
+                    <a wire:click="viewItem({{ $record->id }})">
                         <span class="icon"><x-carbon-view/></span>
                     </a>
 
                     @role(['admin','company_admin','requirement_engineer'])
                         <a href="/requirements/form/{{ $record->id }}">
-                        {{-- <a wire:click="editItem({{ $record->id }})"> --}}
                             <span class="icon"><x-carbon-edit /></span>
                         </a>
-
-                        {{-- <a wire:click.prevent="triggerDelete({{$record->id}})">
-                            <span class="icon has-text-danger-dark"><x-carbon-trash-can /></span>
-                        </a> --}}
                     @endrole
 
                 </td>

@@ -9,12 +9,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-// use App\Models\Attachment;
-// use App\Models\Endproduct;
-// use App\Models\Verification;
-// use App\Models\Meeting;
-
-
 class Requirement extends Model
 {
     use HasFactory;
@@ -28,6 +22,7 @@ class Requirement extends Model
         'chapter_id',
         'requirement_no',
         'revision',
+        'is_latest',
         'cross_ref_no',
         'title',
         'text',

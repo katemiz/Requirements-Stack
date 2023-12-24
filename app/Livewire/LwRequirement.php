@@ -10,6 +10,8 @@ use Livewire\Attributes\Rule;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
+
 
 use App\Models\Company;
 use App\Models\Chapter;
@@ -115,13 +117,16 @@ class LwRequirement extends Component
     {
         if (request('action')) {
             $this->action = strtoupper(request('action'));
+
+            if (request('action') == 'viewByNo' && request('id')) {
+                $this->uid = $this->getIdByRequirementNo(request('id'));
+            }
         }
 
         if (request('id')) {
             $this->uid = request('id');
             $this->setProps();
         }
-
 
         $this->constants = config('requirements');
     }
@@ -213,7 +218,9 @@ class LwRequirement extends Component
                         })
                         ->where(function ($sqlquery) {
                             $sqlquery->where('text', 'LIKE', "%".$this->query."%")
+                                  ->orWhere('requirement_no', 'LIKE', "%".$this->query."%")
                                   ->orWhere('remarks', 'LIKE', "%".$this->query."%");
+
                         })
                         ->orderBy($this->sortField,$this->sortDirection)
                         ->paginate(env('RESULTS_PER_PAGE'));
@@ -242,7 +249,8 @@ class LwRequirement extends Component
                         })
                         ->where(function ($sqlquery) {
                             $sqlquery->where('text', 'LIKE', "%".$this->query."%")
-                                  ->orWhere('remarks', 'LIKE', "%".$this->query."%");
+                                ->orWhere('requirement_no', 'LIKE', "%".$this->query."%")
+                                ->orWhere('remarks', 'LIKE', "%".$this->query."%");
                         })
                         ->orderBy($this->sortField,$this->sortDirection)
                         ->paginate(env('RESULTS_PER_PAGE'));
@@ -281,7 +289,8 @@ class LwRequirement extends Component
                 })
                 ->where(function ($sqlquery) {
                     $sqlquery->where('text', 'LIKE', "%".$this->query."%")
-                            ->orWhere('remarks', 'LIKE', "%".$this->query."%");
+                        ->orWhere('requirement_no', 'LIKE', "%".$this->query."%")
+                        ->orWhere('remarks', 'LIKE', "%".$this->query."%");
                 })
                 ->orderBy($this->sortField,$this->sortDirection)
                 ->paginate(env('RESULTS_PER_PAGE'));
@@ -392,9 +401,15 @@ class LwRequirement extends Component
     }
 
 
-    public function viewItem($uid) {
+    public function getIdByRequirementNo($requirement_no) {
+        $r = Requirement::where('requirement_no',$requirement_no)->where('is_latest',true)->sole();
+        return $r->id;
+    }
+
+
+    public function viewItem($id) {
         $this->action = 'VIEW';
-        $this->uid = $uid;
+        $this->uid = $id;
         $this->setProps();
     }
 
@@ -633,6 +648,8 @@ class LwRequirement extends Component
 
         $this->action = 'VIEW';
         Requirement::find($this->uid)->update(['status' =>'Frozen']);
+
+        $this->setProps();
     }
 
 
@@ -660,7 +677,10 @@ class LwRequirement extends Component
 
         $original_requirement->update(['is_latest' => false]);
 
+        Log::info($original_requirement);
+
         $this->uid = $revised_requirement->id;
         $this->action = 'VIEW';
+        $this->setProps();
     }
 }
