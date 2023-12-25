@@ -17,7 +17,11 @@ class Moc extends Model
 
     public function getEndProductNameAttribute()
     {
-        return Endproduct::find($this->endproduct_id)->code;
+        if ($this->endproduct_id) {
+            return Endproduct::find($this->endproduct_id)->code;
+        } else {
+            return null;
+        }
     }
 
     public function getCreatedByNameAttribute()

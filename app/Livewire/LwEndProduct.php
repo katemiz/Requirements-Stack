@@ -407,6 +407,7 @@ class LwEndProduct extends Component
 
         $this->validate();
 
+        $props['updated_uid'] = Auth::id();
         $props['company_id'] = $this->company_id;
         $props['project_id'] = $this->project_id;
         $props['code'] = $this->code;
@@ -420,7 +421,6 @@ class LwEndProduct extends Component
 
         if ( $this->uid ) {
             // update
-            $props['updated_uid'] = Auth::id();
             Endproduct::find($this->uid)->update($props);
             session()->flash('message','End Product has been updated successfully.');
 
