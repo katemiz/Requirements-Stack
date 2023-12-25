@@ -39,13 +39,13 @@ class LwUser extends Component
     public $logged_user;
     public $user;
 
-    #[Rule('required', message: 'Please select company')] 
+    #[Rule('required', message: 'Please select company')]
     public $company_id;
 
-    #[Rule('required|min:2')] 
+    #[Rule('required|min:2')]
     public $name;
 
-    #[Rule('required|min:2')] 
+    #[Rule('required|min:2')]
     public $lastname;
 
     #[Rule('required|email', onUpdate: false)]
@@ -74,7 +74,7 @@ class LwUser extends Component
 
         $this->allroles = Role::all();
         $this->permissions = Permission::all();
-        
+
         if ( $this->action === 'VIEW') {
             $this->setProps();
         }
@@ -270,6 +270,9 @@ class LwUser extends Component
         $user->projects()->attach($this->user_projects);
 
         $this->action = 'VIEW';
+
+        $this->setProps();
+
     }
 
 }
