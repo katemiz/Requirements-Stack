@@ -132,7 +132,7 @@
 
 
         @if (strlen(trim($remarks)) > 0)
-        <div class="column has-text-grey">
+        <div class="column content has-text-grey">
             <strong>Test Description / What to test</strong>
             {!! $remarks !!}
         </div>
