@@ -9,7 +9,7 @@
         <link rel="stylesheet" href="{{ asset('/css/sweetalert2_min.css') }}">
         <script src="{{ asset('/js/sweetalert2.min.js') }}"></script>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-        <link rel="icon" type="image/x-icon" href="{{ asset('/favicon.ico') }}">
+        <link rel="icon" type="image/x-icon" href="{{ asset('/images/favicon.ico') }}">
 
         <script src="{{ asset('/js/js.js') }}"></script>
 
