@@ -27,10 +27,15 @@ class Chapter extends Model
         return Project::find($this->project_id)->code;
     }
 
-    
+
     public function getEndProductNameAttribute()
     {
-        return Endproduct::find($this->endproduct_id)->code;
+        if ($this->endproduct_id) {
+            return Endproduct::find($this->endproduct_id)->code;
+
+        } else {
+            return null;
+        }
     }
 
 
