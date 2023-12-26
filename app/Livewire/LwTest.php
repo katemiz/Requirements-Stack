@@ -422,7 +422,6 @@ class LwTest extends Component
 
         $this->validate();
 
-        $props['test_no'] = $this->getTestNo();
         $props['updated_uid'] = Auth::id();
         $props['company_id'] = $this->company_id;
         $props['project_id'] = $this->project_id;
@@ -439,6 +438,7 @@ class LwTest extends Component
         } else {
             // create
             $props['user_id'] = Auth::id();
+            $props['test_no'] = $this->getTestNo();
             $this->uid = Test::create($props)->id;
             session()->flash('message','Test has been created successfully.');
         }
