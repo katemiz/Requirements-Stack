@@ -270,16 +270,22 @@
 
 
             <div class="column">
-                <strong>Test Links</strong>
-                @if ( $tests->count() > 0 )
-                    @foreach ($tests as $test)
-                        <div>
-                            <span class="has-text-weight-bold">T{{ $test->test_no }} R{{ $test->revision }}</span>
-                            <span><a href="/projects-tests/view/{{ $test->id }}">{{ $test->title }}</a></span>
-                        </div>
+                <strong class="mb-3">Related Tests</strong>
+                @if ( count($requirement_tests) > 0 )
+                    @foreach ($requirement_tests as $idTest)
+
+                        @foreach ($tests as $test)
+                            @if ($idTest == $test->id)
+                            <div>
+                                <a href="/projects-tests/view/{{ $test->id }}">T{{ $test->test_no }} R{{ $test->revision }}</a>
+                                {{ $test->title }}
+                            </div>
+                            @endif
+                        @endforeach
+
                     @endforeach
                 @else
-                <p>No test link exist</p>
+                <p>No related test</p>
                 @endif
             </div>
 

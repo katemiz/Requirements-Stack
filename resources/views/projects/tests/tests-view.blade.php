@@ -122,7 +122,7 @@
               <div class="column is-half has-text-right">
                 <p class="has-text-weight-light is-size-6">End Product</p>
 
-                <span class="tag is-dark">{{ $endproduct_id > 0 ? $the_endproduct->code : '----' }}</span>
+                <span class="tag is-dark">{{ $the_endproduct ? $the_endproduct->code : '----' }}</span>
 
               </div>
 

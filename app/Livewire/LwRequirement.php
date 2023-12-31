@@ -99,7 +99,7 @@ class LwRequirement extends Component
     public $status;
 
     // Tests
-    public $requirement_tests = [];
+    public $requirement_tests;
 
     public $tests;
 
@@ -138,6 +138,7 @@ class LwRequirement extends Component
         $this->checkCurrentProduct();
         $this->getCompaniesList();
         $this->getProjectsList();
+        $this->getTestsList();
 
         $this->checkSessionVariables();
 
@@ -145,7 +146,6 @@ class LwRequirement extends Component
             'requirements' => $this->getRequirementsList(),
             'verifications' => $this->getExistingVerifications(),
             'verification_data' => $this->getVerificationProps(),
-            'tests' => $this->getTestsList(),
             'chapters' => $this->getChaptersList()
         ]);
     }
@@ -360,9 +360,29 @@ class LwRequirement extends Component
 
     public function getTestsList()  {
         if ($this->project_id) {
-            return Test::where('project_id',$this->project_id)
-                ->where('is_latest',true)->get();
+            // return Test::where('project_id',$this->project_id)
+            //     ->where('is_latest',true)->get();
+
+            //dd('here11111');
+
+
+            $this->tests = Test::where('project_id', session('current_project_id'))
+                ->when(session('current_eproduct_id'), function ($query) {
+                    $query->where('endproduct_id', session('current_eproduct_id'));
+                })
+
+                ->when($this->show_latest, function ($query) {
+                    $query->where('is_latest', true);
+                })->get();
+
+                //dd(gettype($tests));
+
+                
+
+
         }
+
+        //dd('here');
 
         return collect([]);
     }
@@ -465,6 +485,25 @@ class LwRequirement extends Component
             if ($this->requirement->endproduct_id > 0) {
                 $this->the_endproduct = Endproduct::find($this->requirement->endproduct_id);
             }
+
+            //dd($this->requirement->tests);
+
+            $this->requirement_tests  = [];
+
+            if( count($this->requirement->tests) > 0 ) {
+
+                foreach ($this->requirement->tests as $t) {
+
+                    //dd($t);
+                    array_push($this->requirement_tests,$t->id);
+                    
+                    //$this->requirement_tests[] = $t->id;
+
+                }
+            }
+
+
+
 
             // Revisions
             foreach (Requirement::where('requirement_no',$this->requirement_no)->get() as $req) {

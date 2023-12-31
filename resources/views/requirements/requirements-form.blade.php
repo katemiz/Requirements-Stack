@@ -234,11 +234,17 @@
 
         <div class="field">
 
-            <label class="label">Testing Links</label>
+            <label class="label mb-3">Select Related Test (if any)</label>
 
             <div class="control">
 
-                @if ($tests)
+
+                @if ( $tests->count() > 0 )
+
+                {{-- @php
+                print_r($tests);
+                @endphp --}}
+
 
                 @foreach ($tests as $test)
                 <input type="checkbox" value="{{ $test->id }}" wire:model="requirement_tests"> {{ $test->test_no }} {{ $test->title }}<br>
@@ -246,7 +252,7 @@
 
                 @else
 
-                <p>No tests defined yet</p>
+                <p>No tests available</p>
                 @endif
 
             </div>

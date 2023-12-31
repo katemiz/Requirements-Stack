@@ -449,59 +449,6 @@ class LwTest extends Component
     }
 
 
-    // public function formVerification ($rid,$vid) {
-
-    //     $this->uid = $rid;
-    //     if ($vid) {
-    //         $this->vid = $vid;
-    //     }
-    //     $this->action = 'VERIFICATION';
-    // }
-
-
-    // public function getVerificationProps () {
-
-    //     $verification = false;
-
-    //     $ver_milestones = Gate::where('company_id', $this->logged_user->company_id)
-    //         ->where('project_id', session('current_project_id'))
-    //         ->when(session('current_eproduct_id'), function ($query) {
-    //             $query->where('endproduct_id', session('current_eproduct_id'));
-    //         })->get();
-
-    //     $ver_mocs = Moc::where('company_id', $this->logged_user->company_id)
-    //         ->where('project_id', session('current_project_id'))
-    //         ->when(session('current_eproduct_id'), function ($query) {
-    //             $query->where('endproduct_id', session('current_eproduct_id'));
-    //         })->get();
-
-    //     $ver_pocs = Poc::where('company_id', $this->logged_user->company_id)
-    //         ->where('project_id', session('current_project_id'))
-    //         ->when(session('current_eproduct_id'), function ($query) {
-    //             $query->where('endproduct_id', session('current_eproduct_id'));
-    //         })->get();
-
-
-    //     $ver_witnesses = Witness::where('company_id', $this->logged_user->company_id)
-    //         ->where('project_id', session('current_project_id'))
-    //         ->when(session('current_eproduct_id'), function ($query) {
-    //             $query->where('endproduct_id', session('current_eproduct_id'));
-    //         })->get();
-
-    //     if ($this->vid) {
-    //         $verification = Verification::find($this->vid);
-    //     }
-
-    //     return [
-    //         'verification' => $verification,
-    //         'ver_milestones' => $ver_milestones,
-    //         'ver_mocs' => $ver_mocs,
-    //         'ver_pocs' => $ver_pocs,
-    //         'ver_witnesses' => $ver_witnesses
-    //     ];
-    // }
-
-
 
     public function getTestNo() {
 
