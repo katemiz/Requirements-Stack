@@ -376,10 +376,6 @@ class LwRequirement extends Component
                 })->get();
 
                 //dd(gettype($tests));
-
-
-
-
         }
 
         $this->tests = collect([]);
@@ -724,4 +720,40 @@ class LwRequirement extends Component
         $this->action = 'VIEW';
         $this->setProps();
     }
+
+
+
+    public function getPreviousNextRequirement($direction) {
+
+        $next = Requirement::where('requirement_no', '>', $this->requirement_no)
+            ->where('is_latest',true)->orderBy('requirement_no')->first();
+
+        $previous = Requirement::where('requirement_no', '<', $this->requirement_no)
+            ->where('is_latest',true)->orderBy('requirement_no')->first();
+
+        if ($direction == 'next' && $next == null) {
+
+            $max_no = Requirement::where('is_latest',true)->max('requirement_no');
+
+            $next = Requirement::where('requirement_no', $max_no)
+                ->where('is_latest',true)->sole();
+        }
+
+        if ($direction == 'previous' && $previous == null) {
+
+            $min_no = Requirement::where('is_latest',true)->min('requirement_no');
+
+            $previous = Requirement::where('requirement_no', $min_no)
+            ->where('is_latest',true)->sole();
+        }
+
+        if ($direction == 'next') {
+            $this->uid = $next->id;
+        }
+
+        if ($direction == 'previous') {
+            $this->uid = $previous->id;
+        }
+    }
+
 }

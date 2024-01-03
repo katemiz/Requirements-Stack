@@ -113,13 +113,25 @@
             <tr wire:key="{{ $record->id }}">
 
                 @foreach (array_keys($constants['list']['headers']) as $col_name)
-                    <td>
-                        @if (isset($constants['list']['headers'][$col_name]['is_html']) && $constants['list']['headers'][$col_name]['is_html'])
-                        <div class="content">
-                            {!! $record[$col_name] !!}</div>
+                    <td {{ $col_name == 'full_no' ? 'is-narrow' :'' }}>
+
+                        @if ( $col_name == 'full_no' )
+
+                            <a href="/requirements/view/{{ $record->id }}" target="_blank">
+                                <span class="icon">{{ $record[$col_name] }}</span>
+                            </a>
+
                         @else
-                            {{ $record[$col_name] }}
+
+                            @if (isset($constants['list']['headers'][$col_name]['is_html']) && $constants['list']['headers'][$col_name]['is_html'])
+                            <div class="content">
+                                {!! $record[$col_name] !!}</div>
+                            @else
+                                {{ $record[$col_name] }}
+                            @endif
+                            
                         @endif
+
                     </td>
                 @endforeach
 
