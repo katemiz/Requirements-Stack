@@ -377,19 +377,21 @@ class LwRequirement extends Component
 
                 //dd(gettype($tests));
 
-                
+
 
 
         }
 
+        $this->tests = collect([]);
+
         //dd('here');
 
-        return collect([]);
+        //return collect([]);
     }
 
 
     public function getChaptersList()  {
-        
+
 
         if ($this->project_id) {
             return Chapter::where('project_id',$this->project_id)
@@ -496,7 +498,7 @@ class LwRequirement extends Component
 
                     //dd($t);
                     array_push($this->requirement_tests,$t->id);
-                    
+
                     //$this->requirement_tests[] = $t->id;
 
                 }
