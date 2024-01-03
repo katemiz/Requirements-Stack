@@ -632,7 +632,6 @@ class LwRequirement extends Component
                 $query->where('endproduct_id', session('current_eproduct_id'));
             })->get();
 
-
         $ver_witnesses = Witness::where('company_id', $this->logged_user->company_id)
             ->where('project_id', session('current_project_id'))
             ->when(session('current_eproduct_id'), function ($query) {
@@ -732,18 +731,14 @@ class LwRequirement extends Component
             ->where('is_latest',true)->orderBy('requirement_no')->first();
 
         if ($direction == 'next' && $next == null) {
-
-            $max_no = Requirement::where('is_latest',true)->max('requirement_no');
-
-            $next = Requirement::where('requirement_no', $max_no)
+            $min_no = Requirement::where('is_latest',true)->min('requirement_no');
+            $next = Requirement::where('requirement_no', $min_no)
                 ->where('is_latest',true)->sole();
         }
 
         if ($direction == 'previous' && $previous == null) {
-
-            $min_no = Requirement::where('is_latest',true)->min('requirement_no');
-
-            $previous = Requirement::where('requirement_no', $min_no)
+            $max_no = Requirement::where('is_latest',true)->max('requirement_no');
+            $previous = Requirement::where('requirement_no', $max_no)
             ->where('is_latest',true)->sole();
         }
 
@@ -754,6 +749,8 @@ class LwRequirement extends Component
         if ($direction == 'previous') {
             $this->uid = $previous->id;
         }
+
+        $this->setProps();
     }
 
 }

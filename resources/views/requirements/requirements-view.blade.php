@@ -312,13 +312,13 @@
         <div class="columns is-size-7 has-text-grey mt-6">
 
             <div class="column">
-                <a wire:click="getPreviousNextRequirement('next')">
+                <a wire:click="getPreviousNextRequirement('previous')">
                     <span class="icon"><x-carbon-previous-filled /></span>
                 </a>
             </div>
 
             <div class="column has-text-right">
-                <a wire:click="getPreviousNextRequirement('previous')">
+                <a wire:click="getPreviousNextRequirement('next')">
                     <span class="icon"><x-carbon-next-filled /></span>
                 </a>
             </div>
