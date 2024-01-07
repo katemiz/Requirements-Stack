@@ -725,21 +725,49 @@ class LwRequirement extends Component
     public function getPreviousNextRequirement($direction) {
 
         $next = Requirement::where('requirement_no', '>', $this->requirement_no)
-            ->where('is_latest',true)->orderBy('requirement_no')->first();
+            ->where('is_latest',true)->orderBy('requirement_no','asc')
+            ->where('project_id', session('current_project_id'))
+            ->when(session('current_eproduct_id'), function ($query) {
+                $query->where('endproduct_id', session('current_eproduct_id'));
+            })->first();
 
         $previous = Requirement::where('requirement_no', '<', $this->requirement_no)
-            ->where('is_latest',true)->orderBy('requirement_no')->first();
+            ->where('is_latest',true)->orderBy('requirement_no','desc')
+            ->where('project_id', session('current_project_id'))
+            ->when(session('current_eproduct_id'), function ($query) {
+                $query->where('endproduct_id', session('current_eproduct_id'));
+            })->first();
 
-        if ($direction == 'next' && $next == null) {
-            $min_no = Requirement::where('is_latest',true)->min('requirement_no');
+        if ($direction === 'next' && $next === null) {
+
+            $min_no = Requirement::where('is_latest',true)
+                ->where('project_id', session('current_project_id'))
+                ->when(session('current_eproduct_id'), function ($query) {
+                    $query->where('endproduct_id', session('current_eproduct_id'));
+                })->min('requirement_no');
+
             $next = Requirement::where('requirement_no', $min_no)
-                ->where('is_latest',true)->sole();
+                ->where('is_latest',true)
+                ->where('project_id', session('current_project_id'))
+                ->when(session('current_eproduct_id'), function ($query) {
+                    $query->where('endproduct_id', session('current_eproduct_id'));
+                })->sole();
         }
 
         if ($direction == 'previous' && $previous == null) {
-            $max_no = Requirement::where('is_latest',true)->max('requirement_no');
+
+            $max_no = Requirement::where('is_latest',true)
+                ->where('project_id', session('current_project_id'))
+                ->when(session('current_eproduct_id'), function ($query) {
+                    $query->where('endproduct_id', session('current_eproduct_id'));
+                })->max('requirement_no');
+            
             $previous = Requirement::where('requirement_no', $max_no)
-            ->where('is_latest',true)->sole();
+                ->where('is_latest',true)
+                ->where('project_id', session('current_project_id'))
+                ->when(session('current_eproduct_id'), function ($query) {
+                    $query->where('endproduct_id', session('current_eproduct_id'));
+                })->sole();
         }
 
         if ($direction == 'next') {
