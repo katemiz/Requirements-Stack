@@ -51,6 +51,9 @@ class LwRequirement extends Component
     public $is_user_admin = false;
     public $is_user_company_admin = false;
 
+    // Advanced Search
+    public $advanced_search=false;
+    
     // Verification
     public $companies = [];
     public $projects = [];
@@ -110,7 +113,7 @@ class LwRequirement extends Component
     ];
 
     #[Rule('required', message: 'Please select requirement type')]
-    public $rtype = 'GR';
+    public $rtype;
 
 
     public function mount()
@@ -203,6 +206,12 @@ class LwRequirement extends Component
                         ->when($this->show_latest, function ($query) {
                             $query->where('is_latest', true);
                         })
+                        ->when($this->advanced_search && $this->rtype, function ($query) {
+                            $query->where('rtype', $this->rtype);
+                        })
+                        ->when($this->advanced_search && $this->chapter_id, function ($query) {
+                            $query->where('chapter_id', $this->chapter_id);
+                        })
                         ->orderBy($this->sortField,$this->sortDirection)
                         ->paginate(env('RESULTS_PER_PAGE'));
 
@@ -215,6 +224,12 @@ class LwRequirement extends Component
                         })
                         ->when($this->show_latest, function ($query) {
                             $query->where('is_latest', true);
+                        })
+                        ->when($this->advanced_search && $this->rtype, function ($query) {
+                            $query->where('rtype', $this->rtype);
+                        })
+                        ->when($this->advanced_search && $this->chapter_id, function ($query) {
+                            $query->where('chapter_id', $this->chapter_id);
                         })
                         ->where(function ($sqlquery) {
                             $sqlquery->where('text', 'LIKE', "%".$this->query."%")
@@ -234,6 +249,12 @@ class LwRequirement extends Component
                     $requirements = Requirement::when($this->show_latest, function ($query) {
                         $query->where('is_latest', true);
                     })
+                    ->when($this->advanced_search && $this->rtype, function ($query) {
+                        $query->where('rtype', $this->rtype);
+                    })
+                    ->when($this->advanced_search && $this->chapter_id, function ($query) {
+                        $query->where('chapter_id', $this->chapter_id);
+                    })
                     ->orderBy($this->sortField,$this->sortDirection)
                         ->paginate(env('RESULTS_PER_PAGE'));
 
@@ -246,6 +267,12 @@ class LwRequirement extends Component
                         })
                         ->when($this->show_latest, function ($query) {
                             $query->where('is_latest', true);
+                        })
+                        ->when($this->advanced_search && $this->rtype, function ($query) {
+                            $query->where('rtype', $this->rtype);
+                        })
+                        ->when($this->advanced_search && $this->chapter_id, function ($query) {
+                            $query->where('chapter_id', $this->chapter_id);
                         })
                         ->where(function ($sqlquery) {
                             $sqlquery->where('text', 'LIKE', "%".$this->query."%")
@@ -271,6 +298,12 @@ class LwRequirement extends Component
                     ->when($this->show_latest, function ($query) {
                         $query->where('is_latest', true);
                     })
+                    ->when($this->advanced_search && $this->rtype, function ($query) {
+                        $query->where('rtype', $this->rtype);
+                    })
+                    ->when($this->advanced_search && $this->chapter_id, function ($query) {
+                        $query->where('chapter_id', $this->chapter_id);
+                    })
                     ->orderBy($this->sortField,$this->sortDirection)
                     ->paginate(env('RESULTS_PER_PAGE'));
 
@@ -286,6 +319,12 @@ class LwRequirement extends Component
                 })
                 ->when($this->show_latest, function ($query) {
                     $query->where('is_latest', true);
+                })
+                ->when($this->advanced_search && $this->rtype, function ($query) {
+                    $query->where('rtype', $this->rtype);
+                })
+                ->when($this->advanced_search && $this->chapter_id, function ($query) {
+                    $query->where('chapter_id', $this->chapter_id);
                 })
                 ->where(function ($sqlquery) {
                     $sqlquery->where('text', 'LIKE', "%".$this->query."%")
@@ -434,6 +473,7 @@ class LwRequirement extends Component
 
     public function editItem($uid) {
         $this->action = 'FORM';
+        $this->rtype = 'GR';
         $this->uid = $uid;
     }
 
@@ -441,7 +481,7 @@ class LwRequirement extends Component
     public function addItem() {
         $this->uid = false;
         $this->action = 'FORM';
-
+        $this->rtype = 'GR';
         $this->reset('code','name');
     }
 
@@ -484,24 +524,13 @@ class LwRequirement extends Component
                 $this->the_endproduct = Endproduct::find($this->requirement->endproduct_id);
             }
 
-            //dd($this->requirement->tests);
-
             $this->requirement_tests  = [];
 
             if( count($this->requirement->tests) > 0 ) {
-
                 foreach ($this->requirement->tests as $t) {
-
-                    //dd($t);
                     array_push($this->requirement_tests,$t->id);
-
-                    //$this->requirement_tests[] = $t->id;
-
                 }
             }
-
-
-
 
             // Revisions
             foreach (Requirement::where('requirement_no',$this->requirement_no)->get() as $req) {

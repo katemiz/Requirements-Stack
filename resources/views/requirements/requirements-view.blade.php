@@ -80,7 +80,7 @@
             <div class="columns">
 
                 <div class="column is-8">
-                    <p class="title has-text-weight-light is-size-2">{{$rtype}}-{{$requirement_no}} R{{$revision}}</p>
+                    <p class="title has-text-weight-light is-size-2">R{{$requirement_no}} R{{$revision}}</p>
                     <p class="subtitle has-text-weight-light is-size-6"><strong>Status</strong> {{$status}}</p>
 
                     @if (count($all_revs) > 1)

@@ -76,16 +76,16 @@
 
                         @if (count($project_eproducts) > 0)
 
-                        <div class="select">
+                            <div class="select">
 
-                            <select wire:model='endproduct_id'>
-                                <option>Select a End Product...</option>
+                                <select wire:model='endproduct_id'>
+                                    <option value="0">Select a End Product...</option>
                                     @foreach ($project_eproducts as $endproduct)
                                         <option value="{{ $endproduct->id }}">{{ $endproduct->title }}</option>
                                     @endforeach
-                            </select>
+                                </select>
 
-                        </div>
+                            </div>
 
                         @else
                             <p>No end product found</p>

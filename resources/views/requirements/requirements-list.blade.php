@@ -51,20 +51,82 @@
                 </div>
                 <div class="control">
                 <a class="button is-link is-light is-small">
+                    {{-- <span class="icon is-small"><x-carbon-search-advanced /></span> --}}
+
                     @if ( strlen($query) > 0)
                         <span class="icon is-small is-left" wire:click="resetFilter">
                             <x-carbon-close />
                         </span>
                     @else
-                        <span class="icon is-small"><x-carbon-search /></span>
+                        <span class="icon is-small" wire:click="$toggle('advanced_search')"><x-carbon-search /></span>
                     @endif
                 </a>
+
+
                 </div>
+
             </div>
+            
+
 
         </div>
 
     </nav>
+
+    @if ($advanced_search)
+
+        <div class="column has-text-centered">
+            <p class="subtitle">Advanced Search Parameters</p>
+        </div>
+
+        <div class="columns my-6 has-background-light">
+
+
+
+            <div class="column">
+
+                <label class="label">Filter By Requirement Type</label>
+
+                <div class="select">
+
+                    <select wire:model.live='rtype'>
+                        <option>Select Requirement Type ...</option>
+                        @foreach ($rtypes as $abbr => $tip_name)
+                            <option value="{{ $abbr }}">{{ $tip_name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+
+
+
+            @if (count($chapters) > 0)
+            <div class="column">
+
+                <label class="label">Filter By Subject Chapter</label>
+
+                <div class="select">
+
+                    <select wire:model.live='chapter_id'>
+                        <option>Select Chapter...</option>
+                        @foreach ($chapters as $chapters)
+                            <option value="{{ $chapters->id }}">{{ $chapters->title }}</option>
+                        @endforeach
+                    </select>
+
+                </div>
+                        
+            </div>
+            @endif
+
+
+
+
+
+
+        </div>
+        
+    @endif
 
     @if ($requirements->count() > 0)
     <table class="table is-fullwidth">

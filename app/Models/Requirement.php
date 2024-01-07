@@ -74,7 +74,9 @@ class Requirement extends Model
 
     public function getFullNoAttribute()
     {
-        return $this->rtype.'-'.$this->requirement_no.' R'.$this->revision;
+        //return $this->rtype.'-'.$this->requirement_no.' R'.$this->revision;
+        return 'R'.$this->requirement_no.'R'.$this->revision;
+
     }
 
 
