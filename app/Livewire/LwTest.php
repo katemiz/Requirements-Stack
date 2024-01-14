@@ -50,6 +50,7 @@ class LwTest extends Component
     public $the_endproduct = false; // Viewed Phase EndProduct
 
     public $project_eproducts = [];
+    public $requirements = [];
 
     public $all_revs = [];
 
@@ -179,7 +180,7 @@ class LwTest extends Component
                             $query->where('is_latest', true);
                         })
                         ->where(function ($sqlquery) {
-                            $sqlquery->where('text', 'LIKE', "%".$this->query."%")
+                            $sqlquery->where('title', 'LIKE', "%".$this->query."%")
                                   ->orWhere('remarks', 'LIKE', "%".$this->query."%");
                         })
                         ->orderBy($this->sortField,$this->sortDirection)
@@ -208,7 +209,7 @@ class LwTest extends Component
                             $query->where('is_latest', true);
                         })
                         ->where(function ($sqlquery) {
-                            $sqlquery->where('text', 'LIKE', "%".$this->query."%")
+                            $sqlquery->where('title', 'LIKE', "%".$this->query."%")
                                   ->orWhere('remarks', 'LIKE', "%".$this->query."%");
                         })
                         ->orderBy($this->sortField,$this->sortDirection)
@@ -246,7 +247,7 @@ class LwTest extends Component
                     $query->where('is_latest', true);
                 })
                 ->where(function ($sqlquery) {
-                    $sqlquery->where('text', 'LIKE', "%".$this->query."%")
+                    $sqlquery->where('title', 'LIKE', "%".$this->query."%")
                             ->orWhere('remarks', 'LIKE', "%".$this->query."%");
                 })
                 ->orderBy($this->sortField,$this->sortDirection)
@@ -381,6 +382,8 @@ class LwTest extends Component
             if ($c->endproduct_id > 0) {
                 $this->the_endproduct = Endproduct::find($c->endproduct_id);
             }
+
+            $this->requirements = $c->requirements;
 
             // Revisions
             foreach (Test::where('test_no',$this->test_no)->get() as $req) {

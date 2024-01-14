@@ -22,11 +22,12 @@ return [
                 "direction" => "asc"
             ],
 
-            "title"=> [
+            "test_description"=> [
                 "title" => "Test Title",
                 "sortable" => true,
                 "align" => "left",
-                "direction" => "asc"
+                "direction" => "asc",
+                "is_html" => true
             ],
 
 

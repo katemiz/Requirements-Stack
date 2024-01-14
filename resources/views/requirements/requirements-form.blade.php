@@ -247,12 +247,12 @@
 
 
                 @foreach ($tests as $test)
-                <input type="checkbox" value="{{ $test->id }}" wire:model="requirement_tests"> {{ $test->test_no }} {{ $test->title }}<br>
+                <input type="checkbox" value="{{ $test->id }}" wire:model="requirement_tests">&nbsp;&nbsp;T{{ $test->test_no }} R{{  $test->revision}} {{ $test->title }}<br>
                 @endforeach
 
                 @else
 
-                <p>No tests available</p>
+                <p>No tests available {{  count($tests) }}</p>
                 @endif
 
             </div>

@@ -53,7 +53,7 @@ class LwRequirement extends Component
 
     // Advanced Search
     public $advanced_search=false;
-    
+
     // Verification
     public $companies = [];
     public $projects = [];
@@ -399,29 +399,21 @@ class LwRequirement extends Component
 
     public function getTestsList()  {
         if ($this->project_id) {
-            // return Test::where('project_id',$this->project_id)
-            //     ->where('is_latest',true)->get();
-
-            //dd('here11111');
-
 
             $this->tests = Test::where('project_id', session('current_project_id'))
-                ->when(session('current_eproduct_id'), function ($query) {
-                    $query->where('endproduct_id', session('current_eproduct_id'));
-                })
+
+                // ->when(session('current_eproduct_id'), function ($query) {
+                //     $query->where('endproduct_id', session('current_eproduct_id'));
+                // })
 
                 ->when($this->show_latest, function ($query) {
                     $query->where('is_latest', true);
                 })->get();
 
-                //dd(gettype($tests));
+            return true;
         }
 
         $this->tests = collect([]);
-
-        //dd('here');
-
-        //return collect([]);
     }
 
 
@@ -790,7 +782,7 @@ class LwRequirement extends Component
                 ->when(session('current_eproduct_id'), function ($query) {
                     $query->where('endproduct_id', session('current_eproduct_id'));
                 })->max('requirement_no');
-            
+
             $previous = Requirement::where('requirement_no', $max_no)
                 ->where('is_latest',true)
                 ->where('project_id', session('current_project_id'))

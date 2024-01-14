@@ -5,6 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+
+
+use Illuminate\Support\Str;
+
 class Test extends Model
 {
     use HasFactory;
@@ -33,4 +38,11 @@ class Test extends Model
     {
         return 'T'.$this->test_no.' R'.$this->revision;
     }
+
+
+    public function requirements(): BelongsToMany
+    {
+        return $this->belongsToMany(Requirement::class);
+    }
+
 }

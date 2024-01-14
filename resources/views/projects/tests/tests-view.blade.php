@@ -9,6 +9,8 @@
     </div>
 @endif
 
+
+
 <div class="card">
 
     <div class="card-content">
@@ -130,7 +132,6 @@
         </div>
 
 
-
         @if (strlen(trim($remarks)) > 0)
         <div class="column content has-text-grey">
             <strong>Test Description / What to test</strong>
@@ -139,7 +140,17 @@
         @endif
 
 
+        <div class="column content">
+            <strong>Related Requirements</strong>
 
+            <ul>
+            @foreach ($requirements as $requirement)
+                <li>
+                <a href="/requirements/view/{{ $requirement->id }}" target="_blank">R{{ $requirement->requirement_no }} R{{ $requirement->revision }}</a>
+                </li>
+            @endforeach
+            </ul>
+        </div>
 
         <div class="column">
             <strong>Procedure and Support Files</strong>

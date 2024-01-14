@@ -4,10 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\DB;
+
 use App\Models\Requirement;
 use App\Models\Verification;
 use App\Models\Gate;
 use App\Models\Poc;
+use App\Models\Test;
+
 
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\CMExport;
@@ -59,7 +63,7 @@ class ExportController extends Controller
 
             foreach ($req_vers as $verification) {
                 $poc = Poc::find($verification->poc_id);
-    
+
                 $pocnames[$poc->code] = $poc->name;
                 $matrix[$poc->code][] = ['id' => $preq->id,'no' => $preq->rtype.'-'.$preq->requirement_no.' R'.$preq->revision];
             }
@@ -121,6 +125,70 @@ class ExportController extends Controller
             'dgates' => $dgates
         ]);
     }
+
+
+
+
+    public function getTestsList()  {
+
+        if (session('current_project_id')) {
+
+            return Test::where('project_id', session('current_project_id'))
+
+                // ->when(session('current_eproduct_id'), function ($query) {
+                //     $query->where('endproduct_id', session('current_eproduct_id'));
+                // })
+
+                ->where('is_latest', true)
+                ->get();
+
+        }
+
+        return collect([]);
+    }
+
+
+
+
+    public function testsvsreqs() {
+
+        $tests = $this->getTestsList();
+
+        $requirements = Requirement::where('project_id', session('current_project_id'))
+            ->when(session('current_eproduct_id'), function ($query) {
+                $query->where('endproduct_id', session('current_eproduct_id'));
+            })
+            ->whereHas('tests')
+            ->get();
+
+        $tests_array = [];
+        $tests_vs_reqs_array = [];
+
+        foreach ($tests as $tt) {
+            $tests_array[$tt->id] = $tt;
+        }
+
+        //dd($tests_array);
+
+
+
+        foreach ($requirements as $requirement) {
+
+            // dd($requirement->tests);
+
+            foreach ($requirement->tests as $t) {
+                $tests_vs_reqs_array[$t->id][] = $requirement;
+            }
+        }
+
+        // dd([$tests_vs_reqs_array,$tests]);
+
+        return view('export.tests-vs-requirements', [
+            'tests_array' => $tests_array,
+            'tests_vs_reqs_array' => $tests_vs_reqs_array,
+        ]);
+    }
+
 
 
     public function compliancematrix() {

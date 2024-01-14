@@ -120,8 +120,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/all-requirements', [ExportController::class, 'allreqs']);
     Route::get('/pocs-vs-requirements', [ExportController::class, 'pocsvsreqs']);
     Route::get('/dgates-vs-pocs', [ExportController::class, 'dgatesvspocs']);
+    Route::get('/tests-vs-reqs', [ExportController::class, 'testsvsreqs']);
     Route::get('/compliance-matrix', [ExportController::class, 'compliancematrix']);
     Route::get('/compliance-matrix-export', [ExportController::class, 'excelCMExport']);
+
+
+
 });
 
 require __DIR__.'/auth.php';

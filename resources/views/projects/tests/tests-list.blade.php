@@ -6,7 +6,7 @@
 
             <header class="mb-6">
                 <h1 class="title has-text-weight-light is-size-1">{{ $constants['list']['title'] }}</h1>
-        
+
                 @if ( $constants['list']['subtitle'] )
                     <h2 class="subtitle has-text-weight-light">{{ $constants['list']['subtitle'] }}</h2>
                 @endif
@@ -109,7 +109,7 @@
             @foreach ($tests as $record)
             <tr wire:key="{{ $record->id }}">
 
-                @foreach (array_keys($constants['list']['headers']) as $col_name)
+                {{-- @foreach (array_keys($constants['list']['headers']) as $col_name)
                     <td>
                         @if (isset($constants['list']['headers'][$col_name]['is_html']) && $constants['list']['headers'][$col_name]['is_html'])
                             {!! $record[$col_name] !!}
@@ -117,7 +117,23 @@
                             {{ $record[$col_name] }}
                         @endif
                     </td>
-                @endforeach
+                @endforeach --}}
+
+                <th class="is-narrow"> {{ 'T'.$record->test_no.' R'.$this->revision; }}</td>
+                <td>
+                    {{ $record->title }}
+
+                    <article class="message">
+                        <div class="message-body">
+                            {!! Str::limit($record->remarks, 160, ' ... ') !!}
+                        </div>
+                    </article>
+                </td>
+
+                <td>
+                    {{ $record->created_at }}
+                </td>
+
 
                 <td class="has-text-right">
 
@@ -127,13 +143,8 @@
 
                     @role(['admin','company_admin','requirement_engineer'])
                         <a href="/projects-tests/form/{{ $record->id }}">
-                        {{-- <a wire:click="editItem({{ $record->id }})"> --}}
                             <span class="icon"><x-carbon-edit /></span>
                         </a>
-
-                        {{-- <a wire:click.prevent="triggerDelete({{$record->id}})">
-                            <span class="icon has-text-danger-dark"><x-carbon-trash-can /></span>
-                        </a> --}}
                     @endrole
 
                 </td>
