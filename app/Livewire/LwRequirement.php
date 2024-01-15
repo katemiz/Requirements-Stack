@@ -53,6 +53,8 @@ class LwRequirement extends Component
 
     // Advanced Search
     public $advanced_search=false;
+    public $ep_filter = false;
+
 
     // Verification
     public $companies = [];
@@ -78,6 +80,7 @@ class LwRequirement extends Component
     public $project_id = false;
 
     public $endproduct_id = false;
+    public $endproduct_ids = [];
     public $chapter_id = false;
     public $chapter;
 
@@ -105,6 +108,7 @@ class LwRequirement extends Component
     public $requirement_tests;
 
     public $tests;
+
 
     public $rtypes = [
         'GR' => 'General Requirement',
@@ -198,10 +202,13 @@ class LwRequirement extends Component
 
                 if (strlen(trim($this->query)) < 2 ) {
 
+
                     // ADMIN/PROJECT SET/NO QUERY
                     $requirements = Requirement::where('project_id', session('current_project_id'))
                         ->when(session('current_eproduct_id'), function ($query) {
-                            $query->where('endproduct_id', session('current_eproduct_id'));
+                            $query->whereHas('endproducts', function ($query) {
+                                $query->where('endproduct_id', session('current_eproduct_id'));
+                            });
                         })
                         ->when($this->show_latest, function ($query) {
                             $query->where('is_latest', true);
@@ -211,16 +218,25 @@ class LwRequirement extends Component
                         })
                         ->when($this->advanced_search && $this->chapter_id, function ($query) {
                             $query->where('chapter_id', $this->chapter_id);
+                        })
+                        ->when($this->advanced_search && $this->ep_filter, function ($query) {
+                            $query->whereHas('endproducts', function ($query) {
+                                $query->where('endproduct_id', $this->ep_filter);
+                            });
                         })
                         ->orderBy($this->sortField,$this->sortDirection)
                         ->paginate(env('RESULTS_PER_PAGE'));
 
                 } else {
 
+
+
                     // ADMIN/PROJECT SET/QUERY EXISTS
                     $requirements = Requirement::where('project_id', session('current_project_id'))
                         ->when(session('current_eproduct_id'), function ($query) {
-                            $query->where('endproduct_id', session('current_eproduct_id'));
+                            $query->whereHas('endproducts', function ($query) {
+                                $query->where('endproduct_id', session('current_eproduct_id'));
+                            });
                         })
                         ->when($this->show_latest, function ($query) {
                             $query->where('is_latest', true);
@@ -230,6 +246,11 @@ class LwRequirement extends Component
                         })
                         ->when($this->advanced_search && $this->chapter_id, function ($query) {
                             $query->where('chapter_id', $this->chapter_id);
+                        })
+                        ->when($this->advanced_search && $this->ep_filter, function ($query) {
+                            $query->whereHas('endproducts', function ($query) {
+                                $query->where('endproduct_id', $this->ep_filter);
+                            });
                         })
                         ->where(function ($sqlquery) {
                             $sqlquery->where('text', 'LIKE', "%".$this->query."%")
@@ -243,6 +264,8 @@ class LwRequirement extends Component
 
             } else {
 
+
+
                 if (strlen(trim($this->query)) < 2 ) {
 
                     // ADMIN/NO PROJECT/NO QUERY
@@ -255,6 +278,11 @@ class LwRequirement extends Component
                     ->when($this->advanced_search && $this->chapter_id, function ($query) {
                         $query->where('chapter_id', $this->chapter_id);
                     })
+                    ->when($this->advanced_search && $this->ep_filter, function ($query) {
+                        $query->whereHas('endproducts', function ($query) {
+                            $query->where('endproduct_id', $this->ep_filter);
+                        });
+                    })
                     ->orderBy($this->sortField,$this->sortDirection)
                         ->paginate(env('RESULTS_PER_PAGE'));
 
@@ -263,7 +291,9 @@ class LwRequirement extends Component
                     // ADMIN/NO PROJECT/QUERY EXISTS
                     $requirements = Requirement::where('project_id', session('current_project_id'))
                         ->when(session('current_eproduct_id'), function ($query) {
-                            $query->where('endproduct_id', session('current_eproduct_id'));
+                            $query->whereHas('endproducts', function ($query) {
+                                $query->where('endproduct_id', session('current_eproduct_id'));
+                            });
                         })
                         ->when($this->show_latest, function ($query) {
                             $query->where('is_latest', true);
@@ -273,6 +303,11 @@ class LwRequirement extends Component
                         })
                         ->when($this->advanced_search && $this->chapter_id, function ($query) {
                             $query->where('chapter_id', $this->chapter_id);
+                        })
+                        ->when($this->advanced_search && $this->ep_filter, function ($query) {
+                            $query->whereHas('endproducts', function ($query) {
+                                $query->where('endproduct_id', $this->ep_filter);
+                            });
                         })
                         ->where(function ($sqlquery) {
                             $sqlquery->where('text', 'LIKE', "%".$this->query."%")
@@ -286,55 +321,152 @@ class LwRequirement extends Component
 
         } else {
 
-            if (strlen(trim($this->query)) < 2 ) {
 
-                $requirements = Requirement::where('company_id', $this->logged_user->company_id)
-                    ->when(session('current_project_id'), function ($query) {
-                        $query->where('project_id', session('current_project_id'));
-                    })
-                    ->when(session('current_eproduct_id'), function ($query) {
-                        $query->where('endproduct_id', session('current_eproduct_id'));
-                    })
-                    ->when($this->show_latest, function ($query) {
-                        $query->where('is_latest', true);
-                    })
-                    ->when($this->advanced_search && $this->rtype, function ($query) {
-                        $query->where('rtype', $this->rtype);
-                    })
-                    ->when($this->advanced_search && $this->chapter_id, function ($query) {
-                        $query->where('chapter_id', $this->chapter_id);
-                    })
-                    ->orderBy($this->sortField,$this->sortDirection)
-                    ->paginate(env('RESULTS_PER_PAGE'));
+            if (session('current_project_id')) {
+
+
+                if (strlen(trim($this->query)) < 2 ) {
+
+                    $requirements = Requirement::where('project_id', session('current_project_id'))
+
+                        ->where('company_id', $this->logged_user->company_id)
+                        ->when(session('current_eproduct_id'), function ($query) {
+                            $query->whereHas('endproducts', function ($query) {
+                                $query->where('endproduct_id', session('current_eproduct_id'));
+                            });
+                        })
+                        ->when(session('current_eproduct_id'), function ($query) {
+                            $query->where('endproduct_id', session('current_eproduct_id'));
+                        })
+                        ->when($this->show_latest, function ($query) {
+                            $query->where('is_latest', true);
+                        })
+                        ->when($this->advanced_search && $this->rtype, function ($query) {
+                            $query->where('rtype', $this->rtype);
+                        })
+                        ->when($this->advanced_search && $this->chapter_id, function ($query) {
+                            $query->where('chapter_id', $this->chapter_id);
+                        })
+                        ->when($this->advanced_search && $this->ep_filter, function ($query) {
+                            $query->whereHas('endproducts', function ($query) {
+                                $query->where('endproduct_id', $this->ep_filter);
+                            });
+                        })
+                        ->orderBy($this->sortField,$this->sortDirection)
+                        ->paginate(env('RESULTS_PER_PAGE'));
+
+                        //dd([$requirements->total(),session('current_project_id')]);
+
+
+                } else {
+
+                    $requirements = Requirement::where('company_id', $this->logged_user->company_id)
+                        ->when(session('current_eproduct_id'), function ($query) {
+                            $query->whereHas('endproducts', function ($query) {
+                                $query->where('endproduct_id', session('current_eproduct_id'));
+                            });
+                        })
+                        ->when(session('current_eproduct_id'), function ($query) {
+                            $query->where('endproduct_id', session('current_eproduct_id'));
+                        })
+                        ->when($this->show_latest, function ($query) {
+                            $query->where('is_latest', true);
+                        })
+                        ->when($this->advanced_search && $this->rtype, function ($query) {
+                            $query->where('rtype', $this->rtype);
+                        })
+                        ->when($this->advanced_search && $this->chapter_id, function ($query) {
+                            $query->where('chapter_id', $this->chapter_id);
+                        })
+                        ->when($this->advanced_search && $this->ep_filter, function ($query) {
+                            $query->whereHas('endproducts', function ($query) {
+                                $query->where('endproduct_id', $this->ep_filter);
+                            });
+                        })
+                        ->where(function ($sqlquery) {
+                            $sqlquery->where('text', 'LIKE', "%".$this->query."%")
+                                ->orWhere('requirement_no', 'LIKE', "%".$this->query."%")
+                                ->orWhere('remarks', 'LIKE', "%".$this->query."%");
+                        })
+                        ->orderBy($this->sortField,$this->sortDirection)
+                        ->paginate(env('RESULTS_PER_PAGE'));
+
+                }
+
 
 
             } else {
 
-                $requirements = Requirement::where('company_id', $this->logged_user->company_id)
-                ->when(session('current_project_id'), function ($query) {
-                    $query->where('project_id', session('current_project_id'));
-                })
-                ->when(session('current_eproduct_id'), function ($query) {
-                    $query->where('endproduct_id', session('current_eproduct_id'));
-                })
-                ->when($this->show_latest, function ($query) {
-                    $query->where('is_latest', true);
-                })
-                ->when($this->advanced_search && $this->rtype, function ($query) {
-                    $query->where('rtype', $this->rtype);
-                })
-                ->when($this->advanced_search && $this->chapter_id, function ($query) {
-                    $query->where('chapter_id', $this->chapter_id);
-                })
-                ->where(function ($sqlquery) {
-                    $sqlquery->where('text', 'LIKE', "%".$this->query."%")
-                        ->orWhere('requirement_no', 'LIKE', "%".$this->query."%")
-                        ->orWhere('remarks', 'LIKE', "%".$this->query."%");
-                })
-                ->orderBy($this->sortField,$this->sortDirection)
-                ->paginate(env('RESULTS_PER_PAGE'));
+                if (strlen(trim($this->query)) < 2 ) {
+
+                    $requirements = Requirement::where('company_id', $this->logged_user->company_id)
+                        ->when(session('current_eproduct_id'), function ($query) {
+                            $query->whereHas('endproducts', function ($query) {
+                                $query->where('endproduct_id', session('current_eproduct_id'));
+                            });
+                        })
+                        ->when(session('current_eproduct_id'), function ($query) {
+                            $query->where('endproduct_id', session('current_eproduct_id'));
+                        })
+                        ->when($this->show_latest, function ($query) {
+                            $query->where('is_latest', true);
+                        })
+                        ->when($this->advanced_search && $this->rtype, function ($query) {
+                            $query->where('rtype', $this->rtype);
+                        })
+                        ->when($this->advanced_search && $this->chapter_id, function ($query) {
+                            $query->where('chapter_id', $this->chapter_id);
+                        })
+                        ->when($this->advanced_search && $this->ep_filter, function ($query) {
+                            $query->whereHas('endproducts', function ($query) {
+                                $query->where('endproduct_id', $this->ep_filter);
+                            });
+                        })
+                        ->orderBy($this->sortField,$this->sortDirection)
+                        ->paginate(env('RESULTS_PER_PAGE'));
+
+                        //dd([$requirements->total(),session('current_project_id')]);
+
+
+                } else {
+
+                    $requirements = Requirement::where('company_id', $this->logged_user->company_id)
+                        ->when(session('current_eproduct_id'), function ($query) {
+                            $query->whereHas('endproducts', function ($query) {
+                                $query->where('endproduct_id', session('current_eproduct_id'));
+                            });
+                        })
+                        ->when(session('current_eproduct_id'), function ($query) {
+                            $query->where('endproduct_id', session('current_eproduct_id'));
+                        })
+                        ->when($this->show_latest, function ($query) {
+                            $query->where('is_latest', true);
+                        })
+                        ->when($this->advanced_search && $this->rtype, function ($query) {
+                            $query->where('rtype', $this->rtype);
+                        })
+                        ->when($this->advanced_search && $this->chapter_id, function ($query) {
+                            $query->where('chapter_id', $this->chapter_id);
+                        })
+                        ->when($this->advanced_search && $this->ep_filter, function ($query) {
+                            $query->whereHas('endproducts', function ($query) {
+                                $query->where('endproduct_id', $this->ep_filter);
+                            });
+                        })
+                        ->where(function ($sqlquery) {
+                            $sqlquery->where('text', 'LIKE', "%".$this->query."%")
+                                ->orWhere('requirement_no', 'LIKE', "%".$this->query."%")
+                                ->orWhere('remarks', 'LIKE', "%".$this->query."%");
+                        })
+                        ->orderBy($this->sortField,$this->sortDirection)
+                        ->paginate(env('RESULTS_PER_PAGE'));
+
+                }
 
             }
+
+
+
         }
 
         return $requirements;
@@ -391,8 +523,9 @@ class LwRequirement extends Component
 
 
     public function getEndProductsList()  {
-        if ($this->project_id) {
-            $this->project_eproducts = Endproduct::where('project_id',$this->project_id)->get();
+
+        if (session('current_project_id')) {
+            $this->project_eproducts = Endproduct::where('project_id',session('current_project_id'))->get();
         }
     }
 
@@ -418,7 +551,6 @@ class LwRequirement extends Component
 
 
     public function getChaptersList()  {
-
 
         if ($this->project_id) {
             return Chapter::where('project_id',$this->project_id)
@@ -524,6 +656,15 @@ class LwRequirement extends Component
                 }
             }
 
+            $this->endproduct_ids  = [];
+
+            if( count($this->requirement->endproducts) > 0 ) {
+                foreach ($this->requirement->endproducts as $ep) {
+                    array_push($this->endproduct_ids,$ep->id);
+                }
+            }
+
+
             // Revisions
             foreach (Requirement::where('requirement_no',$this->requirement_no)->get() as $req) {
                 $this->all_revs[$req->revision] = $req->id;
@@ -585,7 +726,7 @@ class LwRequirement extends Component
         $props['updated_uid'] = Auth::id();
         $props['company_id'] = $this->company_id;
         $props['project_id'] = $this->project_id;
-        $props['endproduct_id'] = $this->endproduct_id ? $this->endproduct_id : 0;
+        //$props['endproduct_id'] = $this->endproduct_id ? $this->endproduct_id : 0;
         $props['chapter_id'] = $this->chapter_id ? $this->chapter_id : 0;
         $props['rtype'] = $this->rtype;
         $props['source'] = $this->source;
@@ -609,6 +750,9 @@ class LwRequirement extends Component
         }
 
         $requirement = Requirement::find($this->uid);
+
+        $requirement->endproducts()->detach();
+        $requirement->endproducts()->attach($this->endproduct_ids);
 
         $requirement->tests()->detach();
         $requirement->tests()->attach($this->requirement_tests);

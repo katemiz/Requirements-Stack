@@ -71,7 +71,7 @@
                 </div>
 
                 <div class="field">
-                    <label class="label">End Product</label>
+                    {{-- <label class="label">End Product</label>
                     <div class="control">
 
                         @if (count($project_eproducts) > 0)
@@ -94,7 +94,29 @@
 
                     @error('endproduct_id')
                     <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
+                    @enderror --}}
+
+                    <label class="label">End Products</label>
+                    <div class="control">
+
+                        @if (count($project_eproducts) > 0)
+
+                            @foreach ($project_eproducts as $ep)
+                                <input type="checkbox" value="{{ $ep->id }}" wire:model="endproduct_ids">&nbsp;&nbsp;{{ $ep->code }} {{ $ep->title }}<br>
+                            @endforeach
+
+                        @else
+                            <p>No end product found</p>
+                        @endif
+                    </div>
+
+                    @error('endproduct_id')
+                    <div class="notification is-danger is-light is-size-7 p-1 mt-1">{{ $message }}</div>
                     @enderror
+
+
+
+
                 </div>
 
             </div>

@@ -116,7 +116,8 @@ return [
             "value" => "",
             "options" => [
                 "GR" => 'General Requirement',
-                "TR" => 'Technical Requirement'
+                "TR" => 'Technical Requirement',
+                "DEF" => 'Definition',
             ]
         ],
 

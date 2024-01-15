@@ -136,7 +136,11 @@
               <div class="column is-half has-text-right">
                 <p class="has-text-weight-light is-size-6">End Product</p>
 
-                <span class="tag is-dark">{{ $endproduct_id > 0 ? $the_endproduct->code : '----' }}</span>
+                @foreach ($project_eproducts as $ep)
+                    @if ( in_array($ep->id,$endproduct_ids) )
+                        <span class="tag is-dark">{{ $ep->code }}</span>
+                    @endif
+                @endforeach
 
               </div>
 
@@ -213,7 +217,7 @@
                     </div>
 
                 </div>
-            </div>      
+            </div>
 
             <div class="column">
 

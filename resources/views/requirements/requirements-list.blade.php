@@ -49,25 +49,22 @@
                 <div class="control">
                   <input class="input is-small" type="text" wire:model.live="query" placeholder="Search ...">
                 </div>
+
                 <div class="control">
-                <a class="button is-link is-light is-small">
-                    {{-- <span class="icon is-small"><x-carbon-search-advanced /></span> --}}
+                    <a class="button is-link is-light is-small">
+                        {{-- <span class="icon is-small"><x-carbon-search-advanced /></span> --}}
 
-                    @if ( strlen($query) > 0)
-                        <span class="icon is-small is-left" wire:click="resetFilter">
-                            <x-carbon-close />
-                        </span>
-                    @else
-                        <span class="icon is-small" wire:click="$toggle('advanced_search')"><x-carbon-search /></span>
-                    @endif
-                </a>
-
-
+                        @if ( strlen($query) > 0)
+                            <span class="icon is-small is-left" wire:click="resetFilter">
+                                <x-carbon-close />
+                            </span>
+                        @else
+                            <span class="icon is-small" wire:click="$toggle('advanced_search')"><x-carbon-search /></span>
+                        @endif
+                    </a>
                 </div>
 
             </div>
-            
-
 
         </div>
 
@@ -99,6 +96,26 @@
             </div>
 
 
+            @if ($project_eproducts->count() > 0)
+
+            <div class="column">
+
+                <label class="label">Filter By End Product</label>
+
+                <div class="select">
+
+                    <select wire:model.live='ep_filter'>
+                        <option>Select End Product ...</option>
+                        @foreach ($project_eproducts as $ep)
+                            <option value="{{ $ep->id }}">{{ $ep->code }}-{{ $ep->title }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            @endif
+
+
+
 
             @if (count($chapters) > 0)
             <div class="column">
@@ -115,7 +132,7 @@
                     </select>
 
                 </div>
-                        
+
             </div>
             @endif
 
@@ -125,7 +142,7 @@
 
 
         </div>
-        
+
     @endif
 
     @if ($requirements->count() > 0)
@@ -191,7 +208,7 @@
                             @else
                                 {{ $record[$col_name] }}
                             @endif
-                            
+
                         @endif
 
                     </td>
