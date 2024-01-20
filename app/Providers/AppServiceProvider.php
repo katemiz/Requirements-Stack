@@ -5,8 +5,8 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Query\Builder;
 
-use DB;
-use Log;
+// use DB;
+// use Log;
 
 
 // use Illuminate\Pagination\Paginator;
@@ -37,13 +37,13 @@ class AppServiceProvider extends ServiceProvider
         });
 
 
-        DB::listen(function($query) {
-            Log::info(
-                $query->sql,
-                $query->bindings,
-                $query->time
-            );
-        });
+        // DB::listen(function($query) {
+        //     Log::info(
+        //         $query->sql,
+        //         $query->bindings,
+        //         $query->time
+        //     );
+        // });
 
 
     }
