@@ -321,9 +321,7 @@ class LwRequirement extends Component
 
         } else {
 
-
             if (session('current_project_id')) {
-
 
                 if (strlen(trim($this->query)) < 2 ) {
 
@@ -358,9 +356,15 @@ class LwRequirement extends Component
                         //dd([$requirements->total(),session('current_project_id')]);
 
 
+                        //dd($requirements);
+
+
+
+
                 } else {
 
-                    $requirements = Requirement::where('company_id', $this->logged_user->company_id)
+                    $requirements = Requirement::where('project_id', session('current_project_id'))
+                        ->where('company_id', $this->logged_user->company_id)
                         ->when(session('current_eproduct_id'), function ($query) {
                             $query->whereHas('endproducts', function ($query) {
                                 $query->where('endproduct_id', session('current_eproduct_id'));
