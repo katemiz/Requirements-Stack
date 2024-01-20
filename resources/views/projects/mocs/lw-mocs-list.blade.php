@@ -59,6 +59,8 @@
     @if ($mocs->count() > 0)
     <table class="table is-fullwidth">
 
+        <caption>{{ $mocs->total() }} {{ $mocs->total() > 1 ? ' MOCs' :' MOC' }}</caption>
+
         @if ($constants['list']['listCaption'])
             <caption>{{ $constants['list']['listCaption'] }}</caption>
         @endif

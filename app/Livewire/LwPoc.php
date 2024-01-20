@@ -51,19 +51,19 @@ class LwPoc extends Component
     public $project_eproducts = [];
 
 
-    #[Rule('required', message: 'Please select company')] 
+    #[Rule('required', message: 'Please select company')]
     public $company_id = false;
 
-    #[Rule('required', message: 'Please select project')] 
+    #[Rule('required', message: 'Please select project')]
     public $project_id = false;
 
-    // #[Rule('required', message: 'Please select End Product')] 
+    // #[Rule('required', message: 'Please select End Product')]
     public $endproduct_id = 0;
 
-    #[Rule('required', message: 'Please enter phase code. (eg P1)')] 
+    #[Rule('required', message: 'Please enter phase code. (eg P1)')]
     public $code;
 
-    #[Rule('required', message: 'Please enter phase name (eg Feasibility Phase)')] 
+    #[Rule('required', message: 'Please enter phase name (eg Feasibility Phase)')]
     public $name;
 
     public $created_by;
@@ -129,9 +129,9 @@ class LwPoc extends Component
                             })
                             ->orderBy($this->sortField,$this->sortDirection)
                             ->paginate(env('RESULTS_PER_PAGE'));
-    
+
                 } else {
-    
+
                     $pocs = Poc::where('project_id', session('current_project_id'))
                             ->when(session('current_eproduct_id'), function ($query) {
                                 $query->where('endproduct_id', session('current_eproduct_id'));
@@ -149,9 +149,9 @@ class LwPoc extends Component
 
                     $pocs = Poc::orderBy($this->sortField,$this->sortDirection)
                             ->paginate(env('RESULTS_PER_PAGE'));
-    
+
                 } else {
-    
+
                     $pocs = Poc::where('code', 'LIKE', "%".$this->query."%")
                             ->orWhere('name','LIKE',"%".$this->query."%")
                             ->orWhere('description','LIKE',"%".$this->query."%")
@@ -161,9 +161,10 @@ class LwPoc extends Component
             }
         } else {
 
+
             if (session('current_project_id')) {
 
-                if (strlen(trim($this->query)) < 2 ) {
+                if (strlen(trim($this->query)) > 2 ) {
 
                     $pocs = Poc::where('project_id', session('current_project_id'))
                             ->when(session('current_eproduct_id'), function ($query) {
@@ -177,9 +178,9 @@ class LwPoc extends Component
                             })
                             ->orderBy($this->sortField,$this->sortDirection)
                             ->paginate(env('RESULTS_PER_PAGE'));
-    
+
                 } else {
-    
+
                     $pocs = Poc::where('project_id', session('current_project_id'))
                             ->when(session('current_eproduct_id'), function ($query) {
                                 $query->where('endproduct_id', session('current_eproduct_id'));
@@ -191,7 +192,7 @@ class LwPoc extends Component
 
             } else {
 
-                if (strlen(trim($this->query)) < 2 ) {
+                if (strlen(trim($this->query)) > 2 ) {
 
                     $pocs = Poc::where('company_id',$this->logged_user->company_id)
                             ->where(function ($sqlquery) {
@@ -201,9 +202,9 @@ class LwPoc extends Component
                             })
                             ->orderBy($this->sortField,$this->sortDirection)
                             ->paginate(env('RESULTS_PER_PAGE'));
-    
+
                 } else {
-    
+
                     $pocs = Poc::where('company_id', $this->logged_user->company_id)
                             ->orderBy($this->sortField,$this->sortDirection)
                             ->paginate(env('RESULTS_PER_PAGE'));
@@ -336,7 +337,7 @@ class LwPoc extends Component
         $this->resetPage();
     }
 
-    
+
     public function storeUpdateItem () {
 
         $this->validate();

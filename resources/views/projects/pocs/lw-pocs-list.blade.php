@@ -16,7 +16,7 @@
 
 
 
-{{-- 
+{{--
     <pre>
         @foreach ($mocs as $record)
 
@@ -88,6 +88,9 @@
 
     @if ($pocs->count() > 0)
     <table class="table is-fullwidth">
+
+        <caption>{{ $pocs->total() }} {{ $pocs->total() > 1 ? ' POCs' :' POC' }}</caption>
+
 
         @if ($constants['list']['listCaption'])
             <caption>{{ $constants['list']['listCaption'] }}</caption>

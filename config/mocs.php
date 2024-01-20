@@ -14,12 +14,12 @@ return [
 
         "headers" => [
 
-            "id"=> [
-                "title" => "#",
-                "sortable" => true,
-                "align" => "left",
-                "direction" => "asc"
-            ],
+            // "id"=> [
+            //     "title" => "#",
+            //     "sortable" => true,
+            //     "align" => "left",
+            //     "direction" => "asc"
+            // ],
 
             "project_name"=> [
                 "title" => "Project",
