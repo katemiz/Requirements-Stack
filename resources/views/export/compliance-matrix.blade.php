@@ -48,7 +48,9 @@
                     {{-- <td>{{ config('requirements.form.rtype.options')[$item->rtype] }}</td> --}}
                     <td>
                         <p class="subtitle mb-3">{{ config('requirements.form.rtype.options')[$item->rtype] }}</p>
+                        <div class="content">
                         {!! $item->text !!}
+                        </div>
                     </td>
                     <td>
                         @foreach ($item->endproducts as $ep)
