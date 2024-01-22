@@ -9,13 +9,13 @@
     </header>
 
     @if (count($requirements) > 0)
-        
+
         <div class="column has-text-right">
 
             <a href="javascript:tableToExcel()">
 
                 <span class="icon-text">
-        
+
                     <span class="icon">
                         <x-carbon-document-export />
                     </span>
@@ -32,7 +32,7 @@
             <thead>
                 <tr>
                     <th>No</th>
-                    <th>Requirement Type</th>
+                    {{-- <th>Requirement Type</th> --}}
                     <th>Requirement Definition</th>
                     <th>End Products (If any)</th>
                     <th>Compliance</th>
@@ -44,9 +44,12 @@
 
                 @foreach ($requirements as $item)
                 <tr>
-                    <td>{{ $item->rtype }}-{{ $item->requirement_no }} R{{ $item->revision }}</td>
-                    <td>{{ config('requirements.form.rtype.options')[$item->rtype] }}</td>
-                    <td>{!! $item->text !!}</td>
+                    <td class="is-narrow">R{{ $item->requirement_no }} R{{ $item->revision }}</td>
+                    {{-- <td>{{ config('requirements.form.rtype.options')[$item->rtype] }}</td> --}}
+                    <td>
+                        <p class="subtitle mb-3">{{ config('requirements.form.rtype.options')[$item->rtype] }}</p>
+                        {!! $item->text !!}
+                    </td>
                     <td>
                         @foreach ($item->endproducts as $ep)
                         <span class="tag is-info">{{ $ep->code }}</span><br>
@@ -78,9 +81,9 @@
             }
         </script>
 
-    @else   
+    @else
         <div class="notification is-link is-light">No requirements found</div>
-    
+
     @endif
 
 

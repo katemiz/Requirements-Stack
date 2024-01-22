@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\DB;
 
+use App\Models\Endproduct;
 use App\Models\Requirement;
 use App\Models\Verification;
 use App\Models\Gate;
@@ -24,16 +25,21 @@ class ExportController extends Controller
 
     public function allreqs() {
 
-        $all = $this->getProductRequirements();
+        // $all = $this->getProductRequirements();
 
-        $allreqs = [];
+        // $allreqs = [];
 
-        foreach ($all as $requirement) {
-            $allreqs[$requirement->rtype][] = $requirement;
-        }
+        // foreach ($all as $requirement) {
+        //     $allreqs[$requirement->rtype][] = $requirement;
+        // }
+
+
+
+
 
         return view('export.all-reqs', [
-            'allreqs' => $allreqs
+            'allreqs' => $this->getProductRequirements(),
+            'endproducts' => $this->getEndProductsList()
         ]);
     }
 
@@ -44,9 +50,20 @@ class ExportController extends Controller
         ->when(session('current_eproduct_id'), function ($query) {
             $query->where('endproduct_id', session('current_eproduct_id'));
         })
+        ->orderBy('chapter_id')
         ->where('is_latest', true)
         ->get();
     }
+
+
+    public function getEndProductsList()  {
+
+        if (session('current_project_id')) {
+            return Endproduct::where('project_id',session('current_project_id'))->get();
+        }
+    }
+
+
 
 
     public function pocsvsreqs() {

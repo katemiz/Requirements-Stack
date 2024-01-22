@@ -19,73 +19,76 @@
     <section class="section container">
 
         @if ( count($allreqs) > 0)
-            @foreach ($allreqs as $type => $type_reqs)
-                
-                <header class="my-6">
-                    <h1 class="title has-text-weight-light is-size-1">{{ $type=='GR' ? 'General':'Technical' }} Requirements</h1>
-                    <h2 class="subtitle has-text-weight-light">Total number of requirements {{ count($type_reqs)}}</h2>
-                </header>
 
-                @foreach ($type_reqs as $greq)
+            <header class="my-6">
+                <h1 class="title has-text-weight-light is-size-1">Requirements</h1>
+                <h2 class="subtitle has-text-weight-light">Total number of requirements {{ count($allreqs)}}</h2>
+            </header>
 
-                    <div class="card mb-3 has-background-white-ter">
+            @foreach ($allreqs as $r)
 
-                        <div class="card-content">
+                <div class="card mb-5 has-background-white-ter">
+
+                    <div class="card-content">
                         <div class="media">
 
                             <div class="media-content">
                             <p class="title is-4">
-                                <span>{{$greq->rtype}}-{{$greq->requirement_no}} R{{$greq->revision}}</span>
+                                <span>R{{$r->requirement_no}} R{{$r->revision}}</span>
                             </p>
                             </div>
-                
-                            <div class="media-content">
-                            <h4 class="subtitle has-text-weight-normal my-0">Applicable End Products</h4>
-                            </div>    
-                        </div>
-                
-                            <div class="content">
-                                {!! $greq->text !!}
 
-                                <table class="table is-fullwidth">
-                                <caption>Requirement Verification Table</caption>
+                            <div class="media-content has-text-right">
+                                <h4 class="subtitle has-text-weight-normal my-0">Applicable End Products</h4>
 
-                                <tbody>
-                                <tr>
-                                <th>Decision Gate</th>
-                                <th>MOC/Verification Method</th>
-                                <th>Proof of Compliance</th>
-                                <th>Witness</th>
-                                </tr>
-
-                                @foreach ($greq->verifications as $verification)
-                                <tr>
-                                <td>{{ $verification->decision_gate}}</td>
-                                <td>{{ $verification->moc_name}}</td>
-                                <td>{{ $verification->poc_name}}</td>
-                                <td>{{ $verification->witness_name}}</td>
-                                </tr>
+                                @foreach ($r->endproducts as $ep)
+                                    <span class="tag is-dark">{{ $ep->title }}</span>
                                 @endforeach
 
-                                </tbody>
-                                </table>
                             </div>
                         </div>
 
-                    </div>
-                    
-                @endforeach
+                        <div class="content">
+                            {!! $r->text !!}
 
-            @endforeach           
+                            <table class="table is-fullwidth">
+                            <caption>Requirement Verification Table</caption>
+
+                            <tbody>
+                            <tr>
+                            <th>Decision Gate</th>
+                            <th>MOC/Verification Method</th>
+                            <th>Proof of Compliance</th>
+                            <th>Witness</th>
+                            </tr>
+
+                            @foreach ($r->verifications as $verification)
+                            <tr>
+                            <td>{{ $verification->decision_gate}}</td>
+                            <td>{{ $verification->moc_name}}</td>
+                            <td>{{ $verification->poc_name}}</td>
+                            <td>{{ $verification->witness_name}}</td>
+                            </tr>
+                            @endforeach
+
+                            </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+
+            @endforeach
+
         @else
 
             <header class="my-6">
                 <h1 class="title has-text-weight-light is-size-1">No Requirements</h1>
             </header>
-            
+
         @endif
 
-    
+
     </section>
 </body>
 </html>

@@ -65,6 +65,15 @@ class Requirement extends Model
         return Project::find($this->project_id)->code;
     }
 
+    public function getChapterTitleAttribute()
+    {
+        if ($this->chapter_id > 0) {
+            return Chapter::find($this->chapter_id)->title;
+        }
+
+        return 'No related chapter';
+    }
+
 
     public function getEndProductNameAttribute()
     {
