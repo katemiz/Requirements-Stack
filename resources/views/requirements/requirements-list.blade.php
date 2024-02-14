@@ -1,4 +1,4 @@
-<section class="section container">
+<section class="container section">
 
     <div class="columns">
 
@@ -26,7 +26,7 @@
         <div class="notification is-info is-light">{{ session('message') }}</div>
     @endif
 
-    <nav class="level my-6">
+    <nav class="my-6 level">
 
         <!-- Left side -->
         <div class="level-left">
@@ -76,7 +76,7 @@
             <p class="subtitle">Advanced Search Parameters</p>
         </div>
 
-        <div class="columns my-6 has-background-light">
+        <div class="my-6 columns has-background-light">
 
 
 
@@ -191,19 +191,18 @@
             <tr wire:key="{{ $record->id }}">
 
                 @foreach (array_keys($constants['list']['headers']) as $col_name)
-                    <td {{ $col_name == 'full_no' ? 'is-narrow' :'' }}>
+                    <td class="{{ $col_name == 'requirement_no' ? 'is-narrow' :'' }}">
 
-                        @if ( $col_name == 'full_no' )
+                        @if ( $col_name == 'requirement_no' )
 
                             <a href="/requirements/view/{{ $record->id }}" target="_blank">
-                                <span class="icon">{{ $record[$col_name] }}</span>
+                                {{ 'R'.$record->requirement_no.' R'.$record->revision }}
                             </a>
 
                         @else
 
                             @if (isset($constants['list']['headers'][$col_name]['is_html']) && $constants['list']['headers'][$col_name]['is_html'])
-                            <div class="content">
-                                {!! $record[$col_name] !!}</div>
+                                <div class="content">{!! $record[$col_name] !!}</div>
                             @else
                                 {{ $record[$col_name] }}
                             @endif

@@ -15,7 +15,7 @@ return [
 
         "headers" => [
 
-            "full_no"=> [
+            "requirement_no"=> [
                 "title" => "No",
                 "sortable" => true,
                 "class" => "has-text-left is-narrow",

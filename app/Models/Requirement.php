@@ -56,7 +56,7 @@ class Requirement extends Model
 
     public function dgates(): HasMany
     {
-        return $this->hasMany(Meeting::class,'verifications');
+        return $this->hasMany(Gate::class,'verifications');
     }
 
 

@@ -1,4 +1,4 @@
-<section class="section container">
+<section class="container section">
 
     <div class="columns">
 
@@ -26,7 +26,7 @@
         <div class="notification is-info is-light">{{ session('message') }}</div>
     @endif
 
-    <nav class="level my-6">
+    <nav class="my-6 level">
 
         <!-- Left side -->
         <div class="level-left">
@@ -69,9 +69,7 @@
     @if ($tests->count() > 0)
     <table class="table is-fullwidth">
 
-        @if ($constants['list']['listCaption'])
-            <caption>{{ $constants['list']['listCaption'] }}</caption>
-        @endif
+        <caption>{{ $tests->total() }} {{ $tests->total() > 1 ? ' Records' :' Record' }}</caption>
 
         <thead>
             <tr>
@@ -109,17 +107,7 @@
             @foreach ($tests as $record)
             <tr wire:key="{{ $record->id }}">
 
-                {{-- @foreach (array_keys($constants['list']['headers']) as $col_name)
-                    <td>
-                        @if (isset($constants['list']['headers'][$col_name]['is_html']) && $constants['list']['headers'][$col_name]['is_html'])
-                            {!! $record[$col_name] !!}
-                        @else
-                            {{ $record[$col_name] }}
-                        @endif
-                    </td>
-                @endforeach --}}
-
-                <th class="is-narrow"> {{ 'T'.$record->test_no.' R'.$this->revision; }}</td>
+                <th class="is-narrow"> {{ 'T'.$record->test_no.' R'.$record->revision }}</td>
                 <td>
                     {{ $record->title }}
 

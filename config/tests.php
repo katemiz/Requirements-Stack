@@ -15,14 +15,14 @@ return [
 
         "headers" => [
 
-            "full_test_no"=> [
+            "test_no"=> [
                 "title" => "Type",
                 "sortable" => true,
                 "align" => "left",
                 "direction" => "asc"
             ],
 
-            "test_description"=> [
+            "remarks"=> [
                 "title" => "Test Title",
                 "sortable" => true,
                 "align" => "left",
