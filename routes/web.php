@@ -33,6 +33,9 @@ use App\Http\Controllers\RolesPermissionsController;
 use App\Http\Controllers\CkImgController;
 
 
+use App\Http\Controllers\CopyFromProject;
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -123,6 +126,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/tests-vs-reqs', [ExportController::class, 'testsvsreqs']);
     Route::get('/compliance-matrix', [ExportController::class, 'compliancematrix']);
     Route::get('/compliance-matrix-export', [ExportController::class, 'excelCMExport']);
+
+
+    Route::get('/copy-from', [CopyFromProject::class, 'run']);
 
 
 

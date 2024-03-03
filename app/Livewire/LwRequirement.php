@@ -202,7 +202,6 @@ class LwRequirement extends Component
 
                 if (strlen(trim($this->query)) < 2 ) {
 
-
                     // ADMIN/PROJECT SET/NO QUERY
                     $requirements = Requirement::where('project_id', session('current_project_id'))
                         ->when(session('current_eproduct_id'), function ($query) {
@@ -228,8 +227,6 @@ class LwRequirement extends Component
                         ->paginate(env('RESULTS_PER_PAGE'));
 
                 } else {
-
-
 
                     // ADMIN/PROJECT SET/QUERY EXISTS
                     $requirements = Requirement::where('project_id', session('current_project_id'))
