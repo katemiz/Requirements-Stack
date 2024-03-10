@@ -79,19 +79,22 @@ class ExportController extends Controller
 
         $product_reqs = $this->getProductRequirements();
 
-        foreach ($product_reqs as $preq) {
+        foreach ($product_reqs as $rtpye => $gr_tr) {
 
-            // all verification for single req
-            $req_vers = Verification::where('requirement_id',$preq->id)->get();
+            foreach ($gr_tr as $preq) {
 
-            foreach ($req_vers as $verification) {
-                $poc = Poc::find($verification->poc_id);
+                // all verification for single req
+                $req_vers = Verification::where('requirement_id',$preq->id)->get();
 
-                $pocnames[$poc->code] = $poc->name;
-                $matrix[$poc->code][] = ['id' => $preq->id,'no' => $preq->rtype.'-'.$preq->requirement_no.' R'.$preq->revision];
+                foreach ($req_vers as $verification) {
+                    $poc = Poc::find($verification->poc_id);
+
+                    $pocnames[$poc->code] = $poc->name;
+                    $matrix[$rtpye][$poc->code][] = ['id' => $preq->id,'no' => $preq->rtype.'-'.$preq->requirement_no.' R'.$preq->revision];
+                }
+
+                ksort($matrix);
             }
-
-            ksort($matrix);
         }
 
         return view('export.pocs-vs-reqs', [
@@ -127,17 +130,20 @@ class ExportController extends Controller
         $usedPocs = [];
         $matrix = [];
 
-        foreach ($product_reqs as $preq) {
+        foreach ($product_reqs as $gr_tr) {
 
-            // all verification for single req
-            $req_vers = Verification::where('requirement_id',$preq->id)->get();
+            foreach ($gr_tr as $preq) {
 
-            foreach ($req_vers as $verification) {
+                // all verification for single req
+                $req_vers = Verification::where('requirement_id',$preq->id)->get();
 
-                array_push($usedPocs,$verification->poc_id);
+                foreach ($req_vers as $verification) {
 
-                if ( !isset($matrix[$verification->gate_id]) || !in_array($verification->poc_id,$matrix[$verification->gate_id]) ) {
-                    $matrix[$verification->gate_id][] = $verification->poc_id;
+                    array_push($usedPocs,$verification->poc_id);
+
+                    if ( !isset($matrix[$verification->gate_id]) || !in_array($verification->poc_id,$matrix[$verification->gate_id]) ) {
+                        $matrix[$verification->gate_id][] = $verification->poc_id;
+                    }
                 }
             }
         }

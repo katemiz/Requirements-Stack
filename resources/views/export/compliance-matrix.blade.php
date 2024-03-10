@@ -25,9 +25,12 @@
 
         </div>
 
+        @foreach ($requirements as $rtype => $subrequirements)
+
+
         <table class="table is-fullwidth" id="CMMAtrix">
 
-            <caption>Compliances Matrix</caption>
+            <caption>Compliances Matrix for {{ $rtype == 'GR' ? 'General Requirements':'Technical Requirements' }}</caption>
 
             <thead>
                 <tr>
@@ -42,21 +45,20 @@
 
             <tbody>
 
-                @foreach ($requirements as $item)
+                @foreach ($subrequirements as $item)
                 <tr>
                     <td class="is-narrow">R{{ $item->requirement_no }} R{{ $item->revision }}</td>
-                    {{-- <td>{{ config('requirements.form.rtype.options')[$item->rtype] }}</td> --}}
                     <td>
-                        <p class="subtitle mb-3">{{ config('requirements.form.rtype.options')[$item->rtype] }}</p>
+                        {{-- <p class="subtitle mb-3">{{ config('requirements.form.rtype.options')[$item->rtype] }}</p> --}}
                         <div class="content">
                         {!! $item->text !!}
                         </div>
                     </td>
-                    <td>
+                    {{-- <td>
                         @foreach ($item->endproducts as $ep)
                         <span class="tag is-info">{{ $ep->code }}</span><br>
                         @endforeach
-                    </td>
+                    </td> --}}
                     <td>
                         <label class="checkbox is-size-7">
                         <input type="checkbox"> Comply
@@ -74,6 +76,9 @@
 
             </tbody>
         </table>
+
+        @endforeach()
+
 
         <script>
             var table2excel = new Table2Excel();

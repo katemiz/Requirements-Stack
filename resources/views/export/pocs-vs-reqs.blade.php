@@ -27,54 +27,62 @@
             <h2 class="subtitle has-text-weight-light">Evidence / Proof of Compliances / Deliverables vs Requirement</h2>
         </header>
 
-        <table class="table is-fullwidth">
 
-            <thead>
-                <tr>
-                    <th class="is-3 has-background-grey-lighter">Evidence Code<br>Proof of Compliance</th>
-                    <th class="has-background-grey-lighter">Linked Requirements</th>
-                </tr>
-            </thead>
 
-            <tbody>
-                @foreach ($matrix as $poc => $reqlist)
-                <tr>
-                    <td class="has-background-white-ter">
-                        <strong>{{ $poc }}</strong><br>
-                        {{ $pocnames[$poc] }}
-                    </td>
-                    <td>
-                        <table class="table is-fullwidth">
-                            <caption>{{ count($reqlist)}} Requirement{{count($reqlist) > 1 ? 's':''}} Linked to This POC </caption>
+        @foreach ($matrix as $rtype => $reqslist)
 
-                            @php
-                                $count = 0;
-                            @endphp
+            <table class="table is-fullwidth">
 
-                            @foreach ($reqlist as $rrr)
+                <caption>{{ $rtype == 'GR' ? 'General Requirements':'Technical Requirements' }}</caption>
 
-                                @if ($count % 8 === 0 )
-                                <tr>
-                                @endif
+                <thead>
+                    <tr>
+                        <th class="is-3 has-background-grey-lighter">Evidence Code<br>Proof of Compliance</th>
+                        <th class="has-background-grey-lighter">Linked Requirements</th>
+                    </tr>
+                </thead>
 
-                                <td><a href="/requirements/view/{{$rrr['id']}}">{{ $rrr['no'] }}</a></td>
+                <tbody>
+                    @foreach ($reqslist as $poc => $reqlist)
+                    <tr>
+                        <td class="has-background-white-ter">
+                            <strong>{{ $poc }}</strong><br>
+                            {{ $pocnames[$poc] }}
+                        </td>
+                        <td>
+                            <table class="table is-fullwidth">
+                                <caption>{{ count($reqlist)}} Requirement{{count($reqlist) > 1 ? 's':''}} Linked to This POC </caption>
 
                                 @php
-                                $count++;
+                                    $count = 0;
                                 @endphp
 
-                                @if ($count % 8 === 0 )
-                                </tr>
-                                @endif
-                            @endforeach
+                                @foreach ($reqlist as $rrr)
 
-                        </table>
-                    </td>
-                </tr>
-                @endforeach
-            <tbody>
+                                    @if ($count % 8 === 0 )
+                                    <tr>
+                                    @endif
 
-        </table>
+                                    <td><a href="/requirements/view/{{$rrr['id']}}">{{ $rrr['no'] }}</a></td>
+
+                                    @php
+                                    $count++;
+                                    @endphp
+
+                                    @if ($count % 8 === 0 )
+                                    </tr>
+                                    @endif
+                                @endforeach
+
+                            </table>
+                        </td>
+                    </tr>
+                    @endforeach
+                <tbody>
+
+            </table>
+
+        @endforeach
 
     @endif
 
