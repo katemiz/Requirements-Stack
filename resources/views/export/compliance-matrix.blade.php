@@ -37,9 +37,9 @@
                     <th>No</th>
                     {{-- <th>Requirement Type</th> --}}
                     <th>Requirement Definition</th>
-                    <th>End Products (If any)</th>
+                    {{-- <th>End Products (If any)</th>
                     <th>Compliance</th>
-                    <th>Contractor Comments</th>
+                    <th>Contractor Comments</th> --}}
                 </tr>
             </thead>
 
@@ -59,7 +59,7 @@
                         <span class="tag is-info">{{ $ep->code }}</span><br>
                         @endforeach
                     </td> --}}
-                    <td>
+                    {{-- <td>
                         <label class="checkbox is-size-7">
                         <input type="checkbox"> Comply
                         </label>
@@ -69,8 +69,8 @@
                             <label class="checkbox is-size-7">
                                 <input type="checkbox"> Not Comply
                             </label>
-                    </td>
-                    <td>&nbsp;</td>
+                    </td> --}}
+                    {{-- <td>&nbsp;</td> --}}
                 </tr>
                 @endforeach
 
