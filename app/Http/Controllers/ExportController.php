@@ -19,40 +19,46 @@ use App\Exports\CMExport;
 
 class ExportController extends Controller
 {
+
     public function __construct() {
         $this->checkCurrentProduct();
     }
 
     public function allreqs() {
 
-        // $all = $this->getProductRequirements();
-
-        // $allreqs = [];
-
-        // foreach ($all as $requirement) {
-        //     $allreqs[$requirement->rtype][] = $requirement;
-        // }
-
-
-
-
-
         return view('export.all-reqs', [
             'allreqs' => $this->getProductRequirements(),
-            'endproducts' => $this->getEndProductsList()
+            'endproducts' => $this->getEndProductsList(),
         ]);
     }
 
 
     public function getProductRequirements() {
 
-        return Requirement::where('project_id', session('current_project_id'))
+        $technical_requirements = [];
+        $general_requirements = [];
+
+        $reqs = Requirement::where('project_id', session('current_project_id'))
         ->when(session('current_eproduct_id'), function ($query) {
             $query->where('endproduct_id', session('current_eproduct_id'));
         })
         ->orderBy('chapter_id')
         ->where('is_latest', true)
         ->get();
+
+
+        foreach ( $reqs as $r) {
+
+            if ($r->rtype == 'TR') {
+                array_push($technical_requirements,$r);
+            }
+
+            if ($r->rtype == 'GR') {
+                array_push($general_requirements,$r);
+            }
+        }
+
+        return ['GR' => $general_requirements,'TR' => $technical_requirements];
     }
 
 
