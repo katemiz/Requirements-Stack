@@ -49,7 +49,7 @@
 
                                 @foreach ($tests_vs_reqs_array[$test->id] as $r)
                                 <li>
-                                    <a href="requirements/view/{{ $r->id }}" target="_blank">T{{ $r->requirement_no }} R{{ $r->revision }}</a>
+                                    <a href="requirements/view/{{ $r->id }}" target="_blank">R{{ $r->requirement_no }} R{{ $r->revision }}</a>
                                 </li>
                                 @endforeach
 
