@@ -100,14 +100,14 @@
                             </p>
                             </div>
 
-                            <div class="media-content has-text-right">
+                            {{-- <div class="media-content has-text-right">
                                 <h4 class="subtitle has-text-weight-normal my-0">Applicable End Products</h4>
 
                                 @foreach ($r->endproducts as $ep)
                                     <span class="tag is-dark">{{ $ep->title }}</span>
                                 @endforeach
 
-                            </div>
+                            </div> --}}
                         </div>
 
                         <div class="content">
